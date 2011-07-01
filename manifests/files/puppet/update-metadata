@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# ZYV
+#
+# For all repos...
+#
+for i in `ls -d`; do
+    #
+    # And all arches...
+    #
+    for j in `ls -d`; do
+        createrepo $i/$j
+    done
+done
