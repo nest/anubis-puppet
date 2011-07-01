@@ -1,0 +1,6 @@
+# ZYV
+
+# Allows site admins (users in group wheel) execute anything as root
+# without requiring a password
+#
+%wheel  ALL=(ALL)       NOPASSWD: ALL
