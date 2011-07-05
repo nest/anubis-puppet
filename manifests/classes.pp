@@ -12,6 +12,19 @@ class sudoers {
 
 }
 
+class fstab {
+
+    file { "/etc/fstab":
+        ensure => "file",
+        group => "root",
+        mode => 644,
+        owner => "root",
+        source => "puppet:///nodes/fstab",
+    }
+
+}
+
+
 class yum_repos_anubis {
 
     # Local yum repositories on anubis (puppet etc.)
