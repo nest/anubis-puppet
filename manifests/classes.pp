@@ -2,6 +2,10 @@
 
 class sudoers {
 
+    package { "sudo":
+        ensure => "present",
+    }
+
     file { "/etc/sudoers.d/admins":
         ensure => "file",
         group => "root",
