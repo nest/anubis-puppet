@@ -24,15 +24,15 @@ class fstab {
 
 }
 
-class mounts_anubis {
+class efi_backup {
 
-    file { "mount_efi_anubis":
-        path => "/mnt/efi",
+    file { "/mnt/efi":
         ensure => "directory",
         group => "root",
         mode => "0644",
         owner => "root",
-        recurse => false,
+        recurse => "true",
+        source => "file:///boot/efi",
     }
 
 }
