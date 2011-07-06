@@ -1,5 +1,8 @@
 # ZYV
 
+#
+# Virtualization server
+#
 node 'puppet.qa.nest-initiative.org' {
 
     include efi_backup

@@ -1,5 +1,8 @@
 # ZYV
 
+#
+# Ensure that site admins are on the sudoers list
+#
 class sudoers {
 
     package { "sudo":
@@ -16,6 +19,9 @@ class sudoers {
 
 }
 
+#
+# Custom fstab settings
+#
 class fstab {
 
     file { "/etc/fstab":
@@ -28,6 +34,9 @@ class fstab {
 
 }
 
+#
+# Custom rc.local settings (i.e. elevator tweaks)
+#
 class rc_local {
 
     file { "/etc/rc.d/rc.local":
@@ -40,6 +49,16 @@ class rc_local {
 
 }
 
+#
+# The EFI-based systems can only boot off a special vfat partition and for that
+# reason software RAID1 is not supported in such configurations.
+#
+# to the second drive, so that in case if one of the hard drives in RAID fails,
+# the system can still be booted off the second drive.
+#
+# The mount point for the backup partition is to be created from the kickstart
+# during the system provisioning phase.
+#
 class efi_backup {
 
     file { "/mnt/efi":
@@ -53,9 +72,11 @@ class efi_backup {
 
 }
 
+#
+# Local yum repositories on anubis (puppet etc.)
+#
 class yum_repos_anubis {
 
-    # Local yum repositories on anubis (puppet etc.)
     #
     # TODO: think of how to best get the files there
     #
