@@ -5,7 +5,7 @@ class sudoers {
     file { "/etc/sudoers.d/admins":
         ensure => "file",
         group => "root",
-        mode => 440,
+        mode => "0440",
         owner => "root",
         source => "puppet:///common/sudoers/admins",
     }
@@ -17,7 +17,7 @@ class fstab {
     file { "/etc/fstab":
         ensure => "file",
         group => "root",
-        mode => 644,
+        mode => "0644",
         owner => "root",
         source => "puppet:///nodes/fstab",
     }
@@ -48,7 +48,7 @@ class yum_repos_anubis {
     file { "/srv/repos":
         ensure => "directory",
         group => "root",
-        mode => 644,
+        mode => "0644",
         owner => "root",
         recurse => true,
     }
@@ -56,7 +56,7 @@ class yum_repos_anubis {
     file { "/srv/repos/update-metadata":
         ensure => "file",
         group => "root",
-        mode => 755,
+        mode => "0755",
         owner => "root",
         source => "puppet:///nodes/update-metadata",
     }
