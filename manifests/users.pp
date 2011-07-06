@@ -1,6 +1,6 @@
 # ZYV
 
-define admin_user($user_name, $user_id, $ssh_key = "", $present = "present") {
+define admin_user($user_name, $user_id, $ssh_key = "undefined", $present = "present") {
 
     user { "$user_name":
         comment => "Puppet-managed account",
