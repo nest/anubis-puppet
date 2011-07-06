@@ -41,7 +41,7 @@ class efi_backup {
     file { "/mnt/efi":
         ensure => "directory",
         group => "root",
-        mode => "0644",
+        mode => "0700",
         owner => "root",
         recurse => "true",
         source => "file:///boot/efi",
