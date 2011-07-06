@@ -24,6 +24,18 @@ class fstab {
 
 }
 
+class mounts_anubis {
+
+    file { "mount_efi_anubis":
+        path => "/mnt/efi",
+        ensure => "directory",
+        group => "root",
+        mode => "0644",
+        owner => "root",
+        recurse => false,
+    }
+
+}
 
 class yum_repos_anubis {
 
