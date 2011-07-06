@@ -5,3 +5,11 @@
 # want to do the full Sys V style init stuff.
 
 touch /var/lock/subsys/local
+
+#
+# ZYV
+#
+# Specific elevator settings for the SSD drive
+#
+echo deadline > /sys/block/sda/queue/scheduler
+echo 1 > /sys/block/sda/queue/iosched/fifo_batch

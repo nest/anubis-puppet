@@ -24,6 +24,18 @@ class fstab {
 
 }
 
+class rc_local {
+
+    file { "/etc/rc.d/rc.local":
+        ensure => "file",
+        group => "root",
+        mode => "0755",
+        owner => "root",
+        source => "puppet:///nodes/rc.local",
+    }
+
+}
+
 class efi_backup {
 
     file { "/mnt/efi":
