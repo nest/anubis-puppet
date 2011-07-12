@@ -1,10 +1,10 @@
 # ZYV
 
-define admin_user($user_name, $user_id, $ssh_key = "undefined", $present = "present") {
+define admin_user($user_name, $user_id, $ssh_key = "undefined", $ensure = "present") {
 
     user { "$user_name":
         comment => "Puppet-managed account",
-        ensure => "$present",
+        ensure => "$ensure",
         gid => "$user_id",
         groups => [ "wheel", ],
         home => "/home/$user_name",
@@ -14,13 +14,13 @@ define admin_user($user_name, $user_id, $ssh_key = "undefined", $present = "pres
     }
 
     group { "$user_name":
-        ensure => "$present",
+        ensure => "$ensure",
         gid => "$user_id",
         system => "false",
     }
 
     ssh_authorized_key { "$user_name":
-        ensure => "$present",
+        ensure => "$ensure",
         key => "$ssh_key",
         type => "ssh-rsa",
         user => "$user_name",
