@@ -53,8 +53,9 @@ class rc_local {
 # The EFI-based systems can only boot off a special vfat partition and for that
 # reason software RAID1 is not supported in such configurations.
 #
-# to the second drive, so that in case if one of the hard drives in RAID fails,
-# the system can still be booted off the second drive.
+# This class makes sure that the main EFI boot partition is backed up to to the
+# second drive as it changes, so that in case if one of the hard drives in the
+# RAID array fails, the system can still boot off the second drive.
 #
 # The mount point for the backup partition is to be created from the kickstart
 # during the system provisioning phase.
@@ -84,9 +85,9 @@ class master_configuration {
 #    vcsrepo { "/etc/puppet":
 #        ensure => "latest",
 #        provider => "git",
-#        source => "git://git.zaytsev.net/anubis-puppet.git",
-#        revision => "HEAD",
 #        require => Package["git"],
+#        revision => "HEAD",
+#        source => "git://git.zaytsev.net/anubis-puppet.git",
 #    }
 
 }
