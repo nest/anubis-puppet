@@ -77,11 +77,16 @@ class efi_backup {
 #
 class master_configuration {
 
+    package { "git":
+        ensure => "present",
+    }
+
 #    vcsrepo { "/etc/puppet":
 #        ensure => "latest",
 #        provider => "git",
 #        source => "git://git.zaytsev.net/anubis-puppet.git",
 #        revision => "HEAD",
+#        require => Package["git"],
 #    }
 
 }
