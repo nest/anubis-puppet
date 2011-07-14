@@ -73,6 +73,20 @@ class efi_backup {
 }
 
 #
+# Ensures that the master Puppet configuration is always up to date
+#
+class master_configuration {
+
+    vcsrepo { "/etc/puppet":
+        ensure => "latest",
+        provider => "git",
+        source => "git://git.zaytsev.net/anubis-puppet.git",
+        revision => "HEAD",
+    }
+
+}
+
+#
 # Local yum repositories on anubis (puppet etc.)
 #
 class yum_repos_anubis {
