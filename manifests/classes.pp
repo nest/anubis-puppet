@@ -14,6 +14,7 @@ class sudoers {
         group => "root",
         mode => "0440",
         owner => "root",
+        require => Package["sudo"],
         source => "puppet:///common/sudoers/admins",
     }
 
@@ -105,6 +106,7 @@ class yum_repos_anubis {
         descr => "rhel-6-local-noarch",
         enabled => 1,
         gpgcheck => 0,
+        require => File["/srv/repos"],
     }
 
     yumrepo { "rhel-6-local-x86_64":
@@ -112,6 +114,7 @@ class yum_repos_anubis {
         descr => "rhel-6-local-x86_64",
         enabled => 1,
         gpgcheck => 0,
+        require => File["/srv/repos"],
     }
 
     file { "/srv/repos":
@@ -127,6 +130,7 @@ class yum_repos_anubis {
         group => "root",
         mode => "0755",
         owner => "root",
+        require => File["/srv/repos"],
         source => "puppet:///nodes/update-metadata",
     }
 
@@ -135,6 +139,7 @@ class yum_repos_anubis {
         cwd => "/srv/repos",
         logoutput => true,
         refreshonly => true,
+        require => File["/srv/repos/update-metadata"],
         subscribe => File["/srv/repos"],
     }
 
