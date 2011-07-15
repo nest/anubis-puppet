@@ -14,7 +14,7 @@ UUID=DF31-FA52                              /mnt/efi            vfat    umask=00
 /dev/mapper/vg_anubis_fast-host_tmp         /tmp                ext4    defaults,nosuid,noexec,nodev        1 2
 /dev/mapper/vg_anubis_fast-host_var         /var                ext4    defaults,nosuid                     1 2
 /dev/mapper/vg_anubis_slow-host_var_log     /var/log            ext4    defaults,nosuid,noexec,nodev        1 2
-/tmp                                        /var/tmp            ext4    defaults,bind,nosuid,noexec,nodev   0 0
+/tmp                                        /var/tmp            none    defaults,bind,nosuid,noexec,nodev   0 0
 /dev/mapper/vg_anubis_slow-host_swap        swap                swap    defaults                            0 0
 
 tmpfs                                       /dev/shm            tmpfs   defaults,nosuid,noexec,nodev        0 0
