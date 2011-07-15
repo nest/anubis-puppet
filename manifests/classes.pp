@@ -274,7 +274,7 @@ class ssh_server {
     case "$operatingsystem" {
         /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', ] }
         /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', ] }
-        default: undef
+        default: { fail("Unsupported operating system") }
     }
 
     package { $ssh_packages:
