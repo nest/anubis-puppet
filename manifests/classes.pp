@@ -272,9 +272,9 @@ class mail_server {
 class ssh_server {
 
     case "$operatingsystem" {
-        /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', ] },
-        /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', ] },
-        default: undef,
+        /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', ] }
+        /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', ] }
+        default: undef
     }
 
     package { $ssh_packages:
