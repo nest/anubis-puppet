@@ -226,7 +226,7 @@ class mail_server {
         changes => [
 
             'set inet_protocols "ipv4"',
-            'set inet_interfaces "127.0.0.1, 192.168.122.1"',
+            'set inet_interfaces "127.0.0.1, 10.0.0.1"',
 
             "set mydomain '${email_domain}'",
 
@@ -235,7 +235,7 @@ class mail_server {
             'set mydestination "$mydomain, puppet, puppet.$mydomain, localhost, localhost.localdomain, localhost4, localhost4.localdomain4"',
 
             'set mynetworks_style "host"',
-            'set mynetworks "127.0.0.0/8, 192.168.122.0/24"',
+            'set mynetworks "127.0.0.0/8, 10.0.0.0/24, 192.168.122.0/24"',
 
             'set relayhost "[smtp.uni-freiburg.de]:25"',
 
