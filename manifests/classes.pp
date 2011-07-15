@@ -122,7 +122,7 @@ $email_domain = 'qa.nest-initiative.org'
 $email_zaytsev = 'yury.zaytsev@bcf.uni-freiburg.de'
 $email_wiebelt = 'wiebelt@bcf.uni-freiburg.de'
 
-$email_root = "$email_zaytsev"
+$email_root = "${email_zaytsev}"
 
 class mail_server {
 
@@ -151,7 +151,7 @@ class mail_server {
             'set inet_protocols "ipv4"',
             'set inet_interfaces "127.0.0.1, 192.168.122.1"',
 
-            "set mydomain '$email_domain'",
+            "set mydomain '${email_domain}'",
 
             'set myorigin "$mydomain"',
             'set myhostname "$mydomain"',
@@ -173,17 +173,17 @@ class mail_server {
 
     mailalias { 'root':
         ensure => 'present',
-        recipient => "$email_root",
+        recipient => "${email_root}",
     }
 
     mailalias { 'zaytsev':
         ensure => 'present',
-        recipient => "$email_zaytsev",
+        recipient => "${email_zaytsev}",
     }
 
     mailalias { 'wiebelt':
         ensure => 'present',
-        recipient => "$email_wiebelt",
+        recipient => "${email_wiebelt}",
     }
 
 }

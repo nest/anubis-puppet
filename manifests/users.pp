@@ -2,30 +2,30 @@
 
 define admin_user($user_name, $user_id, $ssh_key = 'undefined', $ensure = 'present') {
 
-    user { "$user_name":
+    user { "${user_name}":
         comment => 'Puppet-managed account',
-        ensure => "$ensure",
-        gid => "$user_id",
+        ensure => "${ensure}",
+        gid => "${user_id}",
         groups => [
             'wheel',
         ],
-        home => "/home/$user_name",
+        home => "/home/${user_name}",
         managehome => 'true',
         shell => '/bin/bash',
-        uid => "$user_id",
+        uid => "${user_id}",
     }
 
-    group { "$user_name":
-        ensure => "$ensure",
-        gid => "$user_id",
+    group { "${user_name}":
+        ensure => "${ensure}",
+        gid => "${user_id}",
         system => 'false',
     }
 
-    ssh_authorized_key { "$user_name":
-        ensure => "$ensure",
-        key => "$ssh_key",
+    ssh_authorized_key { "${user_name}":
+        ensure => "${ensure}",
+        key => "${ssh_key}",
         type => 'ssh-rsa',
-        user => "$user_name",
+        user => "${user_name}",
     }
 
 }
