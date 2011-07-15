@@ -272,8 +272,8 @@ class mail_server {
 class ssh_server {
 
     case "$operatingsystem" {
-        /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', ] }
-        /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', ] }
+        /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', ] },
+        /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', ] },
         default: undef,
     }
 
@@ -302,7 +302,7 @@ class ssh_server {
         changes => [
             'set PasswordAuthentication "no"',
             'set GSSAPIAuthentication "no"',
-        ]
+        ],
         notify => Service['sshd'],
         require => Package['openssh'],
     }
