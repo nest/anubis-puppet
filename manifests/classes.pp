@@ -56,6 +56,58 @@ class fstab {
 }
 
 #
+# Class that completely disables IPV6 support on a system
+#
+class disable_ipv6 {
+
+    # https://access.redhat.com/kb/docs/DOC-8711
+    #
+    # - Disabling IPv6 support in Red Hat Enterprise Linux 6
+    #
+    # options ipv6 disable=1
+    #
+    # - Disabling IPv6 support in Red Hat Enterprise Linux 5
+    #
+    # alias ipv6 off
+    # alias net-pf-10 off
+    # options ipv6 disable=1
+    #
+    # - Disabling IPv6 support in Red Hat Enterprise Linux 4
+    #
+    # alias ipv6 off
+    # alias net-pf-10 off
+    #
+
+    #
+    # Extend via facter to support multiple platforms some day
+    #
+    $modprobe_content = "options ipv6 disable=1"
+
+    file { '/etc/modprobe.d/disable-ipv6.conf':
+        ensure => 'file',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        content => "# ZYV\n${modprobe_content}"
+    }
+
+    service { 'ip6tables':
+        enable => 'false',
+        ensure => 'stopped',
+    }
+
+    insert_comment { 'network':
+        file => '/etc/sysconfig/network',
+    }
+
+    augeas { 'network':
+        context => '/files/etc/sysconfig/network',
+        changes => 'set NETWORKING_IPV6 "no"',
+    }
+
+}
+
+#
 # Custom rc.local settings (i.e. elevator tweaks)
 #
 class rc_local {

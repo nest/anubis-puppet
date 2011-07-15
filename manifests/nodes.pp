@@ -5,6 +5,7 @@
 #
 node 'puppet.qa.nest-initiative.org' {
 
+    include disable_ipv6
     include efi_backup
     include fstab
     include mail_server
