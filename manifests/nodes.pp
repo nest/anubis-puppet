@@ -8,6 +8,7 @@ node 'puppet.qa.nest-initiative.org' {
     include disable_ipv6
     include efi_backup
     include fstab
+    include internal_interface
     include mail_server
     include master_configuration
     include rc_local

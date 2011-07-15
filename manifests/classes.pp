@@ -108,6 +108,31 @@ class disable_ipv6 {
 }
 
 #
+# Interface on the virtualization host, that the services that need to be
+# accessible to the virtual machines, but not to the outside network have to
+# listen (e.g. Postfix)
+#
+# For now, activation needs a reboot to not to complicate the configuration
+#
+class internal_interface {
+
+    package { 'tunctl':
+        ensure => 'present',
+    }
+
+    file { '/etc/sysconfig/network-scripts/ifcfg-tap1':
+        ensure => 'file',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        require => Package['tunctl'],
+        source => 'puppet:///nodes/network-scripts/ifcfg-tap1',
+    }
+
+}
+
+
+#
 # Custom rc.local settings (i.e. elevator tweaks)
 #
 class rc_local {
