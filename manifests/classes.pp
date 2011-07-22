@@ -367,3 +367,26 @@ class yum_repos_anubis {
 
 }
 
+#
+# Keeps system time in sync with a local time server
+#
+# According to the RHEL hardening guide it is more secure to update the time
+# every once in a while with ntpdate as opposed to running a full blown ntp
+# server
+#
+class ntpdate {
+
+    package { 'ntpdate':
+        ensure => 'present',
+    }
+
+    cron { 'ntpdate':
+        command => 'ntpdate time.uni-freiburg.de',
+        ensure => 'present',
+        hour => '3',
+        minute => '30',
+        user => 'root',
+    }
+
+}
+

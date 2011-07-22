@@ -11,6 +11,7 @@ node 'puppet.qa.nest-initiative.org' {
     include internal_interface
     include mail_server
     include master_configuration
+    include ntpdate
     include rc_local
     include ssh_server
     include yum_repos_anubis
