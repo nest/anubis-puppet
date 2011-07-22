@@ -382,6 +382,31 @@ class yum_exclude_32bit {
 }
 
 #
+# Services that should be disabled by default
+#
+class disable_services {
+
+    $services_to_disable = [
+        'avahi-daemon',
+        'iscsi',
+        'iscsid',
+        'kdump',
+        'netfs',
+        'nfs',
+        'nfslock',
+        'rpcbind',
+        'rpcgssd',
+        'rpcidmapd',
+    ]
+
+    service { $services_to_disable:
+        enable => 'false',
+        ensure => 'stopped',
+    }
+
+}
+
+#
 # Keeps system time in sync with a local time server
 #
 # According to the RHEL hardening guide it is more secure to update the time

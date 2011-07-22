@@ -6,6 +6,7 @@
 node 'puppet.qa.nest-initiative.org' {
 
     include disable_ipv6
+    include disable_services
     include efi_backup
     include fstab
     include internal_interface
