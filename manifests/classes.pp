@@ -368,6 +368,20 @@ class yum_repos_anubis {
 }
 
 #
+# Yum settings
+#
+class yum_exclude_32bit {
+
+    augeas { 'yum_exclude_32bit':
+        context => '/files/etc/yum.conf/main',
+        changes => [
+            'set exclude "*.i?86"',
+        ],
+    }
+
+}
+
+#
 # Keeps system time in sync with a local time server
 #
 # According to the RHEL hardening guide it is more secure to update the time

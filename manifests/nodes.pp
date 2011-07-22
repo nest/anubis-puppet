@@ -15,6 +15,7 @@ node 'puppet.qa.nest-initiative.org' {
     include rc_local
     include ssh_server
     include yum_repos_anubis
+    include yum_exclude_32bit
 
     include site_ops
     include sudoers
