@@ -420,7 +420,7 @@ class ntpdate {
     }
 
     cron { 'ntpdate':
-        command => 'ntpdate time.uni-freiburg.de && hwclock --systohc',
+        command => '/usr/sbin/ntpdate time.uni-freiburg.de && /usr/sbin/hwclock --systohc',
         ensure => 'present',
         hour => '3',
         minute => '30',
