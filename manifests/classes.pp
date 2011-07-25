@@ -422,9 +422,11 @@ class yum_repos_anubis {
 #
 class yum_exclude_32bit {
 
-    insert_comment { 'yum_exclude_32bit':
-        file => '/etc/yum.conf',
-    }
+# Augeus 0.7 lenses do not support yum.conf comments (yet?)
+#
+#    insert_comment { 'yum_exclude_32bit':
+#        file => '/etc/yum.conf',
+#    }
 
     augeas { 'yum_exclude_32bit':
         context => '/files/etc/yum.conf/main',
