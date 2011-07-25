@@ -372,6 +372,10 @@ class yum_repos_anubis {
 #
 class yum_exclude_32bit {
 
+    insert_comment { 'yum_exclude_32bit':
+        file => '/etc/yum.conf',
+    }
+
     augeas { 'yum_exclude_32bit':
         context => '/files/etc/yum.conf/main',
         changes => [
