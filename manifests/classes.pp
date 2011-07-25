@@ -485,3 +485,14 @@ class ntpdate {
 
 }
 
+#
+# Default logwatch configuration
+#
+class logwatch {
+
+    package { 'logwatch':
+        ensure => 'present',
+    }
+
+}
+

@@ -11,6 +11,7 @@ node 'puppet.qa.nest-initiative.org' {
     include fstab
     include internal_interface
     include iptables
+    include logwatch
     include ntpdate
     include rc_local
     include site_ops
