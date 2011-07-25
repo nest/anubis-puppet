@@ -329,7 +329,7 @@ class ssh_server($xauth = 'false') {
 
     if $xauth == 'true' {
         case "$operatingsystem" {
-            /RedHat|Fedora/: { $ssh_packages += [ 'xorg-x11-xauth', ] }
+            /RedHat|Fedora/: { $ssh_packages += [ 'xorg-x11-xauth', 'xorg-x11-fonts-misc', 'liberation-mono-fonts', 'liberation-sans-fonts', 'liberation-serif-fonts', ] }
             /Debian|Ubuntu/: { $ssh_packages += [ 'xauth', ] }
         }
     }
