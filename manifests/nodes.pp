@@ -10,13 +10,14 @@ node 'puppet.qa.nest-initiative.org' {
     include efi_backup
     include fstab
     include internal_interface
+    include iptables
     include mail_server
     include master_configuration
     include ntpdate
     include rc_local
     include ssh_server
-    include yum_repos_anubis
     include yum_exclude_32bit
+    include yum_repos_anubis
 
     include site_ops
     include sudoers

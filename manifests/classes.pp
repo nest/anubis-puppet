@@ -56,6 +56,27 @@ class fstab {
 }
 
 #
+# Distribute default firewall settings
+#
+class iptables {
+
+    file { '/etc/sysconfig/iptables':
+        ensure => 'file',
+        group => 'root',
+        mode => '0600',
+        notify => Service['iptables'],
+        owner => 'root',
+        source => 'puppet:///nodes/sysconfig/iptables',
+    }
+
+    service { 'iptables':
+        enable => 'true',
+        ensure => 'running',
+    }
+
+}
+
+#
 # Class that completely disables IPV6 support on a system
 #
 class disable_ipv6 {
