@@ -319,12 +319,19 @@ class mail_server {
 #
 # OpenSSH server class
 #
-class ssh_server {
+case "$operatingsystem" {
+    /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', ] }
+    /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', ] }
+    default: { fail('Unsupported operating system') }
+}
 
-    case "$operatingsystem" {
-        /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', 'xauth', ] }
-        /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', 'xauth', ] }
-        default: { fail('Unsupported operating system') }
+class ssh_server($xauth = 'false') {
+
+    if $xauth == 'true' {
+        case "$operatingsystem" {
+            /RedHat|Fedora/: { $ssh_packages += [ 'xorg-x11-xauth', ] }
+            /Debian|Ubuntu/: { $ssh_packages += [ 'xauth', ] }
+        }
     }
 
     package { $ssh_packages:
