@@ -81,7 +81,7 @@ class disable_ipv6 {
     #
     # Extend via facter to support multiple platforms some day
     #
-    $modprobe_content = "options ipv6 disable=1"
+    $modprobe_content = 'options ipv6 disable=1'
 
     file { '/etc/modprobe.d/disable-ipv6.conf':
         ensure => 'file',
@@ -274,7 +274,7 @@ class ssh_server {
     case "$operatingsystem" {
         /RedHat|Fedora/: { $ssh_packages = [ 'openssh', 'openssh-server', 'openssh-clients', ] }
         /Debian|Ubuntu/: { $ssh_packages = [ 'openssh-server', 'openssh-client', ] }
-        default: { fail("Unsupported operating system") }
+        default: { fail('Unsupported operating system') }
     }
 
     package { $ssh_packages:
