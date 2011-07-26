@@ -2,13 +2,10 @@
 
 # ZYV
 #
-# For all repos...
+# For all repos and all arches...
 #
-for i in `ls -d`; do
-    #
-    # And all arches...
-    #
-    for j in `ls -d`; do
-        createrepo $i/$j
-    done
+for i in `find . -mindepth 2 -maxdepth 2 -type d`; do
+    if [ "$i" != "." ]; then
+        createrepo $i
+    fi
 done
