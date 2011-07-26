@@ -347,6 +347,7 @@ class yum_repos_anubis {
         mode => '0644',
         owner => 'root',
         recurse => 'true',
+        selinux_ignore_defaults => 'true',
     }
 
     file { '/srv/infra/repos/update-metadata':
