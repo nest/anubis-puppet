@@ -381,22 +381,22 @@ class yum_repos_anubis {
     # TODO: think of how to best get the files there
     #
     yumrepo { 'rhel-6-local-noarch':
-        baseurl => 'file:///srv/repos/rhel-6-local/noarch',
+        baseurl => 'file:///srv/infra/repos/rhel-6-local/noarch',
         descr => 'rhel-6-local-noarch',
         enabled => '1',
         gpgcheck => '0',
-        require => File['/srv/repos'],
+        require => File['/srv/infra/repos'],
     }
 
     yumrepo { 'rhel-6-local-x86_64':
-        baseurl => 'file:///srv/repos/rhel-6-local/x86_64',
+        baseurl => 'file:///srv/infra/repos/rhel-6-local/x86_64',
         descr => 'rhel-6-local-x86_64',
         enabled => '1',
         gpgcheck => '0',
-        require => File['/srv/repos'],
+        require => File['/srv/infra/repos'],
     }
 
-    file { '/srv/repos':
+    file { '/srv/infra/repos':
         ensure => 'directory',
         group => 'root',
         mode => '0644',
@@ -404,22 +404,22 @@ class yum_repos_anubis {
         recurse => 'true',
     }
 
-    file { '/srv/repos/update-metadata':
+    file { '/srv/infra/repos/update-metadata':
         ensure => 'file',
         group => 'root',
         mode => '0755',
         owner => 'root',
-        require => File['/srv/repos'],
+        require => File['/srv/infra/repos'],
         source => 'puppet:///nodes/update-metadata',
     }
 
     exec { 'update_metadata':
-        command => '/srv/repos/update-metadata',
-        cwd => '/srv/repos',
+        command => '/srv/infra/repos/update-metadata',
+        cwd => '/srv/infra/repos',
         logoutput => 'true',
         refreshonly => 'true',
-        require => File['/srv/repos/update-metadata'],
-        subscribe => File['/srv/repos'],
+        require => File['/srv/infra/repos/update-metadata'],
+        subscribe => File['/srv/infra/repos'],
     }
 
 }
