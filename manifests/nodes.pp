@@ -15,10 +15,11 @@ node 'puppet.qa.nest-initiative.org' {
     include yum_exclude_32bit
     include yum_repos_anubis
 
-    include storage
     include internal_interface
+    include libvirt
     include mail_server
     include puppet_server
+    include storage
 
     class { 'ssh_server': xauth => 'true' }
 
