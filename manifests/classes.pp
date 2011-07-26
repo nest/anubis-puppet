@@ -503,3 +503,40 @@ class logwatch {
 
 }
 
+#
+# Logical volumes dedicated to the virtual machines
+#
+class lvm_guests {
+
+    physical_volume { '/dev/sda1':
+        ensure => 'present',
+    }
+
+    physical_volume { '/dev/md1':
+        ensure => 'present',
+    }
+
+    volume_group { 'vg_anubis_fast':
+        ensure => 'present',
+        physical_volumes => '/dev/sda1',
+    }
+
+    volume_group { 'vg_anubis_slow':
+        ensure => 'present',
+        physical_volumes => '/dev/md1',
+    }
+
+    logical_volume { 'vm_jenkins_main':
+        ensure => 'present',
+        volume_group => 'vg_anubis_fast',
+        size => '16G',
+    }
+
+    logical_volume { 'vm_jenkins_swap':
+        ensure => 'present',
+        volume_group => 'vg_anubis_slow',
+        size => '8G',
+    }
+
+}
+

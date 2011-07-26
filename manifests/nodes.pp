@@ -19,6 +19,7 @@ node 'puppet.qa.nest-initiative.org' {
     include yum_exclude_32bit
     include yum_repos_anubis
 
+    include lvm_guests
     include mail_server
     include puppet_server
 
