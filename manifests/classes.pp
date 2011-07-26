@@ -41,21 +41,6 @@ class sudoers {
 }
 
 #
-# Custom fstab settings
-#
-class fstab {
-
-    file { '/etc/fstab':
-        ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
-        source => 'puppet:///nodes/fstab',
-    }
-
-}
-
-#
 # Distribute default firewall settings
 #
 class iptables {
@@ -196,46 +181,6 @@ class internal_interface {
         owner => 'root',
         require => Package['tunctl'],
         source => 'puppet:///nodes/network-scripts/ifcfg-tap1',
-    }
-
-}
-
-
-#
-# Custom rc.local settings (i.e. elevator tweaks)
-#
-class rc_local {
-
-    file { '/etc/rc.d/rc.local':
-        ensure => 'file',
-        group => 'root',
-        mode => '0755',
-        owner => 'root',
-        source => 'puppet:///nodes/rc.local',
-    }
-
-}
-
-#
-# The EFI-based systems can only boot off a special vfat partition and for that
-# reason software RAID1 is not supported in such configurations.
-#
-# This class makes sure that the main EFI boot partition is backed up to to the
-# second drive as it changes, so that in case if one of the hard drives in the
-# RAID array fails, the system can still boot off the second drive.
-#
-# The mount point for the backup partition is to be created from the kickstart
-# during the system provisioning phase.
-#
-class efi_backup {
-
-    file { '/mnt/efi':
-        ensure => 'directory',
-        group => 'root',
-        mode => '0700',
-        owner => 'root',
-        recurse => 'true',
-        source => 'file:///boot/efi',
     }
 
 }
@@ -504,10 +449,13 @@ class logwatch {
 }
 
 #
-# Logical volumes dedicated to the virtual machines
+# Virtualization host storage setup
 #
-class lvm_guests {
+class storage {
 
+    #
+    # Basic LVM settings
+    #
     physical_volume { '/dev/sda1':
         ensure => 'present',
     }
@@ -526,6 +474,60 @@ class lvm_guests {
         physical_volumes => '/dev/md1',
     }
 
+    #
+    # Custom fstab settings
+    #
+    file { '/etc/fstab':
+        ensure => 'file',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        source => 'puppet:///nodes/fstab',
+    }
+
+    #
+    # Custom elevator tweaks
+    #
+    # (move back to a proper class if more unrelated stuff is added)
+    #
+    file { '/etc/rc.d/rc.local':
+        ensure => 'file',
+        group => 'root',
+        mode => '0755',
+        owner => 'root',
+        source => 'puppet:///nodes/rc.local',
+    }
+
+    #
+    # The EFI-based systems can only boot off a special vfat partition and for that
+    # reason software RAID1 is not supported in such configurations.
+    #
+    # This class makes sure that the main EFI boot partition is backed up to to the
+    # second drive as it changes, so that in case if one of the hard drives in the
+    # RAID array fails, the system can still boot off the second drive.
+    #
+    # The mount point for the backup partition is to be created from the kickstart
+    # during the system provisioning phase.
+    #
+    file { '/mnt/efi':
+        ensure => 'directory',
+        group => 'root',
+        mode => '0700',
+        owner => 'root',
+        recurse => 'true',
+        source => 'file:///boot/efi',
+    }
+
+}
+
+#
+# Virtualization-related settings
+#
+class libvirt {
+
+    #
+    # Storage for the virtual machine running Jenkins
+    #
     logical_volume { 'vm_jenkins_main':
         ensure => 'present',
         volume_group => 'vg_anubis_fast',
@@ -536,6 +538,17 @@ class lvm_guests {
         ensure => 'present',
         volume_group => 'vg_anubis_slow',
         size => '8G',
+    }
+
+    #
+    # libvirt default network definition
+    #
+    file { '/etc/libvirt/qemu/networks/default.xml':
+        ensure => 'file',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        source => 'puppet:///nodes/libvirt/qemu/networks/default.xml',
     }
 
 }
