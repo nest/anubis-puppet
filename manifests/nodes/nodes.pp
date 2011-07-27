@@ -20,6 +20,7 @@ node 'puppet.qa.nest-initiative.org' {
     include mail_server
     include puppet_server
     include storage
+    include web_server
 
     class { 'ssh_server': xauth => 'true' }
 
