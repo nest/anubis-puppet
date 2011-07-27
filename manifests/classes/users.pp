@@ -1,5 +1,24 @@
 # ZYV
 
+#
+# Ensure that site admins are on the sudoers list
+#
+class sudoers {
+
+    package { 'sudo':
+        ensure => 'present',
+    }
+
+    file { '/etc/sudoers.d/admins':
+        ensure => 'file',
+        group => 'root',
+        mode => '0440',
+        owner => 'root',
+        require => Package['sudo'],
+        source => 'puppet:///common/sudoers/admins',
+    }
+}
+
 define admin_user($user_name, $user_id, $ssh_key = 'undefined', $ensure = 'present') {
 
     user { "${user_name}":
