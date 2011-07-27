@@ -1,8 +1,7 @@
 # ZYV
 
-import 'classes.pp'
-import 'nodes.pp'
-import 'users.pp'
+import 'nodes/*.pp'
+import 'classes/*.pp'
 
 #
 # Set the default execution path
