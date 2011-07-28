@@ -9,3 +9,7 @@ for i in `find . -mindepth 2 -maxdepth 2 -type d`; do
         createrepo $i
     fi
 done
+
+# Set the right SELinux context
+#
+chcon -Rh --reference /var/www/html .
