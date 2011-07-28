@@ -7,7 +7,7 @@ class yum_repos {
 
     yumrepo { 'rhel-local-noarch':
         baseurl => 'http://localhost/repos/rhel-$releasever-local/noarch',
-        descr => 'Red Hat Enterprise Linux $releasever - noarch - Local packages',
+        descr => 'Red Hat Enterprise Linux $releasever - noarch - Local packages (ZYV)',
         enabled => '1',
         gpgcheck => '0',
         require => File['/srv/infra/repos'],
@@ -15,7 +15,7 @@ class yum_repos {
 
     yumrepo { 'rhel-local-binary':
         baseurl => 'file:///srv/infra/repos/rhel-$releasever-local/$basearch',
-        descr => 'Red Hat Enterprise Linux $releasever - $basearch - Local packages',
+        descr => 'Red Hat Enterprise Linux $releasever - $basearch - Local packages (ZYV)',
         enabled => '1',
         gpgcheck => '0',
         require => File['/srv/infra/repos'],
