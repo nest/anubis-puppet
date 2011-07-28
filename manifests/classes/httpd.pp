@@ -12,6 +12,16 @@ class web_server {
         require => Package['httpd'],
     }
 
+    file { '/etc/httpd/conf.d/infra.conf':
+        ensure => 'file',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        require => Package['httpd'],
+        notify => Service['httpd'],
+        source => 'puppet:///nodes/httpd/infra.conf',
+    }
+
     insert_comment { 'httpd.conf':
         file => '/etc/httpd/conf/httpd.conf',
     }
