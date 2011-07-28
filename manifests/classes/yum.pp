@@ -49,6 +49,7 @@ class yum_server {
         owner => 'root',
         require => File['/srv/infra/repos'],
         source => 'puppet:///nodes/update-metadata',
+        selinux_ignore_defaults => 'true',
     }
 
     #
