@@ -10,10 +10,13 @@ node 'puppet.qa.nest-initiative.org' {
     include iptables
     include logwatch
     include ntpdate
+
     include site_ops
     include sudoers
-    include yum_exclude_32bit
-    include yum_repos_anubis
+
+    include yum_ban_i386
+    include yum_repos
+    include yum_server
 
     include internal_interface
     include libvirt
