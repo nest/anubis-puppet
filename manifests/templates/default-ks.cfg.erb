@@ -39,7 +39,7 @@ logging --level=info
 timezone --isUtc Europe/Berlin
 
 # Network information
-network --bootproto=static --device=eth0 --gateway=<%= ks_info['net_gw'] %> --ip=<%= ks_info['net_ip'] %> --nameserver=<%= ks_info['net_ns'] %> --netmask=<%= ks_info['net_msk'] %> --onboot=on --noipv6 --hostname=<%= hostname %>
+network --bootproto=static --device=eth0 --gateway=<%= ks_info['net_gw'] %> --ip=<%= ks_info['net_ip'] %> --nameserver=<%= ks_info['net_ns'] %> --netmask=<%= ks_info['net_msk'] %> --onboot=on --noipv6 --hostname=<%= name %>.<%= kickstarts_domain %>
 
 # System bootloader configuration
 bootloader --location=mbr
@@ -55,8 +55,8 @@ part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/v
 part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
 
 # Local repos
-repo --name="<%= prefix %>-local-noarch" --baseurl="http://localhost/repos/<%= prefix %>-$releasever-local/noarch"
-repo --name="<%= prefix %>-local-binary" --baseurl="http://localhost/repos/<%= prefix %>-$releasever-local/$basearch"
+repo --name="<%= prefix %>-local-noarch" --baseurl="http://puppet.<%= kickstarts_domain %>/repos/<%= prefix %>-$releasever-local/noarch"
+repo --name="<%= prefix %>-local-binary" --baseurl="http://puppet.<%= kickstarts_domain %>/repos/<%= prefix %>-$releasever-local/$basearch"
 
 %packages
 @core

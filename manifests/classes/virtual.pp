@@ -171,8 +171,6 @@ class libvirt {
 #
 define make_kickstart($name, $prefix, $ks_info) {
 
-    $hostname = "$name.$kickstarts_domain"
-
     file { "$kickstarts_path/$prefix-$name-ks.cfg":
         content => template('default-ks.cfg.erb'),
         ensure => 'file',
