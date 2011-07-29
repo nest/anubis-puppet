@@ -14,7 +14,7 @@ class yum_repos {
     }
 
     yumrepo { 'rhel-local-binary':
-        baseurl => 'file:///srv/infra/repos/rhel-$releasever-local/$basearch',
+        baseurl => 'http://localhost/repos/rhel-$releasever-local/$basearch',
         descr => 'Red Hat Enterprise Linux $releasever - $basearch - Local packages (ZYV)',
         enabled => '1',
         gpgcheck => '0',
