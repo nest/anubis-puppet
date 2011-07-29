@@ -7,6 +7,7 @@ node 'puppet.qa.nest-initiative.org' {
 
     include disable_ipv6
     include disable_services
+    include hosts
     include iptables
     include logwatch
     include ntpdate

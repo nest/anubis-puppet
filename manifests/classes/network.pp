@@ -22,6 +22,21 @@ class iptables {
 }
 
 #
+# Distribute default hosts file to the clients
+#
+class hosts {
+
+    file { '/etc/hosts':
+        ensure => 'file',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        source => 'puppet:///nodes/hosts',
+    }
+
+}
+
+#
 # Interface on the virtualization host, that the services that need to be
 # accessible to the virtual machines, but not to the outside network have to
 # listen (e.g. Postfix)
