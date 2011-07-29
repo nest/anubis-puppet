@@ -70,6 +70,17 @@ class storage {
         source => 'file:///boot/efi',
     }
 
+    #
+    # This directory contains varios boot media
+    #
+    file { '/srv/infra/isos':
+        ensure => 'directory',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        recurse => 'true',
+    }
+
 }
 
 #
