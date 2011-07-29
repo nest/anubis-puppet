@@ -175,7 +175,7 @@ define make_kickstart($name, $prefix, $ks_info) {
 
     file { "$kickstarts_path/$prefix-$name-ks.cfg":
         content => template('default-ks.cfg.erb'),
-        ensure => 'present',
+        ensure => 'file',
         group => 'root',
         mode => '0644',
         owner => 'root',
