@@ -120,9 +120,24 @@ class libvirt {
     #
     # libvirt default network definition
     #
-    file { '/etc/libvirt/qemu/networks/default.xml':
+    $libvirt_network = '/tmp/config/libvirt/network-default.xml'
+
+    file { [ '/tmp/config', '/tmp/config/libvirt', ]:
+        ensure => 'directory',
+    }
+
+    file { "$libvirt_network":
         ensure => 'file',
-        source => 'puppet:///nodes/libvirt/qemu/networks/default.xml',
+        source => 'puppet:///nodes/libvirt/network-default.xml',
+    }
+
+    exec { 'libvirt-define-network':
+        command => "virsh net-define $libvirt_network && virsh net-destroy default && virsh net-start default",
+        cwd => '/tmp/config/libvirt',
+        logoutput => 'true',
+        refreshonly => 'true',
+        require => File["$libvirt_network"],
+        subscribe => File["$libvirt_network"],
     }
 
     #
