@@ -55,8 +55,8 @@ part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/v
 part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
 
 # Local repos
-repo --name="<%= prefix %>-local-noarch" --baseurl="http://puppet.<%= kickstarts_domain %>/repos/<%= prefix %>-$releasever-local/noarch"
-repo --name="<%= prefix %>-local-binary" --baseurl="http://puppet.<%= kickstarts_domain %>/repos/<%= prefix %>-$releasever-local/$basearch"
+repo --name="<%= prefix %>-local-noarch" --baseurl="http://puppet.<%= kickstarts_domain %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/noarch"
+repo --name="<%= prefix %>-local-binary" --baseurl="http://puppet.<%= kickstarts_domain %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/<%= ks_info['basearch'] %>"
 
 %packages
 @core

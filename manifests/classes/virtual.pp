@@ -161,6 +161,8 @@ class libvirt {
             net_msk => '255.255.255.0',
             net_ns  => "$kickstarts_server",
             net_gw  => "$kickstarts_server",
+            releasever => '6Server',
+            basearch => 'x86_64',
         },
     }
 
