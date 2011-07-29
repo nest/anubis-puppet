@@ -37,23 +37,48 @@ class hosts {
 }
 
 #
-# Interface on the virtualization host, that the services that need to be
-# accessible to the virtual machines, but not to the outside network have to
-# listen (e.g. Postfix)
+# Internal interfaces configuration on Anubis
 #
-# For now, activation needs a reboot to not to complicate the configuration
-#
-class internal_interface {
+class interfaces {
 
+    #
+    # Defaults for all File resources in this class
+    #
+    File {
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+    }
+
+    #
+    # Resolver / DNS configuration
+    #
+    file { '/etc/resolv.conf':
+        ensure => 'file',
+        source => 'puppet:///nodes/resolv.conf',
+    }
+
+    #
+    # Main interface connected to the LAN/WAN
+    #
+    file { '/etc/sysconfig/network-scripts/ifcfg-em1':
+        ensure => 'file',
+        source => 'puppet:///nodes/network-scripts/ifcfg-em1',
+    }
+
+    #
+    # Interface on the virtualization host, that the services that need to be
+    # accessible to the virtual machines, but not to the outside network have to
+    # listen (e.g. Postfix)
+    #
+    # For now, activation needs a reboot to not to complicate the configuration
+    #
     package { 'tunctl':
         ensure => 'present',
     }
 
     file { '/etc/sysconfig/network-scripts/ifcfg-tap1':
         ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
         require => Package['tunctl'],
         source => 'puppet:///nodes/network-scripts/ifcfg-tap1',
     }

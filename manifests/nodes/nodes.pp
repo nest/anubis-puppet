@@ -19,7 +19,7 @@ node 'puppet.qa.nest-initiative.org' {
     include yum_repos
     include yum_server
 
-    include internal_interface
+    include interfaces
     include libvirt
     include mail_server
     include puppet_server
