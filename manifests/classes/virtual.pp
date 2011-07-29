@@ -163,6 +163,17 @@ class libvirt {
             net_gw  => "$kickstarts_server",
             releasever => '6Server',
             basearch => 'x86_64',
+            packages => '
+
+                # Packages not needed on virtual hosts
+                -ntp
+                -ntpdate
+                -smartmontools
+
+                # We only use RHN Classic!
+                -subscription-manager
+
+            ',
         },
     }
 
