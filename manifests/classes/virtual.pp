@@ -86,7 +86,21 @@ class storage {
 #
 # Virtualization-related settings
 #
+
+$kickstarts_path = '/srv/infra/kickstarts'
+$kickstarts_domain = 'qa.nest-initiative.org'
+$kickstarts_server = '192.168.122.1'
+
 class libvirt {
+
+    #
+    # Defaults for all File resources in this class
+    #
+    File {
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+    }
 
     #
     # Storage for the virtual machine running Jenkins
@@ -108,10 +122,49 @@ class libvirt {
     #
     file { '/etc/libvirt/qemu/networks/default.xml':
         ensure => 'file',
+        source => 'puppet:///nodes/libvirt/qemu/networks/default.xml',
+    }
+
+    #
+    # This directory contains kickstarts for RH-based distributions
+    #
+    file { "$kickstarts_path":
+        ensure => 'directory',
+        recurse => 'true',
+        seltype => 'httpd_sys_content_t',
+    }
+
+    #
+    # Make a kickstart for jenkins, the ci master host (RHEL6)
+    #
+    make_kickstart { 'jenkins':
+        name => 'jenkins',
+        prefix => 'rhel',
+        ks_info => {
+            firewall => '--http',
+            net_ip  => '192.168.122.101',
+            net_msk => '255.255.255.0',
+            net_ns  => "$kickstarts_server",
+            net_gw  => "$kickstarts_server",
+        },
+    }
+
+}
+
+#
+# Creates personalized kickstart files from a template
+#
+define make_kickstart($name, $prefix, $ks_info) {
+
+    $hostname = "$name.$kickstarts_domain"
+
+    file { "$kickstarts_path/$prefix-$name-ks.cfg":
+        content => template('default-ks.cfg.erb'),
+        ensure => 'present',
         group => 'root',
         mode => '0644',
         owner => 'root',
-        source => 'puppet:///nodes/libvirt/qemu/networks/default.xml',
+        seltype => 'httpd_sys_content_t',
     }
 
 }
