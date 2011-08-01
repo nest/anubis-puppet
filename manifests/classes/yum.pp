@@ -23,6 +23,8 @@ class yum_repos {
 #
 # Yum repositories on the virtualization server
 #
+$yum_repos_path = '/srv/infra/repos'
+
 class yum_server {
 
     #
@@ -42,19 +44,19 @@ class yum_server {
         owner => 'root',
         require => Class['web_server::package'],
         notify => Class['web_server::service'],
-        content => '
+        content => "
             # ZYV
             #
             # Internal yum repositories
             #
-            Alias /repos /srv/infra/repos
-            ',
+            Alias /repos ${yum_repos_path}
+            ",
     }
 
     #
     # Better ignore SELinux contexts here, because the are set by the update script
     #
-    file { '/srv/infra/repos':
+    file { "${yum_repos_path}":
         ensure => 'directory',
         group => 'root',
         mode => '0644',
@@ -66,12 +68,12 @@ class yum_server {
     #
     # This script re-generates repomd metadata for all repos upon updates
     #
-    file { '/srv/infra/repos/update-metadata':
+    file { "${yum_repos_path}/update-metadata":
         ensure => 'file',
         group => 'root',
         mode => '0755',
         owner => 'root',
-        require => File['/srv/infra/repos'],
+        require => File["${yum_repos_path}"],
         source => 'puppet:///nodes/update-metadata',
         selinux_ignore_defaults => 'true',
     }
@@ -83,15 +85,15 @@ class yum_server {
     # ownership and permissions
     #
     exec { 'update-metadata':
-        command => '/srv/infra/repos/update-metadata',
-        cwd => '/srv/infra/repos',
+        command => "${yum_repos_path}/update-metadata",
+        cwd => "${yum_repos_path}",
         logoutput => 'true',
         refreshonly => 'true',
         require => [
             Package['createrepo'],
-            File['/srv/infra/repos/update-metadata'],
+            File["${yum_repos_path}/update-metadata"],
         ],
-        subscribe => File['/srv/infra/repos'],
+        subscribe => File["${yum_repos_path}"],
     }
 
 }
