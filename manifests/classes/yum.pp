@@ -28,6 +28,13 @@ class yum_repos {
 class yum_server {
 
     #
+    # Make sure that the metadata generator is installed
+    #
+    package { 'createrepo':
+        ensure => 'present',
+    }
+
+    #
     # Better ignore SELinux contexts here, because the are set by the update script
     #
     file { '/srv/infra/repos':
@@ -63,7 +70,10 @@ class yum_server {
         cwd => '/srv/infra/repos',
         logoutput => 'true',
         refreshonly => 'true',
-        require => File['/srv/infra/repos/update-metadata'],
+        require => [
+            Package['createrepo'],
+            File['/srv/infra/repos/update-metadata'],
+        ],
         subscribe => File['/srv/infra/repos'],
     }
 
