@@ -146,8 +146,8 @@ class libvirt {
     #
     file { '/etc/httpd/conf.d/kickstarts.conf':
         ensure => 'file',
-        require => Class['web_server::package'],
-        notify => Class['web_server::service'],
+        require => Class['apache::install'],
+        notify => Class['apache::service'],
         content => "
             # ZYV
             #

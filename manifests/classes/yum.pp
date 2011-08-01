@@ -39,8 +39,8 @@ class yum_server {
     #
     file { '/etc/httpd/conf.d/yum.conf':
         ensure => 'file',
-        require => Class['web_server::package'],
-        notify => Class['web_server::service'],
+        require => Class['apache::install'],
+        notify => Class['apache::service'],
         content => "
             # ZYV
             #
