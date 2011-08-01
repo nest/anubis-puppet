@@ -71,14 +71,25 @@ class storage {
     }
 
     #
-    # This directory contains varios boot media
+    # Directory that hosts various infrastructural content
     #
-    file { '/srv/infra/isos':
+    file { '/srv/infra':
         ensure => 'directory',
         group => 'root',
         mode => '0644',
         owner => 'root',
+    }
+
+    #
+    # This directory contains boot media
+    #
+    file { '/srv/infra/isos':
+        ensure => 'directory',
+        group => 'qemu',
+        mode => '0644',
+        owner => 'qemu',
         recurse => 'true',
+        selinux_ignore_defaults => 'true',
     }
 
 }
