@@ -1,25 +1,18 @@
 # ZYV
 
-class web_server {
+#
+# Generic web server setup
+# (binds to localhost by default and doesn't really do anything)
+#
+class web_server($default_listen = undef) {
 
-    package { 'httpd':
-        ensure => 'present',
-    }
+    include web_server::package
+    include web_server::service
 
-    service { 'httpd':
-        enable => 'true',
-        ensure => 'running',
-        require => Package['httpd'],
-    }
-
-    file { '/etc/httpd/conf.d/infra.conf':
-        ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
-        require => Package['httpd'],
-        notify => Service['httpd'],
-        source => 'puppet:///nodes/httpd/infra.conf',
+    if $default_listen == undef {
+        $listen = '127.0.0.1:80'
+    } else {
+        $listen = "${default_listen}"
     }
 
     insert_comment { 'httpd.conf':
@@ -28,8 +21,22 @@ class web_server {
 
     augeas { 'httpd.conf':
         context => '/files/etc/httpd/conf/httpd.conf',
-        changes => 'set *[self::directive="Listen"]/arg "127.0.0.1:80"',
-        notify => Service['httpd'],
+        changes => "set *[self::directive='Listen']/arg '${listen}'",
+        notify => Class['web_server::service'],
     }
 
+}
+
+class web_server::package {
+    package { 'httpd':
+        ensure => 'present',
+    }
+}
+
+class web_server::service {
+    service { 'httpd':
+        enable => 'true',
+        ensure => 'running',
+        require => Class['web_server::package'],
+    }
 }

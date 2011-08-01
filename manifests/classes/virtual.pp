@@ -150,6 +150,34 @@ class libvirt {
     }
 
     #
+    # Serve kickstarts repository
+    #
+    file { '/etc/httpd/conf.d/kickstarts.conf':
+        ensure => 'file',
+        require => Class['web_server::package'],
+        notify => Class['web_server::service'],
+        content => '
+            # ZYV
+            #
+            # Internal kickstarts repository
+            #
+            Alias /kickstarts /srv/infra/kickstarts
+            ',
+    }
+
+    #
+    # Better ignore SELinux contexts here, because the are set by the update script
+    #
+    file { '/srv/infra/kickstarts':
+        ensure => 'directory',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        recurse => 'true',
+        seltype => 'httpd_sys_content_t',
+    }
+
+    #
     # Make a kickstart for jenkins, the ci master host (RHEL6)
     #
     make_kickstart { 'jenkins':

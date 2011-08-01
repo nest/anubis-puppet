@@ -23,9 +23,9 @@ node 'puppet.qa.nest-initiative.org' {
     include mail_server
     include puppet_server
     include storage
-    include web_server
 
     class { 'interfaces': ports => ['em1', 'tap1'], tunctl => 'true', }
+    class { 'web_server': default_listen => '192.168.1.1:80', }
     class { 'ssh_server': xauth => 'true', }
 
 }

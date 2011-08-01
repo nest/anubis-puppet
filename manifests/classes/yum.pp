@@ -35,6 +35,25 @@ class yum_server {
     }
 
     #
+    # Serve yum repositories
+    #
+    file { '/etc/httpd/conf.d/yum.conf':
+        ensure => 'file',
+        group => 'root',
+        mode => '0644',
+        owner => 'root',
+        require => Class['web_server::package'],
+        notify => Class['web_server::service'],
+        content => '
+            # ZYV
+            #
+            # Internal yum repositories
+            #
+            Alias /repos /srv/infra/repos
+            ',
+    }
+
+    #
     # Better ignore SELinux contexts here, because the are set by the update script
     #
     file { '/srv/infra/repos':
