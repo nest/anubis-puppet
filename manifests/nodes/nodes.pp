@@ -7,7 +7,7 @@ node 'puppet.qa.nest-initiative.org' {
 
     include disable_ipv6
     include disable_services
-    include hosts
+    include resolver
     include iptables
     include logwatch
     include ntpdate
@@ -19,14 +19,14 @@ node 'puppet.qa.nest-initiative.org' {
     include yum_repos
     include yum_server
 
-    include interfaces
     include libvirt
     include mail_server
     include puppet_server
     include storage
     include web_server
 
-    class { 'ssh_server': xauth => 'true' }
+    class { 'interfaces': ports => ['em1', 'tap1'], tunctl => 'true', }
+    class { 'ssh_server': xauth => 'true', }
 
 }
 

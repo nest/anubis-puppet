@@ -27,24 +27,9 @@ class iptables {
 }
 
 #
-# Distribute default hosts file to the clients
+# Distribute default hosts file & resolver settings to the clients
 #
-class hosts {
-
-    file { '/etc/hosts':
-        ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
-        source => 'puppet:///nodes/hosts',
-    }
-
-}
-
-#
-# Internal interfaces configuration on Anubis
-#
-class interfaces {
+class resolver {
 
     #
     # Defaults for all File resources in this class
@@ -55,38 +40,59 @@ class interfaces {
         owner => 'root',
     }
 
-    #
-    # Resolver / DNS configuration
-    #
+    file { '/etc/hosts':
+        ensure => 'file',
+        source => 'puppet:///nodes/hosts',
+    }
+
     file { '/etc/resolv.conf':
         ensure => 'file',
         source => 'puppet:///nodes/resolv.conf',
     }
 
-    #
-    # Main interface connected to the LAN/WAN
-    #
-    file { '/etc/sysconfig/network-scripts/ifcfg-em1':
-        ensure => 'file',
-        source => 'puppet:///nodes/network-scripts/ifcfg-em1',
+}
+
+#
+# Internal interfaces configuration on Anubis
+#
+class interfaces($ports = undef, $tunctl = 'false') {
+
+    if $ports == undef {
+        fail('You need to specify a list of interfaces when invoking this class!')
+    }
+
+    if $tunctl == 'true' {
+        #
+        # Interface on the virtualization host, that the services that need to be
+        # accessible to the virtual machines, but not to the outside network have to
+        # listen (e.g. Postfix)
+        #
+        # For now, activation needs a reboot to not to complicate the configuration
+        #
+        package { 'tunctl':
+            ensure => 'present',
+        }
     }
 
     #
-    # Interface on the virtualization host, that the services that need to be
-    # accessible to the virtual machines, but not to the outside network have to
-    # listen (e.g. Postfix)
+    # Distribute Red Hat interface definitions
     #
-    # For now, activation needs a reboot to not to complicate the configuration
-    #
-    package { 'tunctl':
-        ensure => 'present',
+    define install_configurations {
+
+        $port_def = regsubst($name, '^(.*)', '/etc/sysconfig/network-scripts/ifcfg-\1')
+        $port_src = regsubst($name, '^(.*)', 'puppet:///nodes/network-scripts/ifcfg-\1')
+
+        file { $port_def:
+            ensure => 'file',
+            group => 'root',
+            mode => '0644',
+            owner => 'root',
+            source => $port_src,
+        }
+
     }
 
-    file { '/etc/sysconfig/network-scripts/ifcfg-tap1':
-        ensure => 'file',
-        require => Package['tunctl'],
-        source => 'puppet:///nodes/network-scripts/ifcfg-tap1',
-    }
+    install_configurations { $ports: ; }
 
 }
 
