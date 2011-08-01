@@ -10,7 +10,6 @@ class yum_repos {
         descr => 'Red Hat Enterprise Linux $releasever - noarch - Local packages (ZYV)',
         enabled => '1',
         gpgcheck => '0',
-        require => File['/srv/infra/repos'],
     }
 
     yumrepo { 'rhel-local-binary':
@@ -18,7 +17,6 @@ class yum_repos {
         descr => 'Red Hat Enterprise Linux $releasever - $basearch - Local packages (ZYV)',
         enabled => '1',
         gpgcheck => '0',
-        require => File['/srv/infra/repos'],
     }
 }
 
