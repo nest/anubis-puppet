@@ -17,10 +17,8 @@ class iptables {
 
     file { '/etc/sysconfig/iptables':
         ensure => 'file',
-        group => 'root',
         mode => '0600',
         notify => Service['iptables'],
-        owner => 'root',
         source => 'puppet:///nodes/sysconfig/iptables',
     }
 
@@ -31,14 +29,6 @@ class iptables {
 #
 class resolver {
 
-    #
-    # Defaults for all File resources in this class
-    #
-    File {
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
-    }
 
     file { '/etc/hosts':
         ensure => 'file',
@@ -84,9 +74,6 @@ class interfaces($ports = undef, $tunctl = 'false') {
 
         file { $port_def:
             ensure => 'file',
-            group => 'root',
-            mode => '0644',
-            owner => 'root',
             source => $port_src,
         }
 
@@ -126,9 +113,6 @@ class disable_ipv6 {
 
     file { '/etc/modprobe.d/disable-ipv6.conf':
         ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
         content => "# ZYV\n${modprobe_content}"
     }
 

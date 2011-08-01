@@ -11,9 +11,7 @@ class sudoers {
 
     file { '/etc/sudoers.d/admins':
         ensure => 'file',
-        group => 'root',
         mode => '0440',
-        owner => 'root',
         require => Package['sudo'],
         source => 'puppet:///common/sudoers/admins',
     }

@@ -31,9 +31,6 @@ class storage {
     #
     file { '/etc/fstab':
         ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
         source => 'puppet:///nodes/fstab',
     }
 
@@ -44,9 +41,7 @@ class storage {
     #
     file { '/etc/rc.d/rc.local':
         ensure => 'file',
-        group => 'root',
         mode => '0755',
-        owner => 'root',
         source => 'puppet:///nodes/rc.local',
     }
 
@@ -63,9 +58,7 @@ class storage {
     #
     file { '/mnt/efi':
         ensure => 'directory',
-        group => 'root',
         mode => '0700',
-        owner => 'root',
         recurse => 'true',
         source => 'file:///boot/efi',
     }
@@ -75,9 +68,6 @@ class storage {
     #
     file { '/srv/infra':
         ensure => 'directory',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
     }
 
     #
@@ -86,7 +76,6 @@ class storage {
     file { '/srv/infra/isos':
         ensure => 'directory',
         group => 'qemu',
-        mode => '0644',
         owner => 'qemu',
         recurse => 'true',
         selinux_ignore_defaults => 'true',
@@ -104,15 +93,6 @@ $kickstarts_domain = 'qa.nest-initiative.org'
 $libvirt_server = '192.168.122.1'
 
 class libvirt {
-
-    #
-    # Defaults for all File resources in this class
-    #
-    File {
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
-    }
 
     #
     # Storage for the virtual machine running Jenkins
@@ -215,9 +195,6 @@ define libvirt::make_kickstart($name, $prefix, $ks_info) {
     file { "$kickstarts_path/$prefix-$name-ks.cfg":
         content => template('default-ks.cfg.erb'),
         ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
         seltype => 'httpd_sys_content_t',
     }
 

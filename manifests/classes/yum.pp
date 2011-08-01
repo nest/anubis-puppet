@@ -39,9 +39,6 @@ class yum_server {
     #
     file { '/etc/httpd/conf.d/yum.conf':
         ensure => 'file',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
         require => Class['web_server::package'],
         notify => Class['web_server::service'],
         content => "
@@ -58,9 +55,6 @@ class yum_server {
     #
     file { "${yum_repos_path}":
         ensure => 'directory',
-        group => 'root',
-        mode => '0644',
-        owner => 'root',
         recurse => 'true',
         selinux_ignore_defaults => 'true',
     }
@@ -70,9 +64,7 @@ class yum_server {
     #
     file { "${yum_repos_path}/update-metadata":
         ensure => 'file',
-        group => 'root',
         mode => '0755',
-        owner => 'root',
         require => File["${yum_repos_path}"],
         source => 'puppet:///nodes/update-metadata',
         selinux_ignore_defaults => 'true',

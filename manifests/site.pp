@@ -17,3 +17,11 @@ Exec {
     ],
 }
 
+#
+# Defaults for all the File resources around
+#
+File {
+    group => 'root',
+    mode => '0644',
+    owner => 'root',
+}
