@@ -100,7 +100,8 @@ class storage {
 
 $kickstarts_path = '/srv/infra/kickstarts'
 $kickstarts_domain = 'qa.nest-initiative.org'
-$kickstarts_server = '192.168.122.1'
+
+$libvirt_server = '192.168.122.1'
 
 class libvirt {
 
@@ -191,15 +192,15 @@ class libvirt {
     #
     # Make a kickstart for jenkins, the ci master host (RHEL6)
     #
-    make_kickstart { 'jenkins':
+    libvirt::make_kickstart { 'jenkins':
         name => 'jenkins',
         prefix => 'rhel',
         ks_info => {
             firewall => '--http',
             net_ip  => '192.168.122.101',
             net_msk => '255.255.255.0',
-            net_ns  => "$kickstarts_server",
-            net_gw  => "$kickstarts_server",
+            net_ns  => "$libvirt_server",
+            net_gw  => "$libvirt_server",
             releasever => '6Server',
             basearch => 'x86_64',
             packages => '
@@ -221,7 +222,7 @@ class libvirt {
 #
 # Creates personalized kickstart files from a template
 #
-define make_kickstart($name, $prefix, $ks_info) {
+define libvirt::make_kickstart($name, $prefix, $ks_info) {
 
     file { "$kickstarts_path/$prefix-$name-ks.cfg":
         content => template('default-ks.cfg.erb'),
