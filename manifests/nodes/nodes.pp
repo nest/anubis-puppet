@@ -20,7 +20,6 @@ node 'puppet.qa.nest-initiative.org' {
     include yum_server
 
     include libvirt
-    include mail_server
     include puppet_server
     include storage
 
@@ -28,6 +27,7 @@ node 'puppet.qa.nest-initiative.org' {
 
     class { 'apache': default_listen => '192.168.1.1:80', }
     class { 'openssh': xauth => 'true', }
+    include postfix
 
 }
 
