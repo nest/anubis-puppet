@@ -5,6 +5,16 @@
 #
 class iptables {
 
+    package { 'iptables':
+        ensure => 'present',
+    }
+
+    service { 'iptables':
+        enable => 'true',
+        ensure => 'running',
+        require => Package['iptables'],
+    }
+
     file { '/etc/sysconfig/iptables':
         ensure => 'file',
         group => 'root',
@@ -12,11 +22,6 @@ class iptables {
         notify => Service['iptables'],
         owner => 'root',
         source => 'puppet:///nodes/sysconfig/iptables',
-    }
-
-    service { 'iptables':
-        enable => 'true',
-        ensure => 'running',
     }
 
 }
