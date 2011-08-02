@@ -13,11 +13,28 @@ class postfix::params {
         fail('This class requires settings to be passed!')
     }
 
-    $inet_interfaces = $postfix::settings['inet_interfaces'] == undef ? '' : $postfix::settings['inet_interfaces']
-    $mydestination = $postfix::settings['mydestination'] == undef ? '' : $postfix::settings['mydestination']
-    $mydomain = $postfix::settings['mydomain'] == undef ? $fqdn : $postfix::settings['mydomain']
-    $mynetworks = $postfix::settings['mynetworks'] = undef ? '' : $postfix::settings['mynetworks']
-    $relayhost = $postfix::settings['relayhost'] == undef ? '' : $postfix::settings['relayhost']
+    $inet_interfaces = $postfix::settings['inet_interfaces'] ? {
+        undef => '',
+        default => $postfix::settings['inet_interfaces'],
+    }
+
+    $mydestination = $postfix::settings['mydestination'] ? {
+        undef => '',
+        default => $postfix::settings['mydestination'],
+    }
+    $mydomain = $postfix::settings['mydomain'] ? {
+        undef => $fqdn,
+        default => $postfix::settings['mydomain'],
+    }
+    $mynetworks = $postfix::settings['mynetworks'] ? {
+        undef => '',
+        default => $postfix::settings['mynetworks'],
+    }
+
+    $relayhost = $postfix::settings['relayhost'] ? {
+        undef => '',
+        default => $postfix::settings['relayhost'],
+    }
 
     $aliases = [
         { 'user' => 'zaytsev', 'recipient' => 'yury.zaytsev@bcf.uni-freiburg.de', },
