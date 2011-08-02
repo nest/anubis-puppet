@@ -25,12 +25,24 @@ node 'puppet.qa.nest-initiative.org' {
 
     class { 'interfaces': ports => ['em1', 'tap1'], tunctl => 'true', }
 
-    class { 'apache': default_listen => '192.168.1.1:80', }
-
     include openssh
     include openssh::install::xauth
 
-    include postfix
+    class { 'apache': default_listen => '192.168.1.1:80', }
 
+    class { 'postfix':
+        settings => {
+            mydomain => $domain,
+            mydestination => $domain,
+            inet_interfaces => '192.168.1.1',
+            mynetworks => '192.168.1.0/24 192.168.122.0/24',
+            relayhost => '[smtp.uni-freiburg.de]:25',
+        },
+    }
+
+}
+
+node 'jenkins.qa.nest-initiative.org' {
+#    '192.168.1.1:25'
 }
 

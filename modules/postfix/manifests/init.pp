@@ -1,6 +1,6 @@
 # ZYV
 
-class postfix {
+class postfix($settings = undef) {
     include postfix::params
     include postfix::install
     include postfix::config
@@ -9,26 +9,19 @@ class postfix {
 
 class postfix::params {
 
-    #
-    # Note: $domain, $hostname and $fqdn are Facter facts
-    #
-    if $hostname == 'puppet' {
-        $mydomain = $domain
-        $mydestination = $domain
-        $inet_interfaces = '192.168.1.1'
-        $mynetworks = '192.168.1.0/24 192.168.122.0/24'
-        $relayhost = '[smtp.uni-freiburg.de]:25'
-    } else {
-        $mydomain = $fqdn
-        $mydestination = ''
-        $inet_interfaces = ''
-        $mynetworks = ''
-        $relayhost = '192.168.1.1:25'
+    if $postfix::settings == undef {
+        fail('This class requires settings to be passed!')
     }
+
+    $inet_interfaces = $postfix::settings['inet_interfaces'] == undef ? '' : $postfix::settings['inet_interfaces']
+    $mydestination = $postfix::settings['mydestination'] == undef ? '' : $postfix::settings['mydestination']
+    $mydomain = $postfix::settings['mydomain'] == undef ? $fqdn : $postfix::settings['mydomain']
+    $mynetworks = $postfix::settings['mynetworks'] = undef ? '' : $postfix::settings['mynetworks']
+    $relayhost = $postfix::settings['relayhost'] == undef ? '' : $postfix::settings['relayhost']
 
     $aliases = [
         { 'user' => 'zaytsev', 'recipient' => 'yury.zaytsev@bcf.uni-freiburg.de', },
-        { 'user' => 'wiebelt', 'recipient' => 'wiebelt@bcf.uni-freiburg.de', },
+#        { 'user' => 'wiebelt', 'recipient' => 'wiebelt@bcf.uni-freiburg.de', },
         { 'user' => 'root', 'recipient' => 'zaytsev', },
     ]
 
@@ -85,6 +78,7 @@ class postfix::config::aliases {
         mailalias { $name['user']:
             ensure => 'present',
             recipient => $name['recipient'],
+            notify => Class['postfix::service'],
             require => Class['postfix::install'],
         }
     }
