@@ -1,31 +1,9 @@
 # ZYV
 
 #
-# Local yum repositories for Red Hat based hosts
-#
-class yum_repos {
-
-    yumrepo { 'rhel-local-noarch':
-        baseurl => 'http://puppet/repos/rhel-$releasever-local/noarch',
-        descr => 'Red Hat Enterprise Linux $releasever - noarch - Local packages (ZYV)',
-        enabled => '1',
-        gpgcheck => '0',
-    }
-
-    yumrepo { 'rhel-local-binary':
-        baseurl => 'http://puppet/repos/rhel-$releasever-local/$basearch',
-        descr => 'Red Hat Enterprise Linux $releasever - $basearch - Local packages (ZYV)',
-        enabled => '1',
-        gpgcheck => '0',
-    }
-}
-
-#
 # Yum repositories on the virtualization server
 #
-$yum_repos_path = '/srv/infra/repos'
-
-class yum_server {
+class yum::server($repos_path = '/srv/infra/repos') {
 
     #
     # Make sure that the metadata generator is installed
@@ -46,14 +24,14 @@ class yum_server {
             #
             # Internal yum repositories
             #
-            Alias /repos ${yum_repos_path}
+            Alias /repos ${repos_path}
             ",
     }
 
     #
     # Better ignore SELinux contexts here, because the are set by the update script
     #
-    file { "${yum_repos_path}":
+    file { "${repos_path}":
         ensure => 'directory',
         recurse => 'true',
         selinux_ignore_defaults => 'true',
@@ -62,10 +40,10 @@ class yum_server {
     #
     # This script re-generates repomd metadata for all repos upon updates
     #
-    file { "${yum_repos_path}/update-metadata":
+    file { "${repos_path}/update-metadata":
         ensure => 'file',
         mode => '0755',
-        require => File["${yum_repos_path}"],
+        require => File["${repos_path}"],
         source => 'puppet:///nodes/update-metadata',
         selinux_ignore_defaults => 'true',
     }
@@ -77,23 +55,43 @@ class yum_server {
     # ownership and permissions
     #
     exec { 'update-metadata':
-        command => "${yum_repos_path}/update-metadata",
-        cwd => "${yum_repos_path}",
+        command => "${repos_path}/update-metadata",
+        cwd => "${repos_path}",
         logoutput => 'true',
         refreshonly => 'true',
         require => [
             Package['createrepo'],
-            File["${yum_repos_path}/update-metadata"],
+            File["${repos_path}/update-metadata"],
         ],
-        subscribe => File["${yum_repos_path}"],
+        subscribe => File["${repos_path}"],
     }
 
 }
 
 #
+# Local yum repositories for Red Hat based hosts
+#
+class yum::repos::rhel {
+
+    yumrepo { 'rhel-local-noarch':
+        baseurl => 'http://puppet/repos/rhel-$releasever-local/noarch',
+        descr => 'Red Hat Enterprise Linux $releasever - noarch - Local packages (ZYV)',
+        enabled => '1',
+        gpgcheck => '0',
+    }
+
+    yumrepo { 'rhel-local-binary':
+        baseurl => 'http://puppet/repos/rhel-$releasever-local/$basearch',
+        descr => 'Red Hat Enterprise Linux $releasever - $basearch - Local packages (ZYV)',
+        enabled => '1',
+        gpgcheck => '0',
+    }
+}
+
+#
 # Ban i386 packages from x86_64 systems
 #
-class yum_ban_i386 {
+class yum::ban::i386 {
 
 # Augeus 0.7 lenses do not support yum.conf comments (yet?)
 #
@@ -106,6 +104,13 @@ class yum_ban_i386 {
         changes => [
             'set exclude "*.i?86"',
         ],
+    }
+
+    exec { 'yum_remove_i386':
+        command => '/bin/sh -c "yum remove \*.i\?86 && yum -y reinstall \*"',
+        refreshonly => 'true',
+        subscribe => Augeas['yum_ban_i386'],
+        user => 'root',
     }
 
 }

@@ -1,5 +1,7 @@
 # ZYV
 
+$infra_path = '/srv/infra'
+
 $infra_address  = '192.168.1.1'
 $infra_subnet   = '192.168.1.0/24'
 
@@ -20,9 +22,12 @@ node 'puppet.qa.nest-initiative.org' {
     include site_ops
     include sudoers
 
-    include yum_ban_i386
-    include yum_repos
-    include yum_server
+    include yum::ban::i386
+    include yum::repos::rhel
+
+    class { 'yum::server':
+        repos_path => "${infra_path}/repos",
+    }
 
     include libvirt
     include puppet_server
