@@ -1,5 +1,10 @@
 # ZYV
 
+$infra_address  = '192.168.1.1'
+$infra_subnet   = '192.168.1.0/24'
+
+$libvirt_subnet = '192.168.122.0/24'
+
 #
 # Virtualization server
 #
@@ -28,14 +33,18 @@ node 'puppet.qa.nest-initiative.org' {
     include openssh
     include openssh::install::xauth
 
-    class { 'apache': default_listen => '192.168.1.1:80', }
+    class { 'apache':
+        settings => {
+            listen => "${infra_address}:80",
+        }
+    }
 
     class { 'postfix':
         settings => {
             mydomain => $domain,
             mydestination => $domain,
-            inet_interfaces => '192.168.1.1',
-            mynetworks => '192.168.1.0/24 192.168.122.0/24',
+            inet_interfaces => "${infra_address}",
+            mynetworks => "${infra_subnet} ${libvirt_subnet}",
             relayhost => '[smtp.uni-freiburg.de]:25',
         },
     }
@@ -43,6 +52,5 @@ node 'puppet.qa.nest-initiative.org' {
 }
 
 node 'jenkins.qa.nest-initiative.org' {
-#    '192.168.1.1:25'
 }
 
