@@ -56,7 +56,7 @@ class openssh::install::xauth {
 
 class openssh::config {
 
-    insert_comment { 'sshd_config':
+    augeas::insert_comment { 'sshd_config':
         file => '/etc/ssh/sshd_config',
         require => Class['openssh::install'],
     }

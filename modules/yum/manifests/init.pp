@@ -95,7 +95,7 @@ class yum::ban::i386 {
 
 # Augeus 0.7 lenses do not support yum.conf comments (yet?)
 #
-#    insert_comment { 'yum_exclude_32bit':
+#    augeas::insert_comment { 'yum_exclude_32bit':
 #        file => '/etc/yum.conf',
 #    }
 

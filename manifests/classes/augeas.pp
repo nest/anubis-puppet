@@ -6,7 +6,7 @@
 #
 # Most useful to indicate that the file is managed by Puppet
 #
-define insert_comment($file, $comment = 'ZYV: Managed by Puppet', $lens_comment = '#comment', $load_path = undef) {
+define augeas::insert_comment($file, $comment = 'ZYV: Managed by Puppet', $lens_comment = '#comment', $load_path = undef) {
 
     augeas { "${file}: comment tag":
         context => "/files${file}",

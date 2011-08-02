@@ -32,7 +32,7 @@ class apache::install {
 
 class apache::config {
 
-    insert_comment { 'httpd.conf':
+    augeas::insert_comment { 'httpd.conf':
         file => '/etc/httpd/conf/httpd.conf',
         require => Class['apache::install'],
     }

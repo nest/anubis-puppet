@@ -121,7 +121,7 @@ class disable_ipv6 {
         ensure => 'stopped',
     }
 
-    insert_comment { 'network':
+    augeas::insert_comment { 'network':
         file => '/etc/sysconfig/network',
     }
 

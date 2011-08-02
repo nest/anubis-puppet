@@ -52,7 +52,7 @@ class postfix::install {
 
 class postfix::config {
 
-    insert_comment { 'main.cf':
+    augeas::insert_comment { 'main.cf':
         file => '/etc/postfix/main.cf',
         require => Class['postfix::install'],
     }
