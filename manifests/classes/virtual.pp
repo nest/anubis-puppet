@@ -130,6 +130,7 @@ class libvirt {
         refreshonly => 'true',
         require => File["$libvirt_network"],
         subscribe => File["$libvirt_network"],
+        user => 'root',
     }
 
     #
