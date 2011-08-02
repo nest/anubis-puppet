@@ -1,3 +1,3 @@
 [submodule "modules/lvm"]
 	path = modules/lvm
-	url = https://github.com/puppetlabs/puppet-lvm.git
+	url = https://zyv@github.com/zyv/puppet-lvm.git
