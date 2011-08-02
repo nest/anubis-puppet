@@ -1,9 +1,25 @@
 # ZYV
 
 #
+# Puppet client configuration
+#
+class puppet::client {
+
+    package { 'puppet':
+        ensure => 'present',
+    }
+
+    service { 'puppet':
+        enable => 'true',
+        ensure => 'running',
+    }
+
+}
+
+#
 # Puppet server configuration
 #
-class puppet_server {
+class puppet::server {
 
     package { 'puppet-server':
         ensure => 'present',
@@ -18,10 +34,6 @@ class puppet_server {
     # Ensures that the master Puppet configuration is always up to date
     #
 
-    package { 'git':
-        ensure => 'present',
-    }
-
 #    vcsrepo { '/etc/puppet':
 #        ensure => 'latest',
 #        provider => 'git',
@@ -29,21 +41,5 @@ class puppet_server {
 #        revision => 'HEAD',
 #        source => 'git://git.zaytsev.net/anubis-puppet.git',
 #    }
-
-}
-
-#
-# Puppet client configuration
-#
-class puppet_client {
-
-    package { 'puppet':
-        ensure => 'present',
-    }
-
-    service { 'puppet':
-        enable => 'true',
-        ensure => 'running',
-    }
 
 }

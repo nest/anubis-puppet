@@ -1,5 +1,11 @@
 # ZYV
 
+class git {
+    package { 'git':
+        ensure => 'present',
+    }
+}
+
 #
 # Services that should be disabled by default
 #

@@ -12,6 +12,16 @@ $libvirt_subnet = '192.168.122.0/24'
 #
 node 'puppet.qa.nest-initiative.org' {
 
+    #include puppet::client
+    include puppet::server
+
+    include yum::ban::i386
+    include yum::repos::rhel
+
+    class { 'yum::server':
+        repos_path => "${infra_path}/repos",
+    }
+
     include disable_ipv6
     include disable_services
     include resolver
@@ -22,16 +32,8 @@ node 'puppet.qa.nest-initiative.org' {
     include site_ops
     include sudoers
 
-    include yum::ban::i386
-    include yum::repos::rhel
-
-    class { 'yum::server':
-        repos_path => "${infra_path}/repos",
-    }
-
-    include libvirt
-    include puppet_server
     include storage
+    include libvirt
 
     class { 'interfaces': ports => ['em1', 'tap1'], tunctl => 'true', }
 
