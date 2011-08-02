@@ -3,7 +3,7 @@
 #
 # OpenSSH server class
 #
-class openssh($xauth = 'false') {
+class openssh {
     include openssh::params
     include openssh::install
     include openssh::config
@@ -13,12 +13,12 @@ class openssh($xauth = 'false') {
 class openssh::params {
     case "$operatingsystem" {
         /RedHat|Fedora/: {
-            $package = [
+            $package_core = [
                 'openssh',
                 'openssh-server',
                 'openssh-clients',
             ]
-            $xauth = [
+            $package_xauth = [
                 'xorg-x11-xauth',
                 'xorg-x11-fonts-misc',
                 'liberation-mono-fonts',
@@ -28,11 +28,11 @@ class openssh::params {
             $service = 'sshd'
         }
         /Debian|Ubuntu/: {
-            $package = [
+            $package_core = [
                 'openssh-server',
                 'openssh-client',
             ]
-            $xauth = [
+            $package_xauth = [
                 'xauth',
                 'xfonts-base',
             ]
@@ -43,17 +43,15 @@ class openssh::params {
 }
 
 class openssh::install {
-
-    if $openssh::xauth == 'true' {
-        $packages = [ $openssh::params::package, $openssh::params::xauth, ]
-    } else {
-        $packages = $openssh::params::package
-    }
-
-    package { $packages:
+    package { $openssh::params::package_core:
         ensure => 'present',
     }
+}
 
+class openssh::install::xauth {
+    package { $openssh::params::package_xauth:
+        ensure => 'present',
+    }
 }
 
 class openssh::config {

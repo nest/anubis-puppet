@@ -26,7 +26,10 @@ node 'puppet.qa.nest-initiative.org' {
     class { 'interfaces': ports => ['em1', 'tap1'], tunctl => 'true', }
 
     class { 'apache': default_listen => '192.168.1.1:80', }
-    class { 'openssh': xauth => 'true', }
+
+    include openssh
+    include openssh::install::xauth
+
     include postfix
 
 }
