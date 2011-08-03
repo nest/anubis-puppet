@@ -149,7 +149,10 @@ class libvirt::kickstarts {
     #
     file { '/etc/httpd/conf.d/kickstarts.conf':
         ensure => 'file',
-        require => Class['apache::install'],
+        require => [
+            File[$kickstarts_path],
+            Class['apache::install'],
+        ],
         notify => Class['apache::service'],
         content => "
             # ZYV
@@ -199,6 +202,7 @@ define libvirt::make_kickstart($ks_path, $ks_info) {
     file { "${ks_path}/${ks_info['distro']}-${ks_info['name']}-ks.cfg":
         content => template('default-ks.cfg.erb'),
         ensure => 'file',
+        require => File[$ks_path],
         seltype => 'httpd_sys_content_t',
     }
 
