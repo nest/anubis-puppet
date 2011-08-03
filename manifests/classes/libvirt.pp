@@ -164,10 +164,10 @@ class libvirt::kickstarts {
     # Make a kickstart for jenkins, the ci master host (RHEL6)
     #
     libvirt::make_kickstart { 'jenkins':
-        name => 'jenkins',
         path => $kickstarts_path,
         prefix => 'rhel',
         ks_info => {
+            name => 'jenkins',
             firewall => '--http',
             net_ip  => '192.168.122.101',
             net_msk => '255.255.255.0',
@@ -194,9 +194,9 @@ class libvirt::kickstarts {
 #
 # Creates personalized kickstart files from a template
 #
-define libvirt::make_kickstart($path, $name, $prefix, $ks_info) {
+define libvirt::make_kickstart($path, $prefix, $ks_info) {
 
-    file { "${path}/${prefix}-${name}-ks.cfg":
+    file { "${path}/${prefix}-${ks_info['name']}-ks.cfg":
         content => template('default-ks.cfg.erb'),
         ensure => 'file',
         seltype => 'httpd_sys_content_t',

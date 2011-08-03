@@ -39,7 +39,7 @@ logging --level=info
 timezone --isUtc Europe/Berlin
 
 # Network information
-network --bootproto=static --device=eth0 --gateway=<%= ks_info['net_gw'] %> --ip=<%= ks_info['net_ip'] %> --nameserver=<%= ks_info['net_ns'] %> --netmask=<%= ks_info['net_msk'] %> --onboot=on --noipv6 --hostname=<%= name %>.<%= domain %>
+network --bootproto=static --device=eth0 --gateway=<%= ks_info['net_gw'] %> --ip=<%= ks_info['net_ip'] %> --nameserver=<%= ks_info['net_ns'] %> --netmask=<%= ks_info['net_msk'] %> --onboot=on --noipv6 --hostname=<%= ks_info['name'] %>.<%= scope.lookupvar('::domain') %>
 
 # System bootloader configuration
 bootloader --location=mbr
@@ -55,8 +55,8 @@ part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/v
 part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
 
 # Local repos
-repo --name="<%= prefix %>-local-noarch" --baseurl="http://puppet.<%= domain %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/noarch"
-repo --name="<%= prefix %>-local-binary" --baseurl="http://puppet.<%= domain %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/<%= ks_info['basearch'] %>"
+repo --name="<%= prefix %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/noarch"
+repo --name="<%= prefix %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/<%= ks_info['basearch'] %>"
 
 # Turn off the machine upon succesfull completion
 poweroff
