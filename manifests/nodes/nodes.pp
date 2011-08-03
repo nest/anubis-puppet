@@ -25,7 +25,9 @@ node 'puppet.qa.nest-initiative.org' {
         repos_path => "${infra_path}/repos",
     }
 
-    include network::hosts
+    include network::hosts::localhost
+    include network::hosts::self
+
     include network::resolv
     include network::ipv6::disable
 

@@ -3,18 +3,61 @@
 #
 # Distribute default hosts file & resolver settings to the clients
 #
-class network::hosts {
-    file { '/etc/hosts':
-        ensure => 'file',
-        source => 'puppet:///nodes/hosts',
+class network::hosts::localhost {
+
+    host { 'ipv4':
+        ensure => 'present',
+        ip => '127.0.0.1',
+        name => 'localhost',
+        host_aliases => [
+
+            # Red Hat
+            'localhost.localdomain',
+            'localhost4',
+            'localhost4.localdomain4',
+
+        ],
     }
+
+    host { 'ipv6':
+        ensure => 'present',
+        ip => '::1',
+        name => 'localhost6',
+        host_aliases => [
+
+            # Red Hat
+            'localhost',
+            'localhost.localdomain',
+            'localhost6.localdomain6',
+
+            # Debian
+            'ip6-localhost',
+            'ip6-loopback',
+
+        ],
+    }
+
 }
 
-class network::hosts::common {
-    file { '/etc/hosts':
-        ensure => 'file',
-        source => 'puppet:///commmon/hosts',
+#
+# The puppetmaster hostname should resolve to its internal interface IP
+# address, otherwise (for virtual machines) to the IP address assigned to eth0
+#
+class network::hosts::self {
+
+    if $ipaddress_tap1 != undef {
+        $self_ip = $ipaddress_tap1
+    } else {
+        $self_ip = $ipaddress_eth0
     }
+
+    host { 'self':
+        ensure => 'present',
+        ip => $self_ip,
+        name => $hostname,
+        host_aliases => $fqdn,
+    }
+
 }
 
 class network::resolv {

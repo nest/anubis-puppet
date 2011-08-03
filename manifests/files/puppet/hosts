@@ -1,7 +1,0 @@
-# ZYV
-
-192.168.1.1 puppet puppet.qa.nest-initiative.org
-192.168.122.1 puppet puppet.qa.nest-initiative.org
-
-127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
