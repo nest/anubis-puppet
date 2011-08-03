@@ -43,7 +43,7 @@ class yum::server($repos_path = "${infra_path}/repos") {
     file { "${repos_path}/update-metadata":
         ensure => 'file',
         mode => '0755',
-        require => File["${repos_path}"],
+        require => File[$repos_path],
         source => 'puppet:///nodes/update-metadata',
         selinux_ignore_defaults => 'true',
     }
@@ -63,7 +63,7 @@ class yum::server($repos_path = "${infra_path}/repos") {
             Package['createrepo'],
             File["${repos_path}/update-metadata"],
         ],
-        subscribe => File["${repos_path}"],
+        subscribe => File[$repos_path],
     }
 
 }

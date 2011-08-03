@@ -157,8 +157,8 @@ class libvirt::networks {
         cwd => '/tmp/config/libvirt',
         logoutput => 'true',
         refreshonly => 'true',
-        require => File["$libvirt_network"],
-        subscribe => File["$libvirt_network"],
+        require => File[$libvirt_network],
+        subscribe => File[$libvirt_network],
         user => 'root',
     }
 
