@@ -93,7 +93,7 @@ class yum::repos::rhel {
 #
 class yum::ban::i386 {
 
-# Augeus 0.7 lenses do not support yum.conf comments (yet?)
+# Augeas 0.7 lenses do not support yum.conf comments (yet?)
 #
 #    augeas::insert_comment { 'yum_exclude_32bit':
 #        file => '/etc/yum.conf',
@@ -109,6 +109,7 @@ class yum::ban::i386 {
     exec { 'yum_remove_i386':
         command => '/bin/sh -c "yum remove \*.i\?86 && yum -y reinstall \*"',
         refreshonly => 'true',
+        require => Augeas['yum_ban_i386'],
         subscribe => Augeas['yum_ban_i386'],
         user => 'root',
     }
