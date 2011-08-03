@@ -25,16 +25,22 @@ node 'puppet.qa.nest-initiative.org' {
         repos_path => "${infra_path}/repos",
     }
 
-    include network::hosts::localhost
     include network::hosts::self
+    include network::hosts::localhost
 
-    include network::resolv
-    include network::ipv6::disable
+    class { 'network::resolver':
+        nameservers => [
+            '132.230.201.111',
+            '132.230.200.200',
+        ],
+    }
 
     class { 'network::interfaces':
         ports => ['em1', 'tap1'],
         tunctl => 'true',
     }
+
+    include network::ipv6::disable
 
     include services::disabled
     include services::git

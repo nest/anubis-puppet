@@ -60,18 +60,13 @@ class network::hosts::self {
 
 }
 
-class network::resolv {
-    file { '/etc/resolv.conf':
-        ensure => 'file',
-        source => 'puppet:///nodes/resolv.conf',
-    }
-}
+class network::resolver($nameservers, $resolv_search = $domain, $resolv_domain = $domain) {
 
-class network::resolv::common {
     file { '/etc/resolv.conf':
+        content => template('network/resolv.conf.erb'),
         ensure => 'file',
-        source => 'puppet:///common/resolv.conf',
     }
+
 }
 
 #
