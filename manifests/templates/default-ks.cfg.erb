@@ -55,8 +55,8 @@ part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/v
 part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
 
 # Local repos
-repo --name="<%= prefix %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/noarch"
-repo --name="<%= prefix %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= prefix %>-<%= ks_info['releasever'] %>-local/<%= ks_info['basearch'] %>"
+repo --name="<%= ks_info['distro'] %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_info['distro'] %>-<%= ks_info['releasever'] %>-local/noarch"
+repo --name="<%= ks_info['distro'] %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_info['distro'] %>-<%= ks_info['releasever'] %>-local/<%= ks_info['basearch'] %>"
 
 # Turn off the machine upon succesfull completion
 poweroff
