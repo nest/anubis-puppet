@@ -3,7 +3,7 @@
 #
 # Ensure that site admins are on the sudoers list
 #
-class sudoers {
+class users::sudoers {
 
     package { 'sudo':
         ensure => 'present',
@@ -15,12 +15,13 @@ class sudoers {
         require => Package['sudo'],
         source => 'puppet:///common/sudoers/admins',
     }
+
 }
 
-define admin_user($user_name, $user_id, $ssh_key = 'undefined', $ensure = 'present') {
+define users::make_admin($user_name, $user_id, $ssh_key = 'undefined', $ensure = 'present') {
 
     user { "${user_name}":
-        comment => 'Puppet-managed account',
+        comment => 'Puppet-managed admin account',
         ensure => "${ensure}",
         gid => "${user_id}",
         groups => [
@@ -47,17 +48,18 @@ define admin_user($user_name, $user_id, $ssh_key = 'undefined', $ensure = 'prese
 
 }
 
-class site_ops {
+class users::admins {
 
-    admin_user { 'zaytsev':
+    users::make_admin { 'zaytsev':
         user_name => 'zaytsev',
         user_id => '501',
         ssh_key => 'AAAAB3NzaC1yc2EAAAABIwAAAgEApS91Y4DxkPTFX6izRa/ClYc0qhNHsZvybAipbZPXbjdR0CRTgR4ZIzCzgdGh5iZexP9Q4ULHeR9ozrnXg69xmOdAJqq2/A0XGAvJq4sj+W38nDZ5tgT/8So2kH1ifjwT3ItF16aHi1b6GenMh2cB9mXu3VTE0rvsoTNoykbrT+GjlVjBT1UbfcUAbIR8Lz6LA+xUApIuz+eSWbyLMsjZoO0B8NO9boAVqVsw8CzwSZQZET0b6ekhde0YoQky7areuGvhtwQZ3XADWhPmkVmK8bBAffgdTOy6czHugfeq1NrFYUL0hEvV62a3uQnyDlBZNU8raGKEA8dCMN1uTdv1DVxTabxdd5fSTpRxbizp60XFj/DrU1JzIQ4w5zNlyM9yK3s+YD/pCCfz/iySaKp6VMEOkZNY0WrvfuiEcNSkh3Ga+5Nx0Q3m3SN06irSX8UYuy7y7Z23YpSDqdxnUm4ibQ2x+RGbv3CY5YuVyHbAe930T/94MMg3/h47YILXsnawA1OeyYF7UgydEOihC/FzkQf41ejvOmqPmSDHDRJRbeP97yH6O9pXvkuJavRY5/897HZab+MnCLXeWAAHhJ5UvcQq0Te+S8FwQqp9q4mDNzqjpC0549kck8qts1lHAzKfK/LrZV4nD+Pc/8rENrnOqpodkvNjOLjPu5BYYjporK0=',
     }
 
-    admin_user { 'wiebelt':
+    users::make_admin { 'wiebelt':
         user_name => 'wiebelt',
         user_id => '502',
+        ensure => 'absent',
     }
 
 }

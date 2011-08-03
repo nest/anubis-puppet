@@ -37,6 +37,8 @@ node 'puppet.qa.nest-initiative.org' {
     include services::logwatch
     include services::ntpdate
 
+    include users::admins
+    include users::sudoers
 
     include openssh
     include openssh::install::xauth
