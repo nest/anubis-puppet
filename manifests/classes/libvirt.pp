@@ -102,6 +102,32 @@ class libvirt::machines {
         size => '8G',
     }
 
+    libvirt::make_kickstart { $jenkins_hostname:
+        ks_path => $kickstarts_path,
+        ks_info => {
+            name => $jenkins_hostname,
+            firewall => '--http',
+            net_ip  => $jenkins_ip,
+            net_msk => '255.255.255.0',
+            net_ns  => $libvirt_server,
+            net_gw  => $libvirt_server,
+            distro  => 'rhel',
+            releasever => '6Server',
+            basearch => 'x86_64',
+            packages => '
+
+                # Packages not needed on virtual hosts
+                -ntp
+                -ntpdate
+                -smartmontools
+
+                # We only use RHN Classic!
+                -subscription-manager
+
+            ',
+        },
+    }
+
 }
 
 class libvirt::networks {
@@ -160,35 +186,6 @@ class libvirt::kickstarts {
             #
             Alias /kickstarts ${kickstarts_path}
             ",
-    }
-
-    #
-    # Make a kickstart for jenkins, the ci master host (RHEL6)
-    #
-    libvirt::make_kickstart { 'jenkins':
-        ks_path => $kickstarts_path,
-        ks_info => {
-            name => 'jenkins',
-            firewall => '--http',
-            net_ip  => '192.168.122.101',
-            net_msk => '255.255.255.0',
-            net_ns  => $libvirt_server,
-            net_gw  => $libvirt_server,
-            distro  => 'rhel',
-            releasever => '6Server',
-            basearch => 'x86_64',
-            packages => '
-
-                # Packages not needed on virtual hosts
-                -ntp
-                -ntpdate
-                -smartmontools
-
-                # We only use RHN Classic!
-                -subscription-manager
-
-            ',
-        },
     }
 
 }
