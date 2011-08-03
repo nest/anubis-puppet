@@ -102,6 +102,12 @@ class libvirt::machines {
         size => '8G',
     }
 
+    host { $jenkins_hostname :
+        ensure => 'present',
+        ip => $jenkins_ip,
+        host_aliases => "${jenkins_hostname}.${domain}",
+     }
+
     libvirt::make_kickstart { $jenkins_hostname:
         ks_path => $kickstarts_path,
         ks_info => {
