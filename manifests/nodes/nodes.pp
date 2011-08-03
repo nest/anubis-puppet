@@ -22,20 +22,21 @@ node 'puppet.qa.nest-initiative.org' {
         repos_path => "${infra_path}/repos",
     }
 
-    include disable_ipv6
-    include disable_services
-    include resolver
-    include iptables
-    include logwatch
-    include ntpdate
+    include network::hosts
+    include network::resolv
+    include network::ipv6::disable
 
-    include site_ops
-    include sudoers
+    class { 'network::interfaces':
+        ports => ['em1', 'tap1'],
+        tunctl => 'true',
+    }
 
-    include storage
-    include libvirt
+    include services::disabled
+    include services::git
+    include services::iptables
+    include services::logwatch
+    include services::ntpdate
 
-    class { 'interfaces': ports => ['em1', 'tap1'], tunctl => 'true', }
 
     include openssh
     include openssh::install::xauth
@@ -55,6 +56,9 @@ node 'puppet.qa.nest-initiative.org' {
             relayhost => '[smtp.uni-freiburg.de]:25',
         },
     }
+
+    include storage
+    include libvirt
 
 }
 

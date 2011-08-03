@@ -1,51 +1,40 @@
 # ZYV
 
 #
-# Distribute default firewall settings
-#
-class iptables {
-
-    package { 'iptables':
-        ensure => 'present',
-    }
-
-    service { 'iptables':
-        enable => 'true',
-        ensure => 'running',
-        require => Package['iptables'],
-    }
-
-    file { '/etc/sysconfig/iptables':
-        ensure => 'file',
-        mode => '0600',
-        notify => Service['iptables'],
-        source => 'puppet:///nodes/sysconfig/iptables',
-    }
-
-}
-
-#
 # Distribute default hosts file & resolver settings to the clients
 #
-class resolver {
-
-
+class network::hosts {
     file { '/etc/hosts':
         ensure => 'file',
         source => 'puppet:///nodes/hosts',
     }
+}
 
+class network::hosts::common {
+    file { '/etc/hosts':
+        ensure => 'file',
+        source => 'puppet:///commmon/hosts',
+    }
+}
+
+class network::resolv {
     file { '/etc/resolv.conf':
         ensure => 'file',
         source => 'puppet:///nodes/resolv.conf',
     }
+}
 
+class network::resolv::common {
+    file { '/etc/resolv.conf':
+        ensure => 'file',
+        source => 'puppet:///common/resolv.conf',
+    }
 }
 
 #
 # Internal interfaces configuration on Anubis
 #
-class interfaces($ports = undef, $tunctl = 'false') {
+class network::interfaces($ports = undef, $tunctl = 'false') {
 
     if $ports == undef {
         fail('You need to specify a list of interfaces when invoking this class!')
@@ -86,7 +75,7 @@ class interfaces($ports = undef, $tunctl = 'false') {
 #
 # Class that completely disables IPV6 support on a system
 #
-class disable_ipv6 {
+class network::ipv6::disable {
 
     # https://access.redhat.com/kb/docs/DOC-8711
     #
