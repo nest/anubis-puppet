@@ -5,6 +5,12 @@ $infra_path = '/srv/infra'
 $infra_address  = '192.168.1.1'
 $infra_subnet   = '192.168.1.0/24'
 
+$infra_storage_slow_pv = '/dev/md1'
+$infra_storage_slow_vg = 'vg_anubis_slow'
+
+$infra_storage_fast_pv = '/dev/sda1'
+$infra_storage_fast_vg = 'vg_anubis_fast'
+
 $libvirt_server = '192.168.122.1'
 $libvirt_subnet = '192.168.122.0/24'
 

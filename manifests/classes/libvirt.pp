@@ -8,22 +8,18 @@ class libvirt::storage {
     #
     # Basic LVM settings
     #
-    physical_volume { '/dev/sda1':
+    physical_volume { [$infra_storage_fast_pv, $infra_storage_slow_pv] :
         ensure => 'present',
     }
 
-    physical_volume { '/dev/md1':
+    volume_group { $infra_storage_fast_vg :
         ensure => 'present',
+        physical_volumes => $infra_storage_fast_pv,
     }
 
-    volume_group { 'vg_anubis_fast':
+    volume_group { $infra_storage_slow_vg :
         ensure => 'present',
-        physical_volumes => '/dev/sda1',
-    }
-
-    volume_group { 'vg_anubis_slow':
-        ensure => 'present',
-        physical_volumes => '/dev/md1',
+        physical_volumes => $infra_storage_slow_pv,
     }
 
     #
@@ -89,17 +85,20 @@ class libvirt::storage {
 class libvirt::machines {
 
     #
-    # Storage for the virtual machine running Jenkins
+    # Jenkins, the ci master host (RHEL6)
     #
-    logical_volume { 'vm_jenkins_main':
+    $jenkins_ip = '192.168.122.101'
+    $jenkins_hostname = 'jenkins'
+
+    logical_volume { "vm_${jenkins_hostname}_main":
         ensure => 'present',
-        volume_group => 'vg_anubis_fast',
+        volume_group => $infra_storage_fast_vg,
         size => '16G',
     }
 
-    logical_volume { 'vm_jenkins_swap':
+    logical_volume { "vm_${jenkins_hostname}_swap":
         ensure => 'present',
-        volume_group => 'vg_anubis_slow',
+        volume_group => $infra_storage_slow_vg,
         size => '8G',
     }
 
