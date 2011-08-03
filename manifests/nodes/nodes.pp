@@ -5,7 +5,11 @@ $infra_path = '/srv/infra'
 $infra_address  = '192.168.1.1'
 $infra_subnet   = '192.168.1.0/24'
 
+$libvirt_server = '192.168.122.1'
 $libvirt_subnet = '192.168.122.0/24'
+
+$kickstarts_path = "${infra_path}/kickstarts"
+$kickstarts_domain = "${domain}"
 
 #
 # Virtualization server
@@ -40,6 +44,11 @@ node 'puppet.qa.nest-initiative.org' {
     include users::admins
     include users::sudoers
 
+    include libvirt::storage
+    include libvirt::networks
+    include libvirt::machines
+    include libvirt::kickstarts
+
     include openssh
     include openssh::install::xauth
 
@@ -58,9 +67,6 @@ node 'puppet.qa.nest-initiative.org' {
             relayhost => '[smtp.uni-freiburg.de]:25',
         },
     }
-
-    include storage
-    include libvirt
 
 }
 

@@ -3,7 +3,7 @@
 #
 # Virtualization host storage setup
 #
-class storage {
+class libvirt::storage {
 
     #
     # Basic LVM settings
@@ -66,14 +66,14 @@ class storage {
     #
     # Directory that hosts various infrastructural content
     #
-    file { '/srv/infra':
+    file { $infra_path:
         ensure => 'directory',
     }
 
     #
     # This directory contains boot media
     #
-    file { '/srv/infra/isos':
+    file { "${infra_path}/isos":
         ensure => 'directory',
         group => 'qemu',
         owner => 'qemu',
@@ -86,13 +86,7 @@ class storage {
 #
 # Virtualization-related settings
 #
-
-$kickstarts_path = '/srv/infra/kickstarts'
-$kickstarts_domain = 'qa.nest-initiative.org'
-
-$libvirt_server = '192.168.122.1'
-
-class libvirt {
+class libvirt::machines {
 
     #
     # Storage for the virtual machine running Jenkins
@@ -108,6 +102,10 @@ class libvirt {
         volume_group => 'vg_anubis_slow',
         size => '8G',
     }
+
+}
+
+class libvirt::networks {
 
     #
     # libvirt default network definition
@@ -132,6 +130,10 @@ class libvirt {
         subscribe => File["$libvirt_network"],
         user => 'root',
     }
+
+}
+
+class libvirt::kickstarts {
 
     #
     # This directory contains kickstarts for RH-based distributions
