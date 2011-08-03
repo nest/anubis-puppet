@@ -20,6 +20,10 @@ class users::sudoers {
 
 define users::make_admin($user_name, $user_id, $ssh_key = 'undefined', $ensure = 'present') {
 
+    if $ensure == 'absent' {
+        Ssh_authorized_key["${user_name}"] -> User["${user_name}"] -> Group["${user_name}"]
+    }
+
     user { "${user_name}":
         comment => 'Puppet-managed admin account',
         ensure => "${ensure}",
