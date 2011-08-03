@@ -9,7 +9,6 @@ $libvirt_server = '192.168.122.1'
 $libvirt_subnet = '192.168.122.0/24'
 
 $kickstarts_path = "${infra_path}/kickstarts"
-$kickstarts_domain = "${domain}"
 
 #
 # Virtualization server

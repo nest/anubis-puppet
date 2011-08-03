@@ -138,7 +138,7 @@ class libvirt::kickstarts {
     #
     # This directory contains kickstarts for RH-based distributions
     #
-    file { "$kickstarts_path":
+    file { $kickstarts_path:
         ensure => 'directory',
         recurse => 'true',
         seltype => 'httpd_sys_content_t',
@@ -165,13 +165,14 @@ class libvirt::kickstarts {
     #
     libvirt::make_kickstart { 'jenkins':
         name => 'jenkins',
+        path => $kickstarts_path,
         prefix => 'rhel',
         ks_info => {
             firewall => '--http',
             net_ip  => '192.168.122.101',
             net_msk => '255.255.255.0',
-            net_ns  => "$libvirt_server",
-            net_gw  => "$libvirt_server",
+            net_ns  => $libvirt_server,
+            net_gw  => $libvirt_server,
             releasever => '6Server',
             basearch => 'x86_64',
             packages => '
@@ -193,9 +194,9 @@ class libvirt::kickstarts {
 #
 # Creates personalized kickstart files from a template
 #
-define libvirt::make_kickstart($name, $prefix, $ks_info) {
+define libvirt::make_kickstart($path, $name, $prefix, $ks_info) {
 
-    file { "$kickstarts_path/$prefix-$name-ks.cfg":
+    file { "${path}/${prefix}-${name}-ks.cfg":
         content => template('default-ks.cfg.erb'),
         ensure => 'file',
         seltype => 'httpd_sys_content_t',
