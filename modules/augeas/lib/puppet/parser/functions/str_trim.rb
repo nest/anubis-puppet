@@ -1,7 +1,7 @@
 # ZYV
 
 module Puppet::Parser::Functions
-    newfunction(:trim, :type => :rvalue) do |args|
+    newfunction(:str_trim, :type => :rvalue) do |args|
         args[0].strip
     end
 end
