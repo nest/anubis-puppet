@@ -83,5 +83,26 @@ node 'puppet.qa.nest-initiative.org' {
 }
 
 node 'jenkins.qa.nest-initiative.org' {
+
+    include puppet::client
+
+    include yum::ban::i386
+    include yum::repos::rhel
+
+    include network::hosts::self
+    include network::hosts::localhost
+
+    class { 'network::resolver':
+        nameservers => [ $libvirt_server, ],
+    }
+
+    include network::ipv6::disable
+
+    include users::admins
+    include users::sudoers
+
+    include openssh
+    include openssh::install::xauth
+
 }
 
