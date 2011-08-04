@@ -71,6 +71,7 @@ class services::logwatch {
 class services::disabled {
 
     $services_to_disable = [
+        'abrtd',
         'avahi-daemon',
         'iscsi',
         'iscsid',
@@ -81,6 +82,7 @@ class services::disabled {
         'rpcbind',
         'rpcgssd',
         'rpcidmapd',
+        'sysstat',
     ]
 
     service { $services_to_disable:
