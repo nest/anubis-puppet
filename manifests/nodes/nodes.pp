@@ -100,6 +100,9 @@ node 'jenkins.qa.nest-initiative.org' {
 
     include network::ipv6::disable
 
+    include services::disabled
+    include services::logwatch
+
     include users::admins
     include users::sudoers
 
