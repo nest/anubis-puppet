@@ -104,7 +104,6 @@ node 'jenkins.qa.nest-initiative.org' {
     include users::sudoers
 
     include openssh
-    include openssh::install::xauth
 
 }
 
