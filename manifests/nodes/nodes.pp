@@ -7,6 +7,8 @@ $infra_subnet   = '192.168.1.0/24'
 
 $infra_dns = [ '132.230.201.111', '132.230.200.200', ]
 
+$infra_relayhost = '[smtp.uni-freiburg.de]:25'
+
 $infra_storage_slow_pv = '/dev/md1'
 $infra_storage_slow_vg = 'vg_anubis_slow'
 
@@ -74,9 +76,9 @@ node 'puppet.qa.nest-initiative.org' {
         settings => {
             mydomain => $domain,
             mydestination => $domain,
-            inet_interfaces => "${infra_address}",
+            inet_interfaces => $infra_address,
             mynetworks => "${infra_subnet} ${libvirt_subnet}",
-            relayhost => '[smtp.uni-freiburg.de]:25',
+            relayhost => $infra_relayhost,
         },
     }
 
