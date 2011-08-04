@@ -63,30 +63,18 @@ class postfix::config {
         changes => [
 
             'set inet_protocols "ipv4"',
-            str_concat(
-                'set inet_interfaces "',
-                str_trim("127.0.0.1 ${postfix::params::inet_interfaces}"),
-                '"'
-            ),
+            join( 'set inet_interfaces "', strip("127.0.0.1 ${postfix::params::inet_interfaces}"), '"', "" ),
 
             "set mydomain '${postfix::params::mydomain}'",
 
             'set myorigin "$mydomain"',
             'set myhostname "$mydomain"',
 
-            str_concat(
-                'set mydestination "',
-                str_trim("${postfix::params::mydestination} ${hostname} ${fqdn} localhost localhost.localdomain"),
-                '"'
-            ),
+            join( 'set mydestination "', strip("${postfix::params::mydestination} ${hostname} ${fqdn} localhost localhost.localdomain"), '"', "" ),
 
             'set mynetworks_style "host"',
 
-            str_concat(
-                'set mynetworks "',
-                str_trim("127.0.0.0/8 ${postfix::params::mynetworks}"),
-                '"'
-            ),
+            join( 'set mynetworks "', strip("127.0.0.0/8 ${postfix::params::mynetworks}"), '"', "" ),
 
             "set relayhost '${postfix::params::relayhost}'",
 
