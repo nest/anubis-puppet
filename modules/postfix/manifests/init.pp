@@ -13,27 +13,28 @@ class postfix::params {
         fail('This class requires settings to be passed!')
     }
 
-    $inet_interfaces = $postfix::settings['inet_interfaces'] ? {
-        undef => '',
-        default => $postfix::settings['inet_interfaces'],
+    $keys = keys($postfix::settings)
+
+    if 'inet_interfaces' in $keys {
+        $inet_interfaces = $postfix::settings['inet_interfaces']
     }
 
-    $mydestination = $postfix::settings['mydestination'] ? {
-        undef => '',
-        default => $postfix::settings['mydestination'],
-    }
-    $mydomain = $postfix::settings['mydomain'] ? {
-        undef => $fqdn,
-        default => $postfix::settings['mydomain'],
-    }
-    $mynetworks = $postfix::settings['mynetworks'] ? {
-        undef => '',
-        default => $postfix::settings['mynetworks'],
+    if 'mydestination' in $keys {
+        $mydestination = $postfix::settings['mydestination']
     }
 
-    $relayhost = $postfix::settings['relayhost'] ? {
-        undef => '',
-        default => $postfix::settings['relayhost'],
+    if 'mydomain' in $keys {
+        $mydomain = $postfix::settings['mydomain']
+    } else {
+        $mydomain = $fqdn
+    }
+
+    if 'mynetworks' in $keys {
+        $mynetworks = $postfix::settings['mynetworks']
+    }
+
+    if 'relayhost' in $keys {
+        $relayhost = $postfix::settings['relayhost']
     }
 
     $aliases = [
