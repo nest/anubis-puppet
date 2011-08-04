@@ -105,5 +105,11 @@ node 'jenkins.qa.nest-initiative.org' {
 
     include openssh
 
+    class { 'postfix':
+        settings => {
+            relayhost => "${infra_address}:25",
+        },
+    }
+
 }
 
