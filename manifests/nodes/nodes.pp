@@ -5,6 +5,8 @@ $infra_path = '/srv/infra'
 $infra_address  = '192.168.1.1'
 $infra_subnet   = '192.168.1.0/24'
 
+$infra_dns = [ '132.230.201.111', '132.230.200.200', ]
+
 $infra_storage_slow_pv = '/dev/md1'
 $infra_storage_slow_vg = 'vg_anubis_slow'
 
@@ -35,10 +37,7 @@ node 'puppet.qa.nest-initiative.org' {
     include network::hosts::localhost
 
     class { 'network::resolver':
-        nameservers => [
-            '132.230.201.111',
-            '132.230.200.200',
-        ],
+        nameservers => $infra_dns,
     }
 
     class { 'network::interfaces':
