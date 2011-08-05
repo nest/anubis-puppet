@@ -29,6 +29,18 @@ class postfix::params {
         $mydomain = $fqdn
     }
 
+    if 'myorigin' in $keys {
+        $myorigin = $postfix::settings['myorigin']
+    } else {
+        $myorigin = '$mydomain'
+    }
+
+    if 'myhostname' in $keys {
+        $myhostname = $postfix::settings['myhostname']
+    } else {
+        $myhostname = '$mydomain'
+    }
+
     if 'mynetworks' in $keys {
         $mynetworks = $postfix::settings['mynetworks']
     }
@@ -64,8 +76,8 @@ class postfix::config {
 
         "set mydomain '${postfix::params::mydomain}'",
 
-        'set myorigin "$mydomain"',
-        'set myhostname "$mydomain"',
+        "set myorigin '${postfix::params::myorigin}'",
+        "set myhostname '${postfix::params::myhostname}'",
 
         join( 'set mydestination "', strip("${postfix::params::mydestination} ${hostname} ${fqdn} localhost localhost.localdomain"), '"', "" ),
 
