@@ -18,7 +18,16 @@ class services::iptables {
     file { '/etc/sysconfig/iptables':
         ensure => 'file',
         mode => '0600',
-        notify => Service['iptables'],
+
+#
+# If iptables are restarted, the virtual network rules added by libvirt are
+# removed, so the right way to go is probably to do iptables-save, then add
+# changes manually and do iptables-restore if the rules update is to be
+# executed on fly without rebooting the whole server or at least iptables +
+# libvirt networking (which can screw up virtual machines network connectivity)
+#
+
+#        notify => Service['iptables'],
         source => 'puppet:///nodes/sysconfig/iptables',
     }
 
