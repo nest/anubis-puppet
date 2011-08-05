@@ -31,7 +31,7 @@ class yum::server($repos_path = "${infra_path}/repos") {
     #
     # Better ignore SELinux contexts here, because the are set by the update script
     #
-    file { "${repos_path}":
+    file { $repos_path:
         ensure => 'directory',
         recurse => 'true',
         selinux_ignore_defaults => 'true',
@@ -56,7 +56,7 @@ class yum::server($repos_path = "${infra_path}/repos") {
     #
     exec { 'update-metadata':
         command => "${repos_path}/update-metadata",
-        cwd => "${repos_path}",
+        cwd => $repos_path,
         logoutput => 'true',
         refreshonly => 'true',
         require => [
@@ -64,6 +64,7 @@ class yum::server($repos_path = "${infra_path}/repos") {
             File["${repos_path}/update-metadata"],
         ],
         subscribe => File[$repos_path],
+        user => 'root',
     }
 
 }
