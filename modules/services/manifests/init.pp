@@ -87,7 +87,7 @@ class services::ntpdate($ntp_server) {
     $cron_minute_2 = $cron_minute_1 + 30
 
     cron { 'ntpdate':
-        command => "/usr/sbin/ntpdate ${ntp_server} && /usr/sbin/hwclock --systohc",
+        command => "/bin/sh -c '/usr/sbin/ntpdate ${ntp_server} && /usr/sbin/hwclock --systohc' >/dev/null 2>&1",
         ensure => 'present',
         minute => [ $cron_minute_1, $cron_minute_2 ],
         user => 'root',
