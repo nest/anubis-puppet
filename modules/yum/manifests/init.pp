@@ -106,12 +106,16 @@ class yum::ban::i386 {
         ],
     }
 
-    exec { 'yum_remove_i386':
-        command => '/bin/sh -c "yum remove \*.i\?86 && yum -y reinstall \*"',
-        refreshonly => 'true',
-        require => Augeas['yum_ban_i386'],
-        subscribe => Augeas['yum_ban_i386'],
-        user => 'root',
-    }
+#
+# Activate on RHEL5 installations, should be no longer relevant to RHEL6
+#
+
+#    exec { 'yum_remove_i386':
+#        command => '/bin/sh -c "yum remove \*.i\?86 && yum -y reinstall \*"',
+#        refreshonly => 'true',
+#        require => Augeas['yum_ban_i386'],
+#        subscribe => Augeas['yum_ban_i386'],
+#        user => 'root',
+#    }
 
 }
