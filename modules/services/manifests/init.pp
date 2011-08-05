@@ -40,6 +40,18 @@ class services::git {
     }
 }
 
+class services::subversion {
+    package { 'subversion':
+        ensure => 'present',
+    }
+}
+
+class services::java {
+    package { 'java-1.6.0-openjdk':
+        ensure => 'present',
+    }
+}
+
 #
 # Keeps system time in sync with a local time server
 #
