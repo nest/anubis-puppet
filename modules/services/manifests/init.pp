@@ -75,11 +75,17 @@ class services::ntpdate {
         ensure => 'present',
     }
 
+    #
+    # As host / guest time sync problems are getting more severe, run ntpdate
+    # client every half an hour to keep the time reasonably in sync
+    #
+    $cron_minute_1 = fqdn_rand(25)
+    $cron_minute_2 = $cron_minute_1 + 30
+
     cron { 'ntpdate':
         command => '/usr/sbin/ntpdate time.uni-freiburg.de && /usr/sbin/hwclock --systohc',
         ensure => 'present',
-        hour => '3',
-        minute => '30',
+        minute => [ $cron_minute_1, $cron_minute_2 ],
         user => 'root',
     }
 
