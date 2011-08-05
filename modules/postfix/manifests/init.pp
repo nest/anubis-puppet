@@ -58,30 +58,31 @@ class postfix::config {
         require => Class['postfix::install'],
     }
 
+    $main_changes = [
+        'set inet_protocols "ipv4"',
+        join( 'set inet_interfaces "', strip("127.0.0.1 ${postfix::params::inet_interfaces}"), '"', "" ),
+
+        "set mydomain '${postfix::params::mydomain}'",
+
+        'set myorigin "$mydomain"',
+        'set myhostname "$mydomain"',
+
+        join( 'set mydestination "', strip("${postfix::params::mydestination} ${hostname} ${fqdn} localhost localhost.localdomain"), '"', "" ),
+
+        'set mynetworks_style "host"',
+
+        join( 'set mynetworks "', strip("127.0.0.0/8 ${postfix::params::mynetworks}"), '"', "" ),
+
+        "set relayhost '${postfix::params::relayhost}'",
+
+        'set smtp_tls_security_level "may"',
+        'set smtp_tls_CAfile "/etc/pki/tls/certs/ca-bundle.crt"',
+    ]
+
     augeas { 'main.cf':
 
         context => '/files/etc/postfix/main.cf',
-        changes => [
-
-            'set inet_protocols "ipv4"',
-            join( 'set inet_interfaces "', strip("127.0.0.1 ${postfix::params::inet_interfaces}"), '"', "" ),
-
-            "set mydomain '${postfix::params::mydomain}'",
-
-            'set myorigin "$mydomain"',
-            'set myhostname "$mydomain"',
-
-            join( 'set mydestination "', strip("${postfix::params::mydestination} ${hostname} ${fqdn} localhost localhost.localdomain"), '"', "" ),
-
-            'set mynetworks_style "host"',
-
-            join( 'set mynetworks "', strip("127.0.0.0/8 ${postfix::params::mynetworks}"), '"', "" ),
-
-            "set relayhost '${postfix::params::relayhost}'",
-
-            'set smtp_tls_security_level "may"',
-            'set smtp_tls_CAfile "/etc/pki/tls/certs/ca-bundle.crt"',
-        ],
+        changes => $main_changes,
 
         notify => Class['postfix::service'],
         require => Class['postfix::install'],
