@@ -17,9 +17,10 @@ class apache::params {
         fail('This class requires settings to be passed!')
     }
 
-    $listen = $apache::settings['listen'] ? {
-        undef => '127.0.0.1:80',
-        default => $apache::settings['listen'],
+    if 'listen' in keys($apache::settings) {
+        $listen = $apache::settings['listen']
+    } else {
+        $listen = '127.0.0.1:80'
     }
 
 }
