@@ -103,6 +103,11 @@ node 'jenkins.qa.nest-initiative.org' {
     include services::disabled
     include services::logwatch
 
+    include services::java
+
+    include jenkins::install
+    include jenkins::service
+
     include users::admins
     include users::sudoers
 
