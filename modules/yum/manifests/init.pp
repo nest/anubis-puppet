@@ -3,7 +3,11 @@
 #
 # Yum repositories on the virtualization server
 #
-class yum::server($repos_path = "${infra_path}/repos") {
+class yum::server($repos_path) {
+
+    if $repos_path == undef {
+        fail('This class requires $repos_path to be passed!')
+    }
 
     #
     # Make sure that the metadata generator is installed
