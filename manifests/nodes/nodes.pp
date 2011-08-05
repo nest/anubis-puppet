@@ -100,11 +100,12 @@ node 'jenkins.qa.nest-initiative.org' {
 
     include network::ipv6::disable
 
+    include services::iptables
+
     include services::disabled
     include services::logwatch
 
     include services::java
-
     include jenkins::install
     include jenkins::config
     include jenkins::service
