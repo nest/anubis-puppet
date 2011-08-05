@@ -110,6 +110,7 @@ node 'jenkins.qa.nest-initiative.org' {
 
     class { 'postfix':
         settings => {
+            myorigin => $domain,
             relayhost => "${infra_address}:25",
         },
     }
