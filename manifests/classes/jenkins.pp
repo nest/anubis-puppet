@@ -18,6 +18,16 @@ class jenkins::install {
 
 }
 
-class jenkins::service {
+class jenkins::config {
+}
 
+class jenkins::service {
+    service { 'jenkins':
+        enable => 'true',
+        ensure => 'running',
+        require => [
+            Class['jenkins::config'],
+            Class['jenkins::install'],
+        ]
+    }
 }

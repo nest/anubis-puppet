@@ -106,6 +106,7 @@ node 'jenkins.qa.nest-initiative.org' {
     include services::java
 
     include jenkins::install
+    include jenkins::config
     include jenkins::service
 
     include users::admins
