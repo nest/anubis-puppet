@@ -9,6 +9,8 @@ $infra_dns = [ '132.230.201.111', '132.230.200.200', ]
 
 $infra_relayhost = '[smtp.uni-freiburg.de]:25'
 
+$infra_time = 'time.uni-freiburg.de'
+
 $infra_storage_slow_pv = '/dev/md1'
 $infra_storage_slow_vg = 'vg_anubis_slow'
 
@@ -53,7 +55,10 @@ node 'puppet.qa.nest-initiative.org' {
     include services::git
     include services::iptables
     include services::logwatch
-    include services::ntpdate
+
+    class { 'services::ntpdate':
+        ntp_server => $infra_time,
+    }
 
     include users::admins
     include users::sudoers
@@ -104,6 +109,10 @@ node 'jenkins.qa.nest-initiative.org' {
 
     include services::disabled
     include services::logwatch
+
+    class { 'services::ntpdate':
+        ntp_server => $infra_time,
+    }
 
     include services::java
     include jenkins::install

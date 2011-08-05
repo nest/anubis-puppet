@@ -69,7 +69,11 @@ class services::java {
 # every once in a while with ntpdate as opposed to running a full blown ntp
 # server
 #
-class services::ntpdate {
+class services::ntpdate($ntp_server) {
+
+    if $ntp_server == undef {
+        fail('This class requires $ntp_server to be passed!')
+    }
 
     package { 'ntpdate':
         ensure => 'present',
@@ -83,7 +87,7 @@ class services::ntpdate {
     $cron_minute_2 = $cron_minute_1 + 30
 
     cron { 'ntpdate':
-        command => '/usr/sbin/ntpdate time.uni-freiburg.de && /usr/sbin/hwclock --systohc',
+        command => "/usr/sbin/ntpdate ${ntp_server} && /usr/sbin/hwclock --systohc",
         ensure => 'present',
         minute => [ $cron_minute_1, $cron_minute_2 ],
         user => 'root',
