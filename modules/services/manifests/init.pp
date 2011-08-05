@@ -47,9 +47,19 @@ class services::subversion {
 }
 
 class services::java {
-    package { 'java-1.6.0-openjdk':
+
+    #
+    # Is available from RHEL Server Supplementary (v. 6 64-bit x86_64) channel
+    #
+    # Reference: https://wiki.jasig.org/display/CASUM/HOWTO+Switch+to+Sun+JVM+in+RHEL
+    #            https://issues.jenkins-ci.org/browse/JENKINS-3947
+    #
+    # Jenkins: "Captcha Not Rendering with OpenJDK 1.6.0.0"
+    #
+    package { 'java-1.6.0-sun':
         ensure => 'present',
     }
+
 }
 
 #
