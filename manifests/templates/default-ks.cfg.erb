@@ -61,6 +61,10 @@ part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
 repo --name="<%= ks_info['distro'] %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_info['distro'] %>-<%= ks_info['releasever'] %>-local/noarch"
 repo --name="<%= ks_info['distro'] %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_info['distro'] %>-<%= ks_info['releasever'] %>-local/<%= ks_info['basearch'] %>"
 
+<% if ks_info['distro'] == 'fc' then %>
+repo --name="<%= ks_info['distro'] %>-online-main" --baseurl="http://download.fedoraproject.org/pub/fedora/linux/releases/<%= ks_info['releasever'] %>/Everything/<%= ks_info['basearch'] %>/os/"
+<% end %>
+
 # Turn off the machine upon succesfull completion
 poweroff
 
