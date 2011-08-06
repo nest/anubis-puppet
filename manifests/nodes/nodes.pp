@@ -97,8 +97,6 @@ node 'jenkins.qa.nest-initiative.org' {
     include yum::ban::i386
     include yum::repos::rhel
 
-    include network::hosts::localhost
-
     class { 'network::resolver':
         nameservers => [ $libvirt_server, ],
     }
@@ -144,5 +142,21 @@ node 'jenkins.qa.nest-initiative.org' {
 
 
 node 'fc-15-i386.qa.nest-initiative.org' {
+
+    include puppet::client
+
+    class { 'network::resolver':
+        nameservers => [ $libvirt_server, ],
+    }
+
+    class { 'services::ntpdate':
+        ntp_server => $infra_time,
+    }
+
+    include users::admins
+    include users::sudoers
+
+    include openssh
+
 }
 
