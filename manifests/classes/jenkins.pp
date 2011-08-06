@@ -19,6 +19,13 @@ class jenkins::install {
 }
 
 class jenkins::config {
+     file { '/etc/sysconfig/jenkins':
+         ensure => 'file',
+         mode => '0600',
+         notify => Class['jenkins::service'],
+         require => Class['jenkins::install'],
+         source => 'puppet:///nodes/sysconfig/jenkins',
+     }
 }
 
 class jenkins::service {

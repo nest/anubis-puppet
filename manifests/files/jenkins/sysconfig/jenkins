@@ -1,3 +1,4 @@
+# ZYV
 ## Path:        Development/Jenkins
 ## Description: Configuration for the Jenkins continuous build server
 ## Type:        string
@@ -42,7 +43,9 @@ JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true"
 #
 # Port Jenkins is listening on.
 #
-JENKINS_PORT="8080"
+# ZYV: disable HTTP
+#
+JENKINS_PORT="-1"
 
 ## Type:        integer(1:9)
 ## Default:     5
@@ -84,4 +87,6 @@ JENKINS_HANDLER_IDLE="20"
 # Pass arbitrary arguments to Jenkins.
 # Full option list: java -jar jenkins.war --help
 #
-JENKINS_ARGS=""
+# ZYV: enable HTTPS
+#
+JENKINS_ARGS=" --httpsPort=8443 --ajpPort=-1 "
