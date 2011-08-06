@@ -7,15 +7,15 @@
 # Accessible filesystems, by reference, are maintained under '/dev/disk'
 # See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
 #
-/dev/mapper/vg_anubis_fast-host_root        /                   ext4    defaults,relatime                       1 1
-UUID=13d0c097-15a4-4762-b1bc-10631a76756c   /boot               ext4    defaults,nosuid,noexec,nodev            1 2
-UUID=7D87-23C9                              /boot/efi           vfat    umask=0077,shortname=winnt              0 0
-UUID=DF31-FA52                              /mnt/efi            vfat    umask=0077,shortname=winnt              0 0
-/dev/mapper/vg_anubis_fast-host_tmp         /tmp                ext4    defaults,relatime,nosuid,noexec,nodev   1 2
-/dev/mapper/vg_anubis_fast-host_var         /var                ext4    defaults,relatime,nosuid                1 2
-/dev/mapper/vg_anubis_slow-host_var_log     /var/log            ext4    defaults,nosuid,noexec,nodev            1 2
-/tmp                                        /var/tmp            none    defaults,bind,nosuid,noexec,nodev       0 0
-/dev/mapper/vg_anubis_slow-host_swap        swap                swap    defaults                                0 0
+/dev/mapper/vg_anubis_fast-host_root        /                   ext4    defaults,discard,relatime                       1 1
+UUID=13d0c097-15a4-4762-b1bc-10631a76756c   /boot               ext4    defaults,nosuid,noexec,nodev                    1 2
+UUID=7D87-23C9                              /boot/efi           vfat    umask=0077,shortname=winnt                      0 0
+UUID=DF31-FA52                              /mnt/efi            vfat    umask=0077,shortname=winnt                      0 0
+/dev/mapper/vg_anubis_fast-host_tmp         /tmp                ext4    defaults,discard,relatime,nosuid,noexec,nodev   1 2
+/dev/mapper/vg_anubis_fast-host_var         /var                ext4    defaults,discard,relatime,nosuid                1 2
+/dev/mapper/vg_anubis_slow-host_var_log     /var/log            ext4    defaults,nosuid,noexec,nodev                    1 2
+/tmp                                        /var/tmp            none    defaults,bind,nosuid,noexec,nodev               0 0
+/dev/mapper/vg_anubis_slow-host_swap        swap                swap    defaults                                        0 0
 
 tmpfs                                       /dev/shm            tmpfs   defaults,nosuid,noexec,nodev            0 0
 devpts                                      /dev/pts            devpts  gid=5,mode=620                          0 0
