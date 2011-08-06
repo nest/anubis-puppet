@@ -153,6 +153,8 @@ node 'fc-15-i386.qa.nest-initiative.org' {
         ntp_server => $infra_time,
     }
 
+    include services::java
+
     include users::admins
     include users::sudoers
 
