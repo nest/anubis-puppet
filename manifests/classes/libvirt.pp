@@ -145,6 +145,18 @@ class libvirt::machines {
         },
     }
 
+    logical_volume { "vm_${fc_15_i386_hostname}_main":
+        ensure => 'present',
+        volume_group => $infra_storage_slow_vg,
+        size => '16G',
+    }
+
+    host { $fc_15_i386_hostname :
+        ensure => 'present',
+        ip => $fc_15_i386_ip,
+        host_aliases => "${fc_15_i386_hostname}.${domain}",
+     }
+
     libvirt::make_kickstart { $fc_15_i386_hostname:
         ks_path => $kickstarts_path,
         ks_info => {

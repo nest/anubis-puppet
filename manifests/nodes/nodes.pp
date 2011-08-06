@@ -143,3 +143,7 @@ node 'jenkins.qa.nest-initiative.org' {
 
 }
 
+
+node 'fc-15-i386.qa.nest-initiative.org' {
+}
+
