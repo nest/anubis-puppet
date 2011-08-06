@@ -57,3 +57,26 @@ class apache::service {
         ]
     }
 }
+
+class apache::redirect::https {
+
+    #
+    # Redirect any incoming requests to HTTPS
+    #
+    file { '/etc/httpd/conf.d/jenkins.conf':
+        ensure => 'file',
+        require => Class['apache::install'],
+        notify => Class['apache::service'],
+        content => '
+            # ZYV
+            #
+            # For now do nothing but redirect all requests to HTTPS
+            #
+            RewriteEngine On
+            RewriteRule ^.*$ https://%{HTTP_HOST} [R,L]
+
+            RedirectMatch 403 ^.*$
+            ',
+    }
+
+}

@@ -120,6 +120,14 @@ node 'jenkins.qa.nest-initiative.org' {
     include jenkins::config
     include jenkins::service
 
+    class { 'apache':
+        settings => {
+            listen => "*:80",
+        }
+    }
+
+    include apache::redirect::https
+
     include users::admins
     include users::sudoers
 
