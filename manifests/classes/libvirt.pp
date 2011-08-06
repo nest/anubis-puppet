@@ -87,8 +87,19 @@ class libvirt::machines {
     #
     # Jenkins, the ci master host (RHEL6)
     #
-    $jenkins_ip = '192.168.122.101'
-    $jenkins_hostname = 'jenkins'
+    $jenkins_arch       = 'x86_64'
+    $jenkins_distro     = 'rhel'
+    $jenkins_hostname   = 'jenkins'
+    $jenkins_ip         = '192.168.122.101'
+    $jenkins_releasever = '6Server'
+    $jenkins_swap       = true
+
+    $fc_15_i386_arch       = 'i386'
+    $fc_15_i386_distro     = 'fc'
+    $fc_15_i386_hostname   = 'fc-15-i386'
+    $fc_15_i386_ip         = '192.168.122.111'
+    $fc_15_i386_releasever = '15'
+    $fc_15_i386_swap       = false
 
     logical_volume { "vm_${jenkins_hostname}_main":
         ensure => 'present',
@@ -111,20 +122,20 @@ class libvirt::machines {
     libvirt::make_kickstart { $jenkins_hostname:
         ks_path => $kickstarts_path,
         ks_info => {
-            name => $jenkins_hostname,
-            firewall => '--http',
-            net_ip  => $jenkins_ip,
-            net_msk => '255.255.255.0',
-            net_ns  => $libvirt_server,
-            net_gw  => $libvirt_server,
-            distro  => 'rhel',
-            releasever => '6Server',
-            basearch => 'x86_64',
-            packages => '
+            name       => $jenkins_hostname,
+            firewall   => '--http',
+            net_ip     => $jenkins_ip,
+            net_msk    => $libvirt_netmask,
+            net_ns     => $libvirt_server,
+            net_gw     => $libvirt_server,
+            swap       => $jenkins_swap,
+            distro     => $jenkins_distro,
+            releasever => $jenkins_releasever,
+            basearch   => $jenkins_arch,
+            packages   => '
 
                 # Packages not needed on virtual hosts
                 -ntp
-                -ntpdate
                 -smartmontools
 
                 # We only use RHN Classic!
@@ -133,6 +144,29 @@ class libvirt::machines {
             ',
         },
     }
+
+    libvirt::make_kickstart { $fc_15_i386_hostname:
+        ks_path => $kickstarts_path,
+        ks_info => {
+            name       => $fc_15_i386_hostname,
+            firewall   => '',
+            net_ip     => $fc_15_i386_ip,
+            net_msk    => $libvirt_netmask,
+            net_ns     => $libvirt_server,
+            net_gw     => $libvirt_server,
+            swap       => $fc_15_i386_swap,
+            distro     => $fc_15_i386_distro,
+            releasever => $fc_15_i386_releasever,
+            basearch   => $fc_15_i386_arch,
+            packages   => '
+                # Packages not needed on virtual hosts
+                -ntp
+                -smartmontools
+            ',
+        },
+    }
+
+
 
 }
 
@@ -201,7 +235,7 @@ class libvirt::kickstarts {
 #
 define libvirt::make_kickstart($ks_path, $ks_info) {
 
-    file { "${ks_path}/${ks_info['distro']}-${ks_info['name']}-ks.cfg":
+    file { "${ks_path}/${ks_info['name']}-ks.cfg":
         content => template('default-ks.cfg.erb'),
         ensure => 'file',
         require => File[$ks_path],

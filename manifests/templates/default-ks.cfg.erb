@@ -52,7 +52,10 @@ clearpart --all --initlabel
 
 # Disk partitioning information
 part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/vda --size=1
+
+<% if ks_info['swap'] then %>
 part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
+<% end %>
 
 # Local repos
 repo --name="<%= ks_info['distro'] %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_info['distro'] %>-<%= ks_info['releasever'] %>-local/noarch"

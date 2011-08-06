@@ -17,8 +17,9 @@ $infra_storage_slow_vg = 'vg_anubis_slow'
 $infra_storage_fast_pv = '/dev/sda1'
 $infra_storage_fast_vg = 'vg_anubis_fast'
 
-$libvirt_server = '192.168.122.1'
-$libvirt_subnet = '192.168.122.0/24'
+$libvirt_server  = '192.168.122.1'
+$libvirt_netmask = '255.255.255.0'
+$libvirt_subnet  = '192.168.122.0/24'
 
 $kickstarts_path = "${infra_path}/kickstarts"
 
