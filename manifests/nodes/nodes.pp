@@ -97,7 +97,6 @@ node 'jenkins.qa.nest-initiative.org' {
     include yum::ban::i386
     include yum::repos::rhel
 
-    include network::hosts::self
     include network::hosts::localhost
 
     class { 'network::resolver':
