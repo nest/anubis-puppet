@@ -1,5 +1,11 @@
 # ZYV
 
+class jenkins::params {
+
+    $ramdisk = '/mnt/ram'
+    $ramsize = '2G'
+
+}
 
 class jenkins::install {
 
@@ -37,4 +43,31 @@ class jenkins::service {
             Class['jenkins::install'],
         ]
     }
+}
+
+class jenkins::slave::user {
+}
+
+class jenkins::slave::tmpfs {
+
+    file { $jenkins::params::ramdisk :
+        ensure => 'directory',
+        group => 'jenkins',
+        mode => '0755',
+        owner => 'jenkins',
+        recurse => 'false',
+    }
+
+    mount { $jenkins::params::ramdisk :
+        atboot => 'true',
+        device => 'tmpfs',
+        dump => '0',
+        ensure => 'mounted',
+        fstype => 'tmpfs',
+        options => "size=${jenkins::params::ramsize}",
+        pass => '0',
+        remounts => 'true',
+        require => File[$jenkins::params::ramdisk],
+    }
+
 }
