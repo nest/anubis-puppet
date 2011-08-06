@@ -135,6 +135,8 @@ class libvirt::machines {
             basearch   => $jenkins_arch,
             packages   => '
 
+                @server-policy
+
                 # Packages not needed on virtual hosts
                 -ntp
                 -smartmontools
@@ -174,7 +176,7 @@ class libvirt::machines {
             releasever => $fc_15_i386_releasever,
             basearch   => $fc_15_i386_arch,
             packages   => '
-                # Packages not needed on virtual hosts
+                @buildsys-build
                 -ntp
                 -smartmontools
             ',
