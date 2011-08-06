@@ -156,6 +156,7 @@ node 'fc-15-i386.qa.nest-initiative.org' {
     include services::java
 
     include jenkins::params
+    include jenkins::slave::user
     include jenkins::slave::tmpfs
 
     include users::admins
