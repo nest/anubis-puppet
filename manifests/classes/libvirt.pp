@@ -124,6 +124,7 @@ class libvirt::machines {
         ks_info => {
             name       => $jenkins_hostname,
             firewall   => '--http',
+            kernel     => '',
             net_ip     => $jenkins_ip,
             net_msk    => $libvirt_netmask,
             net_ns     => $libvirt_server,
@@ -142,6 +143,7 @@ class libvirt::machines {
                 -subscription-manager
 
             ',
+            post => '',
         },
     }
 
@@ -162,6 +164,7 @@ class libvirt::machines {
         ks_info => {
             name       => $fc_15_i386_hostname,
             firewall   => '',
+            kernel     => 'biosdevname=0',
             net_ip     => $fc_15_i386_ip,
             net_msk    => $libvirt_netmask,
             net_ns     => $libvirt_server,
@@ -174,6 +177,9 @@ class libvirt::machines {
                 # Packages not needed on virtual hosts
                 -ntp
                 -smartmontools
+            ',
+            post => '
+                rm -f /etc/udev/rules.d/70-persistent-net.rules
             ',
         },
     }

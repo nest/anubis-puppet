@@ -42,7 +42,7 @@ timezone --isUtc Europe/Berlin
 network --bootproto=static --device=eth0 --gateway=<%= ks_info['net_gw'] %> --ip=<%= ks_info['net_ip'] %> --nameserver=<%= ks_info['net_ns'] %> --netmask=<%= ks_info['net_msk'] %> --onboot=on --noipv6 --hostname=<%= ks_info['name'] %>.<%= scope.lookupvar('::domain') %>
 
 # System bootloader configuration
-bootloader --location=mbr
+bootloader --location=mbr --append="<%= ks_info['kernel'] %>"
 
 # Clear the Master Boot Record
 zerombr
@@ -88,5 +88,7 @@ wget
 chkconfig puppet on
 
 ) 2>&1 | tee /root/ks-post.log
+
+<%= ks_info['post'] %>
 
 %end
