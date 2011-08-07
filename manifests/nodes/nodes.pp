@@ -1,7 +1,7 @@
 # ZYV
 
 $infra_path = '/srv/infra'
-$infra_config = '/tmp/config'
+$infra_config = '/opt/config'
 
 $infra_address  = '192.168.1.1'
 $infra_subnet   = '192.168.1.0/24'
