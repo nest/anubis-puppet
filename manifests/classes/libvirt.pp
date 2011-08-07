@@ -216,6 +216,17 @@ class libvirt::networks {
         user => 'root',
     }
 
+    file { '/etc/libvirt/hooks':
+        ensure => 'directory',
+    }
+
+    file { '/etc/libvirt/hooks/qemu':
+        ensure => 'file',
+        mode => '0755',
+        source => 'puppet:///nodes/libvirt/hooks/qemu',
+        require => File['/etc/libvirt/hooks'],
+    }
+
 }
 
 class libvirt::kickstarts {

@@ -1,0 +1,87 @@
+#!/bin/bash
+#
+# ZYV
+#
+# This horrible script adds and removes iptables rules to allow for port
+# forwarding from the host machine (virtualization server) to the selected
+# virtualized guests.
+#
+# Unfortunately, libvirt inserts its own FORWARD rules along with final REJECTs
+# at the very top of the table, so the rules defined via iptables config will
+# be rendered ineffective, hence the need for this hook.
+#
+
+set -e
+set -u
+
+iptables='/sbin/iptables'
+
+# Ideally, rewrite as ERB template and fetch this from Puppet
+external_if='em1'
+external_ip='132.230.177.10'
+
+# List the machines here
+machines=( 'jenkins' )
+
+# Machine definition block
+jenkins_hostname='jenkins.qa.nest-initiative.org'
+jenkins_ip='192.168.122.101'
+jenkins_sport=( '80' '443' )
+jenkins_dport=( '80' '8443' )
+
+rules_update() {
+
+    domain="$1"
+    action="$2"
+
+    for host in $machines; do
+
+        eval host_name="\$${host}_hostname"
+
+        if [ "$domain" == "${host_name}" ]; then
+
+            eval host_ip="\$${host}_ip"
+
+            eval host_sport=( \${${host}_sport[@]} )
+            eval host_dport=( \${${host}_dport[@]} )
+
+            length=$(( ${#host_sport[@]} - 1 ))
+
+            for i in `seq 0 $length`; do
+
+                PREROUTING="$iptables -t nat $action PREROUTING -d ${external_ip} -i ${external_if} -p tcp -m tcp --dport ${host_sport[$i]} -j DNAT --to-destination ${host_ip}:${host_dport[$i]}"
+                FORWARD="$iptables $action FORWARD -d ${host_ip} -p tcp -m state --state NEW -m tcp --dport ${host_dport[$i]} -j ACCEPT"
+
+                if [ -z "${DEBUG_RULES:-}" ]; then
+                    `$PREROUTING`
+                    `$FORWARD`
+                else
+                    echo $PREROUTING
+                    echo $FORWARD
+                fi
+
+            done
+
+        fi
+
+    done
+
+}
+
+domain_name="$1"
+domain_task="$2"
+
+case "${domain_task}" in
+    # hook is called with <domain_name> start begin -
+    start)
+        rules_update ${domain_name} " -I "
+    ;;
+    # hook is called with <domain_name> stopped end -
+    stopped)
+        rules_update ${domain_name} " -D "
+    ;;
+    *)
+        echo "qemu hook called with unexpected options $*" >&2
+    ;;
+esac
+
