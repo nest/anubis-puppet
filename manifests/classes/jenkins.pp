@@ -59,9 +59,7 @@ class jenkins::slave::tmpfs {
 
     file { $jenkins::params::ramdisk :
         ensure => 'directory',
-        group => 'jenkins',
-        mode => '0755',
-        owner => 'jenkins',
+        mode => '1777',
         recurse => 'false',
         require => Class['jenkins::slave::user'],
     }
