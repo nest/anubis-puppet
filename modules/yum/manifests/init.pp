@@ -124,3 +124,28 @@ class yum::ban::i386 {
 #    }
 
 }
+
+#
+# Quasi-safe yum automatic updates run during the night
+#
+class yum::autoupdate {
+
+    file { "${infra_config}/yum-autoupdate":
+        ensure => 'file',
+        mode => '0755',
+        source => 'puppet:///common/yum-autoupdate',
+    }
+
+    $cron_hour   = fqdn_rand(4)
+    $cron_minute = fqdn_rand(60)
+
+    cron { 'yum-autoupdate':
+        command => "${infra_config}/yum-autoupdate >/dev/null 2>&1",
+        ensure => 'present',
+        hour => $cron_hour,
+        minute => $cron_minute,
+        user => 'root',
+        require => File["${infra_config}/yum-autoupdate"],
+    }
+
+}

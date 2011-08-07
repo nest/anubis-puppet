@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# ZYV
+#
+# This is an auto-update script for yum-managed machines, that are not so
+# important to set up yum-updatesd and read through its e-mail reports before
+# updating manually.
+#
+# It is supposed to be kind of a 'safe' way of keeping the whole system up to
+# date automatically to the extent it is possible at all.
+#
+# - Caches are cleaned in order to avoid disk space utilization growth
+# - Times when actions are performed are randomized to prevent overloads
+#
+
+YUM=/usr/bin/yum -R 5
+
+if [ -f /var/lock/subsys/yum ] ; then
+
+    $YUM clean all
+    $YUM -e 0 -d 0 -y update glibc\*
+    $YUM -e 0 -d 0 -y update yum\* rpm\* python\*
+    $YUM clean all
+    $YUM -e 0 -d 0 -y update
+
+fi
+

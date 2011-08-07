@@ -173,6 +173,8 @@ node 'builder-fedora' {
 
     include openssh
 
+    include yum::autoupdate
+
 }
 
 
