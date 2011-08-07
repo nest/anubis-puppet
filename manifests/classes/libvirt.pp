@@ -186,8 +186,6 @@ class libvirt::machines {
         },
     }
 
-
-
 }
 
 class libvirt::networks {
@@ -195,20 +193,22 @@ class libvirt::networks {
     #
     # libvirt default network definition
     #
-    $libvirt_network = '/tmp/config/libvirt/network-default.xml'
+    $libvirt_network = "${infra_config}/libvirt/network-default.xml"
 
-    file { [ '/tmp/config', '/tmp/config/libvirt', ]:
+    file { "${infra_config}/libvirt":
         ensure => 'directory',
+        require => Class['services::everybody'],
     }
 
-    file { "$libvirt_network":
+    file { $libvirt_network:
         ensure => 'file',
         source => 'puppet:///nodes/libvirt/network-default.xml',
+        require => File["${infra_config}/libvirt"],
     }
 
     exec { 'libvirt-define-network':
-        command => "virsh net-define $libvirt_network && virsh net-destroy default && virsh net-start default",
-        cwd => '/tmp/config/libvirt',
+        command => "virsh net-define ${libvirt_network} && virsh net-destroy default && virsh net-start default",
+        cwd => "${infra_config}/libvirt",
         logoutput => 'true',
         refreshonly => 'true',
         require => File[$libvirt_network],

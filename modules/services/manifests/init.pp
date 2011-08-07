@@ -1,6 +1,21 @@
 # ZYV
 
 #
+# Things that have to be that way on ALL hosts, no exceptions
+#
+class services::everybody {
+
+    #
+    # For now it's only a directory in /tmp that stores misc site admin / config
+    # scripts to be piped into the admin tools or scheduled via cron jobs etc.
+    #
+    file { $infra_config:
+        ensure => 'directory',
+    }
+
+}
+
+#
 # Distribute default firewall settings
 #
 class services::iptables {

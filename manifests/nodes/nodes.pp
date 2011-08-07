@@ -1,6 +1,7 @@
 # ZYV
 
 $infra_path = '/srv/infra'
+$infra_config = '/tmp/config'
 
 $infra_address  = '192.168.1.1'
 $infra_subnet   = '192.168.1.0/24'
@@ -27,6 +28,8 @@ $kickstarts_path = "${infra_path}/kickstarts"
 # Virtualization server
 #
 node 'puppet.qa.nest-initiative.org' {
+
+    include services::everybody
 
     #include puppet::client
     include puppet::server
@@ -92,6 +95,8 @@ node 'puppet.qa.nest-initiative.org' {
 
 node 'jenkins.qa.nest-initiative.org' {
 
+    include services::everybody
+
     include puppet::client
 
     include yum::ban::i386
@@ -142,6 +147,8 @@ node 'jenkins.qa.nest-initiative.org' {
 
 
 node 'builder-fedora' {
+
+    include services::everybody
 
     include puppet::client
 
