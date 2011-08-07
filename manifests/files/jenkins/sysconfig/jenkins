@@ -89,4 +89,6 @@ JENKINS_HANDLER_IDLE="20"
 #
 # ZYV: enable HTTPS
 #
-JENKINS_ARGS=" --httpsPort=8443 --ajpPort=-1 "
+# keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -validity 1825 -dname "cn=qa.nest-intiative.org" -storepass XXX
+#
+JENKINS_ARGS=" --httpsPort=8443 --httpsKeyStore=/var/lib/jenkins/ssl/keystore.jks --httpsKeyStorePassword=uDf7oLosBDMh7 --ajpPort=-1 "
