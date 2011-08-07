@@ -153,6 +153,8 @@ node 'fc-15-i386.qa.nest-initiative.org' {
         ntp_server => $infra_time,
     }
 
+    include services::disabled
+
     include services::java
 
     include jenkins::params
