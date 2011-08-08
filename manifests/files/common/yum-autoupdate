@@ -13,9 +13,13 @@
 # - Times when actions are performed are randomized to prevent overloads
 #
 
-YUM=/usr/bin/yum -R 5
+set -e
+set -u
+set -x
 
-if [ -f /var/lock/subsys/yum ] ; then
+YUM='/usr/bin/yum -R 5'
+
+if [ ! -f /var/lock/subsys/yum ] ; then
 
     $YUM clean all
     $YUM -e 0 -d 0 -y update glibc\*
