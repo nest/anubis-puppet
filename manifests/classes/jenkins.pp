@@ -77,3 +77,25 @@ class jenkins::slave::tmpfs {
     }
 
 }
+
+class jenkins::builddeps::nest {
+
+    $packages = [
+
+        'autoconf',
+        'automake',
+        'libtool',
+
+        'gsl-devel',
+        'numpy',
+        'openmpi-devel',
+        'python-devel',
+        'readline-devel',
+
+    ]
+
+    package { $packages :
+        ensure => 'present',
+    }
+
+}

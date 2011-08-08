@@ -168,6 +168,8 @@ node 'builder-fedora' {
     include jenkins::slave::user
     include jenkins::slave::tmpfs
 
+    include jenkins::builddeps::nest
+
     include users::admins
     include users::sudoers
 
