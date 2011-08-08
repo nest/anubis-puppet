@@ -85,6 +85,7 @@ class jenkins::builddeps::nest {
         'autoconf',
         'automake',
         'libtool',
+        'libtool-ltdl-devel',
 
         'gsl-devel',
         'numpy',
