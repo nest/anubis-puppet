@@ -163,6 +163,7 @@ node 'builder-fedora' {
     include services::disabled
 
     include services::java
+    include services::git
 
     include jenkins::params
     include jenkins::slave::user
