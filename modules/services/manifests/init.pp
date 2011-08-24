@@ -165,7 +165,7 @@ class services::rhn_check {
     $cron_minute = fqdn_rand(59)
 
     cron { 'rhn_check':
-        command => "rhn_check >/dev/null 2>&1",
+        command => '/usr/sbin/rhn_check >/dev/null 2>&1',
         ensure => 'present',
         minute => $cron_minute,
         user => 'root',
