@@ -61,6 +61,8 @@ node 'puppet.qa.nest-initiative.org' {
     include services::logwatch
     include services::smartmontools
 
+    include services::rhn_check
+
     class { 'services::ntpdate':
         ntp_server => $infra_time,
     }
@@ -113,6 +115,8 @@ node 'jenkins.qa.nest-initiative.org' {
 
     include services::disabled
     include services::logwatch
+
+    include services::rhn_check
 
     class { 'services::ntpdate':
         ntp_server => $infra_time,
