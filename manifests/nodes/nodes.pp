@@ -70,6 +70,7 @@ node 'puppet.qa.nest-initiative.org' {
     include users::admins
     include users::sudoers
 
+    include libvirt::params
     include libvirt::storage
     include libvirt::networks
     include libvirt::machines

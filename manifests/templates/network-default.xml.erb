@@ -1,0 +1,15 @@
+<network>
+  <name>default</name>
+  <uuid>8322fb2d-30c8-4c54-a143-25c392ad8f89</uuid>
+  <forward mode='nat'/>
+  <bridge name='virbr0' stp='on' delay='0' />
+  <mac address='52:54:00:BB:21:F4'/>
+  <ip address='192.168.122.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.122.101' end='192.168.122.254' />
+      <% klnts.each do |klnt_name, klnt_data| -%>
+          <host mac="<%= klnt_data['mac'] %>" name="<%= klnt_data['hostname'] %>.<%= scope.lookupvar('::domain') %>" ip="<%= klnt_data['ip'] %>" />
+      <% end -%>
+  </dhcp>
+  </ip>
+</network>

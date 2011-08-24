@@ -1,6 +1,43 @@
 # ZYV
 
 #
+# Miscelaneous libvirt settings
+#
+class libvirt::params {
+
+    $guests = {
+
+        #
+        # Jenkins, the ci master host (RHEL6)
+        #
+        'jenkins' => {
+            'arch'       => 'x86_64',
+            'distro'     => 'rhel',
+            'hostname'   => 'jenkins',
+            'ip'         => '192.168.122.101',
+            'mac'        => '52:54:00:c1:5c:c3',
+            'releasever' => '6Server',
+            'swap'       => true,
+        },
+
+        #
+        # Build slaves
+        #
+        'fc_15_i386' => {
+            'arch'       => 'i386',
+            'distro'     => 'fc',
+            'hostname'   => 'fc-15-i386',
+            'ip'         => '192.168.122.111',
+            'mac'        => '52:54:00:3c:77:9a',
+            'releasever' => '15',
+            'swap'       => false,
+        },
+
+    }
+
+}
+
+#
 # Virtualization host storage setup
 #
 class libvirt::storage {
@@ -84,55 +121,25 @@ class libvirt::storage {
 #
 class libvirt::machines {
 
-    $guests = {
-
-        #
-        # Jenkins, the ci master host (RHEL6)
-        #
-        'jenkins' => {
-            'arch'       => 'x86_64',
-            'distro'     => 'rhel',
-            'hostname'   => 'jenkins',
-            'ip'         => '192.168.122.101',
-            'mac'        => '52:54:00:c1:5c:c3',
-            'releasever' => '6Server',
-            'swap'       => true,
-        },
-
-        #
-        # Build slaves
-        #
-        'fc_15_i386' => {
-            'arch'       => 'i386',
-            'distro'     => 'fc',
-            'hostname'   => 'fc-15-i386',
-            'ip'         => '192.168.122.111',
-            'mac'        => '52:54:00:3c:77:9a',
-            'releasever' => '15',
-            'swap'       => false,
-        },
-
-    }
-
-    logical_volume { "vm_${guests['jenkins']['hostname']}_main":
+    logical_volume { "vm_${libvirt::params::guests['jenkins']['hostname']}_main":
         ensure => 'present',
         volume_group => $infra_storage_fast_vg,
         size => '16G',
     }
 
-    logical_volume { "vm_${guests['jenkins']['hostname']}_swap":
+    logical_volume { "vm_${libvirt::params::guests['jenkins']['hostname']}_swap":
         ensure => 'present',
         volume_group => $infra_storage_slow_vg,
         size => '8G',
     }
 
-    host { $guests['jenkins']['hostname'] :
+    host { $libvirt::params::guests['jenkins']['hostname'] :
         ensure => 'present',
-        ip => $guests['jenkins']['ip'],
-        host_aliases => "${guests['jenkins']['hostname']}.${domain}",
+        ip => $libvirt::params::guests['jenkins']['ip'],
+        host_aliases => "${libvirt::params::guests['jenkins']['hostname']}.${domain}",
      }
 
-    libvirt::make_kickstart { $guests['jenkins']['hostname']:
+    libvirt::make_kickstart { $libvirt::params::guests['jenkins']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
             firewall   => '--http',
@@ -144,22 +151,22 @@ class libvirt::machines {
             ',
             post => '',
         },
-        ks_guest => $guests['jenkins'],
+        ks_guest => $libvirt::params::guests['jenkins'],
     }
 
-    logical_volume { "vm_${guests['fc_15_i386']['hostname']}_main":
+    logical_volume { "vm_${libvirt::params::guests['fc_15_i386']['hostname']}_main":
         ensure => 'present',
         volume_group => $infra_storage_slow_vg,
         size => '16G',
     }
 
-    host { $guests['fc_15_i386']['hostname'] :
+    host { $libvirt::params::guests['fc_15_i386']['hostname'] :
         ensure => 'present',
-        ip => $guests['fc_15_i386']['ip'],
-        host_aliases => "${guests['fc_15_i386']['hostname']}.${domain}",
+        ip => $libvirt::params::guests['fc_15_i386']['ip'],
+        host_aliases => "${libvirt::params::guests['fc_15_i386']['hostname']}.${domain}",
      }
 
-    libvirt::make_kickstart { $guests['fc_15_i386']['hostname']:
+    libvirt::make_kickstart { $libvirt::params::guests['fc_15_i386']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
             firewall   => '',
@@ -172,7 +179,7 @@ class libvirt::machines {
                 rm -f /etc/udev/rules.d/70-persistent-net.rules
             ',
         },
-        ks_guest => $guests['fc_15_i386'],
+        ks_guest => $libvirt::params::guests['fc_15_i386'],
     }
 
 }
@@ -225,6 +232,8 @@ class libvirt::kickstarts {
 
 class libvirt::networks {
 
+    $klnts = $libvirt::params::guests
+
     #
     # libvirt default network definition
     #
@@ -237,7 +246,7 @@ class libvirt::networks {
 
     file { $libvirt_network:
         ensure => 'file',
-        source => 'puppet:///nodes/libvirt/network-default.xml',
+        content => template('network-default.xml.erb'),
         require => File["${infra_config}/libvirt"],
     }
 
