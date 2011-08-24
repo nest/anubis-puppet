@@ -39,7 +39,7 @@ logging --level=info
 timezone --isUtc Europe/Berlin
 
 # Network information
-network --bootproto=static --device=eth0 --gateway=<%= ks_info['net_gw'] %> --ip=<%= ks_info['net_ip'] %> --nameserver=<%= ks_info['net_ns'] %> --netmask=<%= ks_info['net_msk'] %> --onboot=on --noipv6 --hostname=<%= ks_info['name'] %>.<%= scope.lookupvar('::domain') %>
+network --device eth0 --bootproto=dhcp --hostname=<%= ks_guest['hostname'] %>.<%= scope.lookupvar('::domain') %>
 
 # System bootloader configuration
 bootloader --location=mbr --append="<%= ks_info['kernel'] %>"
@@ -53,16 +53,16 @@ clearpart --all --initlabel
 # Disk partitioning information
 part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/vda --size=1
 
-<% if ks_info['swap'] then %>
+<% if ks_guest['swap'] then %>
 part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
 <% end %>
 
 # Local repos
-repo --name="<%= ks_info['distro'] %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_info['distro'] %>-<%= ks_info['releasever'] %>-local/noarch"
-repo --name="<%= ks_info['distro'] %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_info['distro'] %>-<%= ks_info['releasever'] %>-local/<%= ks_info['basearch'] %>"
+repo --name="<%= ks_guest['distro'] %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_guest['distro'] %>-<%= ks_guest['releasever'] %>-local/noarch"
+repo --name="<%= ks_guest['distro'] %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_guest['distro'] %>-<%= ks_guest['releasever'] %>-local/<%= ks_guest['arch'] %>"
 
-<% if ks_info['distro'] == 'fc' then %>
-repo --name="<%= ks_info['distro'] %>-online-main" --baseurl="http://download.fedoraproject.org/pub/fedora/linux/releases/<%= ks_info['releasever'] %>/Everything/<%= ks_info['basearch'] %>/os/"
+<% if ks_guest['distro'] == 'fc' then %>
+repo --name="<%= ks_guest['distro'] %>-online-main" --baseurl="http://download.fedoraproject.org/pub/fedora/linux/releases/<%= ks_guest['releasever'] %>/Everything/<%= ks_guest['arch'] %>/os/"
 <% end %>
 
 # Turn off the machine upon succesfull completion
@@ -79,6 +79,7 @@ vim
 wget
 -abrtd
 -sysstat
+-smartmontools
 
 <%= ks_info['packages'] %>
 

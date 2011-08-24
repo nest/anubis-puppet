@@ -84,147 +84,109 @@ class libvirt::storage {
 #
 class libvirt::machines {
 
-    #
-    # Jenkins, the ci master host (RHEL6)
-    #
-    $jenkins_arch       = 'x86_64'
-    $jenkins_distro     = 'rhel'
-    $jenkins_hostname   = 'jenkins'
-    $jenkins_ip         = '192.168.122.101'
-    $jenkins_releasever = '6Server'
-    $jenkins_swap       = true
+    $guests = {
 
-    $fc_15_i386_arch       = 'i386'
-    $fc_15_i386_distro     = 'fc'
-    $fc_15_i386_hostname   = 'fc-15-i386'
-    $fc_15_i386_ip         = '192.168.122.111'
-    $fc_15_i386_releasever = '15'
-    $fc_15_i386_swap       = false
+        #
+        # Jenkins, the ci master host (RHEL6)
+        #
+        'jenkins' => {
+            'arch'       => 'x86_64',
+            'distro'     => 'rhel',
+            'hostname'   => 'jenkins',
+            'ip'         => '192.168.122.101',
+            'mac'        => '52:54:00:c1:5c:c3',
+            'releasever' => '6Server',
+            'swap'       => true,
+        },
 
-    logical_volume { "vm_${jenkins_hostname}_main":
+        #
+        # Build slaves
+        #
+        'fc_15_i386' => {
+            'arch'       => 'i386',
+            'distro'     => 'fc',
+            'hostname'   => 'fc-15-i386',
+            'ip'         => '192.168.122.111',
+            'mac'        => '52:54:00:3c:77:9a',
+            'releasever' => '15',
+            'swap'       => false,
+        },
+
+    }
+
+    logical_volume { "vm_${guests['jenkins']['hostname']}_main":
         ensure => 'present',
         volume_group => $infra_storage_fast_vg,
         size => '16G',
     }
 
-    logical_volume { "vm_${jenkins_hostname}_swap":
+    logical_volume { "vm_${guests['jenkins']['hostname']}_swap":
         ensure => 'present',
         volume_group => $infra_storage_slow_vg,
         size => '8G',
     }
 
-    host { $jenkins_hostname :
+    host { $guests['jenkins']['hostname'] :
         ensure => 'present',
-        ip => $jenkins_ip,
-        host_aliases => "${jenkins_hostname}.${domain}",
+        ip => $guests['jenkins']['ip'],
+        host_aliases => "${guests['jenkins']['hostname']}.${domain}",
      }
 
-    libvirt::make_kickstart { $jenkins_hostname:
+    libvirt::make_kickstart { $guests['jenkins']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
-            name       => $jenkins_hostname,
             firewall   => '--http',
             kernel     => '',
-            net_ip     => $jenkins_ip,
-            net_msk    => $libvirt_netmask,
-            net_ns     => $libvirt_server,
-            net_gw     => $libvirt_server,
-            swap       => $jenkins_swap,
-            distro     => $jenkins_distro,
-            releasever => $jenkins_releasever,
-            basearch   => $jenkins_arch,
             packages   => '
-
                 @server-policy
-
-                # Packages not needed on virtual hosts
                 -ntp
-                -smartmontools
-
-                # We only use RHN Classic!
                 -subscription-manager
-
             ',
             post => '',
         },
+        ks_guest => $guests['jenkins'],
     }
 
-    logical_volume { "vm_${fc_15_i386_hostname}_main":
+    logical_volume { "vm_${guests['fc_15_i386']['hostname']}_main":
         ensure => 'present',
         volume_group => $infra_storage_slow_vg,
         size => '16G',
     }
 
-    host { $fc_15_i386_hostname :
+    host { $guests['fc_15_i386']['hostname'] :
         ensure => 'present',
-        ip => $fc_15_i386_ip,
-        host_aliases => "${fc_15_i386_hostname}.${domain}",
+        ip => $guests['fc_15_i386']['ip'],
+        host_aliases => "${guests['fc_15_i386']['hostname']}.${domain}",
      }
 
-    libvirt::make_kickstart { $fc_15_i386_hostname:
+    libvirt::make_kickstart { $guests['fc_15_i386']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
-            name       => $fc_15_i386_hostname,
             firewall   => '',
             kernel     => 'biosdevname=0',
-            net_ip     => $fc_15_i386_ip,
-            net_msk    => $libvirt_netmask,
-            net_ns     => $libvirt_server,
-            net_gw     => $libvirt_server,
-            swap       => $fc_15_i386_swap,
-            distro     => $fc_15_i386_distro,
-            releasever => $fc_15_i386_releasever,
-            basearch   => $fc_15_i386_arch,
             packages   => '
                 @buildsys-build
                 -ntp
-                -smartmontools
             ',
             post => '
                 rm -f /etc/udev/rules.d/70-persistent-net.rules
             ',
         },
+        ks_guest => $guests['fc_15_i386'],
     }
 
 }
 
-class libvirt::networks {
+#
+# Creates personalized kickstart files from a template
+#
+define libvirt::make_kickstart($ks_path, $ks_info, $ks_guest) {
 
-    #
-    # libvirt default network definition
-    #
-    $libvirt_network = "${infra_config}/libvirt/network-default.xml"
-
-    file { "${infra_config}/libvirt":
-        ensure => 'directory',
-        require => Class['services::everybody'],
-    }
-
-    file { $libvirt_network:
+    file { "${ks_path}/${ks_guest['hostname']}-ks.cfg":
+        content => template('default-ks.cfg.erb'),
         ensure => 'file',
-        source => 'puppet:///nodes/libvirt/network-default.xml',
-        require => File["${infra_config}/libvirt"],
-    }
-
-    exec { 'libvirt-define-network':
-        command => "virsh net-define ${libvirt_network} && virsh net-destroy default && virsh net-start default",
-        cwd => "${infra_config}/libvirt",
-        logoutput => 'true',
-        refreshonly => 'true',
-        require => File[$libvirt_network],
-        subscribe => File[$libvirt_network],
-        user => 'root',
-    }
-
-    file { '/etc/libvirt/hooks':
-        ensure => 'directory',
-    }
-
-    file { '/etc/libvirt/hooks/qemu':
-        ensure => 'file',
-        mode => '0755',
-        source => 'puppet:///nodes/libvirt/hooks/qemu',
-        require => File['/etc/libvirt/hooks'],
+        require => File[$ks_path],
+        seltype => 'httpd_sys_content_t',
     }
 
 }
@@ -261,17 +223,49 @@ class libvirt::kickstarts {
 
 }
 
-#
-# Creates personalized kickstart files from a template
-#
-define libvirt::make_kickstart($ks_path, $ks_info) {
+class libvirt::networks {
 
-    file { "${ks_path}/${ks_info['name']}-ks.cfg":
-        content => template('default-ks.cfg.erb'),
+    #
+    # libvirt default network definition
+    #
+    $libvirt_network = "${infra_config}/libvirt/network-default.xml"
+
+    file { "${infra_config}/libvirt":
+        ensure => 'directory',
+        require => Class['services::everybody'],
+    }
+
+    file { $libvirt_network:
         ensure => 'file',
-        require => File[$ks_path],
-        seltype => 'httpd_sys_content_t',
+        source => 'puppet:///nodes/libvirt/network-default.xml',
+        require => File["${infra_config}/libvirt"],
+    }
+
+    #
+    # Re-initializing the network breaks connectivity for running hosts, so
+    # safer to do it by hand:
+    #
+    # virsh net-destroy default && virsh net-start default
+    #
+    exec { 'libvirt-define-network':
+        command => "virsh net-define ${libvirt_network}",
+        cwd => "${infra_config}/libvirt",
+        logoutput => 'true',
+        refreshonly => 'true',
+        require => File[$libvirt_network],
+        subscribe => File[$libvirt_network],
+        user => 'root',
+    }
+
+    file { '/etc/libvirt/hooks':
+        ensure => 'directory',
+    }
+
+    file { '/etc/libvirt/hooks/qemu':
+        ensure => 'file',
+        mode => '0755',
+        source => 'puppet:///nodes/libvirt/hooks/qemu',
+        require => File['/etc/libvirt/hooks'],
     }
 
 }
-
