@@ -128,11 +128,27 @@ class services::logwatch {
 
 }
 
+#
+# Rudementary config for SMART monitor
+#
 class services::smartmontools {
 
     package { 'smartmontools':
         ensure => 'present',
     }
+
+    service { 'smartd':
+        enable => 'true',
+        ensure => 'running',
+        require => Package['smartmontools'],
+    }
+
+    #
+    # On RH-based systems you don't need to do anything else
+    #
+    # The default configuration is to use all devices and
+    # mail root if they fail the self-assesment test
+    #
 
 }
 
