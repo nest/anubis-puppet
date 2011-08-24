@@ -153,6 +153,27 @@ class services::smartmontools {
 }
 
 #
+# rnhsd fails to apply scheduled actions, so just cron rnh_check, damn it!
+#
+class services::rhn_check {
+
+    service { 'rhnsd':
+        enable => 'false',
+        ensure => 'stopped',
+    }
+
+    $cron_minute = fqdn_rand(59)
+
+    cron { 'rhn_check':
+        command => "rhn_check >/dev/null 2>&1",
+        ensure => 'present',
+        minute => $cron_minute,
+        user => 'root',
+    }
+
+}
+
+#
 # Services that should be disabled by default
 #
 class services::disabled {
