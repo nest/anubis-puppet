@@ -59,6 +59,7 @@ node 'puppet.qa.nest-initiative.org' {
     include services::git
     include services::iptables
     include services::logwatch
+    include services::smartmontools
 
     class { 'services::ntpdate':
         ntp_server => $infra_time,

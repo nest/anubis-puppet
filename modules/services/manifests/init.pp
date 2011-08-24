@@ -128,6 +128,14 @@ class services::logwatch {
 
 }
 
+class services::smartmontools {
+
+    package { 'smartmontools':
+        ensure => 'present',
+    }
+
+}
+
 #
 # Services that should be disabled by default
 #
