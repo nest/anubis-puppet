@@ -8,8 +8,8 @@
     <dhcp>
       <range start='192.168.122.101' end='192.168.122.254' />
       <% klnts.each do |klnt_name, klnt_data| -%>
-          <host mac="<%= klnt_data['mac'] %>" name="<%= klnt_data['hostname'] %>.<%= scope.lookupvar('::domain') %>" ip="<%= klnt_data['ip'] %>" />
+        <host mac="<%= klnt_data['mac'] %>" name="<%= klnt_data['hostname'] %>.<%= scope.lookupvar('::domain') %>" ip="<%= klnt_data['ip'] %>" />
       <% end -%>
-  </dhcp>
+</dhcp>
   </ip>
 </network>

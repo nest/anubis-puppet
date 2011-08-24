@@ -250,18 +250,41 @@ class libvirt::networks {
         require => File["${infra_config}/libvirt"],
     }
 
+    file { "${infra_config}/libvirt/network-restart.sh" :
+        ensure => 'file',
+        content => "#!/bin/sh
+
+            virsh net-define ${libvirt_network}
+            virsh net-destroy default
+            virsh net-start default
+
+            echo 'Please restart the guests manually! The code to re-attach the interfaces does not work yet...'
+
+            exit 0
+
+            MACHINES=\$(virsh list | tail -n +3 | head -n -1 | awk '{ print \$2; }')
+
+            for m in \$MACHINES ; do
+                virsh detach-interface \$m network
+                virsh attach-interface \$m network default
+            done
+
+            ",
+        require => File["${infra_config}/libvirt"],
+    }
+
     #
-    # Re-initializing the network breaks connectivity for running hosts, so
-    # safer to do it by hand:
-    #
-    # virsh net-destroy default && virsh net-start default
+    # Re-init the network and re-attach all interfaces
     #
     exec { 'libvirt-define-network':
-        command => "virsh net-define ${libvirt_network}",
+        command => "/bin/sh ${infra_config}/libvirt/network-restart.sh",
         cwd => "${infra_config}/libvirt",
         logoutput => 'true',
         refreshonly => 'true',
-        require => File[$libvirt_network],
+        require => [
+            File["${infra_config}/libvirt/network-restart.sh"],
+            File[$libvirt_network],
+        ],
         subscribe => File[$libvirt_network],
         user => 'root',
     }
