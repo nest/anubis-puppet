@@ -125,6 +125,8 @@ node 'jenkins.qa.nest-initiative.org' {
 
     include services::java
 
+    include services::git
+
     include jenkins::install
     include jenkins::config
     include jenkins::service
