@@ -12,7 +12,7 @@ class openssh {
 
 class openssh::params {
     case "$operatingsystem" {
-        /RedHat|Fedora/: {
+        /RedHat|Scientific|Fedora/: {
             $package_core = [
                 'openssh',
                 'openssh-server',
