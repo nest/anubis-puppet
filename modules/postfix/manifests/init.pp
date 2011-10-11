@@ -50,8 +50,7 @@ class postfix::params {
     }
 
     $aliases = [
-        { 'user' => 'zaytsev', 'recipient' => 'yury.zaytsev@bcf.uni-freiburg.de', },
-#        { 'user' => 'wiebelt', 'recipient' => 'wiebelt@bcf.uni-freiburg.de', },
+        { 'user' => 'zaytsev', 'recipient' => 'yury@shurup.com', },
         { 'user' => 'root', 'recipient' => 'zaytsev', },
     ]
 
