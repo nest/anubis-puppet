@@ -105,8 +105,6 @@ class jenkins::builddeps::sumatra {
 
     $packages = [
 
-        'python',
-
         'Django',
         'django-tagging',
 
@@ -116,9 +114,7 @@ class jenkins::builddeps::sumatra {
         'python-setuptools',
         'python-simplejson',
 
-        'bzr',
         'GitPython',
-        'mercurial',
         'pysvn',
 
         'mpi4py',

@@ -48,6 +48,17 @@ class services::iptables {
 
 }
 
+class services::python {
+    package { 'python':
+        ensure => 'present',
+    }
+}
+
+class services::bzr {
+    package { 'bzr':
+        ensure => 'present',
+    }
+}
 
 class services::git {
     package { 'git':

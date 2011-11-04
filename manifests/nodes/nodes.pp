@@ -171,7 +171,9 @@ node 'builder-fedora' {
     include services::disabled
 
     include services::java
+    include services::python
 
+    include services::bzr
     include services::git
     include services::mercurial
 
