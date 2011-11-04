@@ -117,7 +117,7 @@ class jenkins::builddeps::sumatra {
         'GitPython',
         'pysvn',
 
-        'mpi4py',
+        'mpi4py-openmpi',
 
     ]
 
