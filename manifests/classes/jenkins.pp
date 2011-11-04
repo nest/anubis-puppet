@@ -100,3 +100,33 @@ class jenkins::builddeps::nest {
     }
 
 }
+
+class jenkins::builddeps::sumatra {
+
+    $packages = [
+
+        'python',
+
+        'Django',
+        'django-tagging',
+
+        'python-coverage',
+        'python-httplib2',
+        'python-nose',
+        'python-setuptools',
+        'python-simplejson',
+
+        'bzr',
+        'GitPython',
+        'mercurial',
+        'pysvn',
+
+        'mpi4py',
+
+    ]
+
+    package { $packages :
+        ensure => 'present',
+    }
+
+}
