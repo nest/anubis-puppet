@@ -55,6 +55,12 @@ class services::git {
     }
 }
 
+class services::mercurial {
+    package { 'mercurial':
+        ensure => 'present',
+    }
+}
+
 class services::subversion {
     package { 'subversion':
         ensure => 'present',

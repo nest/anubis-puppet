@@ -171,7 +171,9 @@ node 'builder-fedora' {
     include services::disabled
 
     include services::java
+
     include services::git
+    include services::mercurial
 
     include jenkins::params
     include jenkins::slave::user
