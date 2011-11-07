@@ -150,6 +150,7 @@ class jenkins::builddeps::pynn {
 
         'python-cheetah',
         'python-jinja2',
+        'python-mock',
 
         'nrn',
 
