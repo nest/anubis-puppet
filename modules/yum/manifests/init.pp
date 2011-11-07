@@ -94,6 +94,26 @@ class yum::repos::rhel {
 }
 
 #
+# Local yum repositories for Fedora based hosts
+#
+class yum::repos::fc {
+
+    yumrepo { 'fc-local-noarch':
+        baseurl => 'http://puppet/repos/fc-$releasever-local/noarch',
+        descr => 'Fedora $releasever - noarch - Local packages (ZYV)',
+        enabled => '1',
+        gpgcheck => '0',
+    }
+
+    yumrepo { 'fc-local-binary':
+        baseurl => 'http://puppet/repos/fc-$releasever-local/$basearch',
+        descr => 'Fedora $releasever - $basearch - Local packages (ZYV)',
+        enabled => '1',
+        gpgcheck => '0',
+    }
+}
+
+#
 # Ban i386 packages from x86_64 systems
 #
 class yum::ban::i386 {

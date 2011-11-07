@@ -193,6 +193,8 @@ node 'builder-fedora' {
 
     include yum::autoupdate
 
+    include yum::repos::fc
+
 }
 
 
