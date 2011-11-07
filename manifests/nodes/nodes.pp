@@ -181,6 +181,7 @@ node 'builder-fedora' {
     include jenkins::slave::user
     include jenkins::slave::tmpfs
 
+    include jenkins::builddeps::common
     include jenkins::builddeps::nest
     include jenkins::builddeps::sumatra
     include jenkins::builddeps::pynn

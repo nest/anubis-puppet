@@ -78,6 +78,29 @@ class jenkins::slave::tmpfs {
 
 }
 
+class jenkins::builddeps::common {
+
+    $packages = [
+
+        # Required by NEST and PyNN
+        'numpy',
+
+        # Required by Sumatra and PyNN
+        'python-coverage',
+        'python-nose',
+        'python-setuptools',
+
+        # Required by Sumatra and PyNN
+        'mpi4py-openmpi',
+
+    ]
+
+    package { $packages :
+        ensure => 'present',
+    }
+
+}
+
 class jenkins::builddeps::nest {
 
     $packages = [
@@ -88,7 +111,6 @@ class jenkins::builddeps::nest {
         'libtool-ltdl-devel',
 
         'gsl-devel',
-        'numpy',
         'openmpi-devel',
         'python-devel',
         'readline-devel',
@@ -108,16 +130,11 @@ class jenkins::builddeps::sumatra {
         'Django',
         'django-tagging',
 
-        'python-coverage',
         'python-httplib2',
-        'python-nose',
-        'python-setuptools',
         'python-simplejson',
 
         'GitPython',
         'pysvn',
-
-        'mpi4py-openmpi',
 
     ]
 
@@ -131,21 +148,10 @@ class jenkins::builddeps::pynn {
 
     $packages = [
 
-        'numpy',
         'python-cheetah',
         'python-jinja2',
 
         'nrn',
-
-#
-# Already requested by Sumatra
-#
-#        'python-coverage',
-#        'python-nose',
-#        'python-setuptools',
-#
-#        'mpi4py-openmpi',
-#
 
     ]
 
