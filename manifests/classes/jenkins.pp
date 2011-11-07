@@ -126,3 +126,31 @@ class jenkins::builddeps::sumatra {
     }
 
 }
+
+class jenkins::builddeps::pynn {
+
+    $packages = [
+
+        'numpy',
+        'python-cheetah',
+        'python-jinja2',
+
+        'nrn',
+
+#
+# Already requested by Sumatra
+#
+#        'python-coverage',
+#        'python-nose',
+#        'python-setuptools',
+#
+#        'mpi4py-openmpi',
+#
+
+    ]
+
+    package { $packages :
+        ensure => 'present',
+    }
+
+}

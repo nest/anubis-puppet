@@ -183,6 +183,7 @@ node 'builder-fedora' {
 
     include jenkins::builddeps::nest
     include jenkins::builddeps::sumatra
+    include jenkins::builddeps::pynn
 
     include users::admins
     include users::sudoers
