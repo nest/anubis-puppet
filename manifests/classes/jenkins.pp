@@ -153,6 +153,7 @@ class jenkins::builddeps::pynn {
         'python-mock',
 
         'nrn',
+        'python-nest',
 
     ]
 
