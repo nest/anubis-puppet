@@ -84,6 +84,7 @@ class jenkins::builddeps::common {
 
         # Required by NEST and PyNN
         'numpy',
+        'scipy',
 
         # Required by Sumatra and PyNN
         'python-coverage',
