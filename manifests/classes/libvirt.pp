@@ -230,6 +230,42 @@ class libvirt::kickstarts {
 
 }
 
+class libvirt::pypi {
+
+    #
+    # This directory contains PyPi packages
+    #
+    file { $pypi_path:
+        ensure => 'directory',
+        recurse => 'true',
+        seltype => 'httpd_sys_content_t',
+    }
+
+    #
+    # Serve PyPi repository
+    #
+    file { '/etc/httpd/conf.d/pypi.conf':
+        ensure => 'file',
+        require => [
+            File[$pypi_path],
+            Class['apache::install'],
+        ],
+        notify => Class['apache::service'],
+        content => "
+            # ZYV
+            #
+            # Internal pypi repository
+            #
+            Alias /pypi ${pypi_path}
+
+            <Directory ${pypi_path}>
+                Options +Indexes
+            </Directory>
+            ",
+    }
+
+}
+
 class libvirt::networks {
 
     $klnts = $libvirt::params::guests

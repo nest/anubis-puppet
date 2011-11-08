@@ -4,7 +4,7 @@
 #
 # For all repos and all arches...
 #
-for i in `find . -mindepth 2 -maxdepth 2 -type d ! -name pypi`; do
+for i in `find . -mindepth 2 -maxdepth 2 -type d`; do
     if [ "$i" != "." ]; then
         createrepo $i
     fi

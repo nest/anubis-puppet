@@ -23,6 +23,7 @@ $libvirt_netmask = '255.255.255.0'
 $libvirt_subnet  = '192.168.122.0/24'
 
 $kickstarts_path = "${infra_path}/kickstarts"
+$pypi_path = "${infra_path}/pypi"
 
 #
 # Virtualization server
@@ -75,6 +76,7 @@ node 'puppet.qa.nest-initiative.org' {
     include libvirt::networks
     include libvirt::machines
     include libvirt::kickstarts
+    include libvirt::pypi
 
     include openssh
     include openssh::install::xauth
