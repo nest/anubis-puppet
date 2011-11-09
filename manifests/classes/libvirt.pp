@@ -329,6 +329,16 @@ class libvirt::networks {
         ensure => 'directory',
     }
 
+    # http://wiki.libvirt.org/page/Networking#Forwarding_Incoming_Connections
+    #
+    # (NB: This method is a hack, and has one annoying flaw - if libvirtd is
+    # restarted while the guest is running, all of the standard iptables rules
+    # to support virtual networks that were added by libvirtd will be
+    # reloaded, thus changing the order of the above FORWARD rule relative to
+    # a reject rule for the network, thus rendering this setup non-working
+    # until the guest is stopped and restarted. A better solution would be
+    # welcome!)
+    #
     file { '/etc/libvirt/hooks/qemu':
         ensure => 'file',
         mode => '0755',
