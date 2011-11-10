@@ -96,6 +96,7 @@ class jenkins::builddeps::common {
 
         # OpenJDK to build Java stuff
         'java-1.6.0-openjdk-devel',
+        'vecmath',
 
     ]
 
