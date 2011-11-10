@@ -94,6 +94,9 @@ class jenkins::builddeps::common {
         # Required by Sumatra and PyNN
         'mpi4py-openmpi',
 
+        # OpenJDK to build Java stuff
+        'java-1.6.0-openjdk-devel',
+
     ]
 
     package { $packages :
