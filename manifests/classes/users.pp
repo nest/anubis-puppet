@@ -51,7 +51,9 @@ define users::make_user($user_name, $user_id, $groups = undef, $ssh_key = 'undef
     if $noverifyhosts == 'true' {
         file { "/home/${user_name}/.ssh/config":
             ensure => 'file',
+            group => $user_name,
             mode => '0600',
+            owner => $user_name,
             require => Ssh_authorized_key[$user_name],
             content => '# ZYV
 
