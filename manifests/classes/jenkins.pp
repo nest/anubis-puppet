@@ -51,6 +51,7 @@ class jenkins::slave::user {
         user_name => 'jenkins',
         user_id => '1501',
         ssh_key => 'AAAAB3NzaC1yc2EAAAABIwAAAgEAv9sgjXe/WVln7WLksLE+rpzjfaQUaMGS77zhUdtiK01/+FmkH1ZruNZ4M3HCjRS2P+sOt0P7qyTeGyraMNYok3RbOLO+mwh/T+hsVd7gI40mz+NDgCVtU89VTzdlei8XNvyqwjl9UEmnm1P87h7AsUrOHvfs+JhYFudUGgOkIaQhX47B3siF7YBZZ3pYeXdSJUHtAh7xFdtBEFbpcLC+SWIjpbjz5n/j+M7yc/soWrfJ2ZZa0B/GEp676qaLrxR0nxBWUddppSNZDJIyPreCPRPGPDjfYEVebmsIYIsqXwttWd7ADoqGVDaCMUY8wWv+bmbzVrxMmO5POTTdncWPL8AHEJfcuibraNlp5PKIcWD8al58ODiwtx+vm7p99d2h7VnVyNyS6TlHkPRC7i1Xe1C8Wvth0QLNGe/dTSKV6ehcf4PKUtBmUwE8uT1xcRqWS4X11RwZUN6/mRFJnjXVysusR+rd1WPHyUqSLZu2hnL05F3Zisi/6y3rGZNaJP+nm3DMR/TLWAGaRWgbG3AiZM1/zL239YVIIUoS26ziLUxcqNsXhu0W3m1SluStyJfdN9dQv9IRdtKqtN4slDIp9+rLqmPoAHSUcN1/y5X3qgCb3iUXmpv9gRhwEYnJfnjqfxvRHHjZaOWxYkMjgp3FngJ47fYkMAIUTQPcKwga//s=',
+        noverifyhosts => 'true',
     }
 
 }

@@ -18,7 +18,7 @@ class users::sudoers {
 
 }
 
-define users::make_user($user_name, $user_id, $groups = undef, $ssh_key = 'undefined', $ensure = 'present') {
+define users::make_user($user_name, $user_id, $groups = undef, $ssh_key = 'undefined', $ensure = 'present', $noverifyhosts = 'false') {
 
     if $ensure == 'absent' {
         Ssh_authorized_key[$user_name] -> User[$user_name] -> Group[$user_name]
@@ -46,6 +46,17 @@ define users::make_user($user_name, $user_id, $groups = undef, $ssh_key = 'undef
         key => $ssh_key,
         type => 'ssh-rsa',
         user => $user_name,
+    }
+
+    if $noverifyhosts == 'true' {
+        file { "/home/${user_name}/.ssh/config":
+            ensure => 'file',
+            mode => '0600',
+            require => Ssh_authorized_key[$user_name],
+            content => '# ZYV
+StrictHostKeyChecking=no
+',
+        }
     }
 
 }
