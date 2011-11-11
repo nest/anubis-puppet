@@ -54,7 +54,11 @@ define users::make_user($user_name, $user_id, $groups = undef, $ssh_key = 'undef
             mode => '0600',
             require => Ssh_authorized_key[$user_name],
             content => '# ZYV
-StrictHostKeyChecking=no
+
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+
 ',
         }
     }
