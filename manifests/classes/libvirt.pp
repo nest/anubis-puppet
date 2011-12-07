@@ -286,11 +286,18 @@ class libvirt::networks {
         require => File["${infra_config}/libvirt"],
     }
 
+    package { 'perl-XML-XPath':
+        ensure => 'present',
+    }
+
     file { "${infra_config}/libvirt/network-restart" :
         ensure => 'file',
         mode => '0755',
         source => 'puppet:///common/network-restart',
-        require => File["${infra_config}/libvirt"],
+        require => [
+            File["${infra_config}/libvirt"],
+            Package['perl-XML-XPath'],
+        ],
     }
 
     #
