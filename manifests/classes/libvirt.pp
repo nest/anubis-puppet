@@ -286,26 +286,10 @@ class libvirt::networks {
         require => File["${infra_config}/libvirt"],
     }
 
-    file { "${infra_config}/libvirt/network-restart.sh" :
+    file { "${infra_config}/libvirt/network-restart" :
         ensure => 'file',
-        content => "#!/bin/sh
-
-            virsh net-define ${libvirt_network}
-            virsh net-destroy default
-            virsh net-start default
-
-            echo 'Please restart the guests manually! The code to re-attach the interfaces does not work yet...'
-
-            exit 0
-
-            MACHINES=\$(virsh list | tail -n +3 | head -n -1 | awk '{ print \$2; }')
-
-            for m in \$MACHINES ; do
-                virsh detach-interface \$m network
-                virsh attach-interface \$m network default
-            done
-
-            ",
+        mode => '0755',
+        source => 'puppet:///common/network-restart',
         require => File["${infra_config}/libvirt"],
     }
 
@@ -313,12 +297,12 @@ class libvirt::networks {
     # Re-init the network and re-attach all interfaces
     #
     exec { 'libvirt-define-network':
-        command => "/bin/sh ${infra_config}/libvirt/network-restart.sh",
+        command => "${infra_config}/libvirt/network-restart",
         cwd => "${infra_config}/libvirt",
         logoutput => 'true',
         refreshonly => 'true',
         require => [
-            File["${infra_config}/libvirt/network-restart.sh"],
+            File["${infra_config}/libvirt/network-restart"],
             File[$libvirt_network],
         ],
         subscribe => File[$libvirt_network],
@@ -335,8 +319,8 @@ class libvirt::networks {
     # restarted while the guest is running, all of the standard iptables rules
     # to support virtual networks that were added by libvirtd will be
     # reloaded, thus changing the order of the above FORWARD rule relative to
-    # a reject rule for the network, thus rendering this setup non-working
-    # until the guest is stopped and restarted. A better solution would be
+    # a reject rule for the network and rendering this setup non-working
+    # until the guest is stopped & restarted. A better solution would be
     # welcome!)
     #
     file { '/etc/libvirt/hooks/qemu':
