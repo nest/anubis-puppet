@@ -26,6 +26,7 @@ set -e
 set -u
 
 NETWORK_NAME=default
+NETWORK_HOOK=/etc/libvirt/hooks/qemu
 
 virsh net-define /opt/config/libvirt/network-$NETWORK_NAME.xml
 virsh net-destroy $NETWORK_NAME
@@ -39,9 +40,10 @@ for m in $MACHINES ; do
     MACHINE_MAC=$( echo "$MACHINE_INFO" | grep "mac address" | cut -d '"' -f 2 )
     MACHINE_MOD=$( echo "$MACHINE_INFO" | grep "model type" | cut -d '"' -f 2 )
 
-    virsh detach-interface "$m" network --mac "$MACHINE_MAC"
+    virsh detach-interface "$m" network --mac "$MACHINE_MAC" && sleep 3
     virsh attach-interface "$m" network $NETWORK_NAME --mac "$MACHINE_MAC" --model "$MACHINE_MOD"
 
+    $NETWORK_HOOK "$m" stopped && sleep 3
+    $NETWORK_HOOK "$m" start
+
 done
-
-
