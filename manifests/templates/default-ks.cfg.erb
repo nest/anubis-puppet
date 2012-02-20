@@ -51,6 +51,11 @@ zerombr
 clearpart --all --initlabel
 
 # Disk partitioning information
+
+<% if ks_guest['biosboot'] then %>
+part biosboot --asprimary --fstype="biosboot" --ondisk=/dev/vda --size=1
+<% end %>
+
 part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/vda --size=1
 
 <% if ks_guest['swap'] then %>

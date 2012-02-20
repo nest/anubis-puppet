@@ -229,6 +229,7 @@ class libvirt::machines {
     libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_1']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
+            biosboot   => 'true',
             firewall   => '',
             kernel     => 'biosdevname=0',
             packages   => '
@@ -245,6 +246,7 @@ class libvirt::machines {
     libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_2']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
+            biosboot   => 'true',
             firewall   => '',
             kernel     => 'biosdevname=0',
             packages   => '
