@@ -83,6 +83,8 @@ wget
 
 <%= ks_info['packages'] %>
 
+%end
+
 %post
 
 (
@@ -90,8 +92,8 @@ wget
 # Enable puppet client installed from the internal repo
 chkconfig puppet on
 
-) 2>&1 | tee /root/ks-post.log
-
 <%= ks_info['post'] %>
+
+) 2>&1 | tee /root/ks-post.log
 
 %end
