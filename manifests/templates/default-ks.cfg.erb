@@ -52,7 +52,7 @@ clearpart --all --initlabel
 
 # Disk partitioning information
 
-<% if ks_guest['biosboot'] then %>
+<% if ks_info['biosboot'] then %>
 part biosboot --asprimary --fstype="biosboot" --ondisk=/dev/vda --size=1
 <% end %>
 
