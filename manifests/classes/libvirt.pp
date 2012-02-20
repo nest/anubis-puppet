@@ -33,6 +33,26 @@ class libvirt::params {
             'swap'       => false,
         },
 
+        'fc_16_i386_1' => {
+            'arch'       => 'i386',
+            'distro'     => 'fc',
+            'hostname'   => 'fc-16-i386-1',
+            'ip'         => '192.168.122.121',
+            'mac'        => '52:54:00:69:f2:a1',
+            'releasever' => '16',
+            'swap'       => false,
+        },
+
+        'fc_16_i386_2' => {
+            'arch'       => 'i386',
+            'distro'     => 'fc',
+            'hostname'   => 'fc-16-i386-2',
+            'ip'         => '192.168.122.122',
+            'mac'        => '52:54:00:b3:ae:28',
+            'releasever' => '16',
+            'swap'       => false,
+        },
+
     }
 
 }
@@ -160,10 +180,34 @@ class libvirt::machines {
         size => '16G',
     }
 
+    logical_volume { "vm_${libvirt::params::guests['fc_16_i386_1']['hostname']}_main":
+        ensure => 'present',
+        volume_group => $infra_storage_slow_vg,
+        size => '24G',
+    }
+
+    logical_volume { "vm_${libvirt::params::guests['fc_16_i386_2']['hostname']}_main":
+        ensure => 'present',
+        volume_group => $infra_storage_slow_vg,
+        size => '24G',
+    }
+
     host { $libvirt::params::guests['fc_15_i386']['hostname'] :
         ensure => 'present',
         ip => $libvirt::params::guests['fc_15_i386']['ip'],
         host_aliases => "${libvirt::params::guests['fc_15_i386']['hostname']}.${domain}",
+     }
+
+    host { $libvirt::params::guests['fc_16_i386_1']['hostname'] :
+        ensure => 'present',
+        ip => $libvirt::params::guests['fc_16_i386_1']['ip'],
+        host_aliases => "${libvirt::params::guests['fc_16_i386_1']['hostname']}.${domain}",
+     }
+
+    host { $libvirt::params::guests['fc_16_i386_2']['hostname'] :
+        ensure => 'present',
+        ip => $libvirt::params::guests['fc_16_i386_2']['ip'],
+        host_aliases => "${libvirt::params::guests['fc_16_i386_2']['hostname']}.${domain}",
      }
 
     libvirt::make_kickstart { $libvirt::params::guests['fc_15_i386']['hostname']:
@@ -180,6 +224,38 @@ class libvirt::machines {
             ',
         },
         ks_guest => $libvirt::params::guests['fc_15_i386'],
+    }
+
+    libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_1']['hostname']:
+        ks_path => $kickstarts_path,
+        ks_info => {
+            firewall   => '',
+            kernel     => 'biosdevname=0',
+            packages   => '
+                @buildsys-build
+                -ntp
+            ',
+            post => '
+                rm -f /etc/udev/rules.d/70-persistent-net.rules
+            ',
+        },
+        ks_guest => $libvirt::params::guests['fc_16_i386_1'],
+    }
+
+    libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_2']['hostname']:
+        ks_path => $kickstarts_path,
+        ks_info => {
+            firewall   => '',
+            kernel     => 'biosdevname=0',
+            packages   => '
+                @buildsys-build
+                -ntp
+            ',
+            post => '
+                rm -f /etc/udev/rules.d/70-persistent-net.rules
+            ',
+        },
+        ks_guest => $libvirt::params::guests['fc_16_i386_2'],
     }
 
 }
