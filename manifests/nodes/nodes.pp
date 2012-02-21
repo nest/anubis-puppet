@@ -185,8 +185,6 @@ node 'builder-fedora' {
 
     include jenkins::builddeps::common
     include jenkins::builddeps::nest
-    include jenkins::builddeps::sumatra
-    include jenkins::builddeps::pynn
 
     include users::admins
     include users::sudoers
@@ -199,7 +197,16 @@ node 'builder-fedora' {
 
 }
 
-
-node 'fc-15-i386.qa.nest-initiative.org' inherits 'builder-fedora' {
+node 'builder-fedora-15' inherits 'builder-fedora' {
+    include jenkins::builddeps::sumatra
+    include jenkins::builddeps::pynn
 }
 
+node 'builder-fedora-16' inherits 'builder-fedora' {
+}
+
+node 'fc-15-i386' inherits 'builder-fedora-15' {
+}
+
+node /^fc-16-i386-\d+$/ inherits 'builder-fedora-16' {
+}
