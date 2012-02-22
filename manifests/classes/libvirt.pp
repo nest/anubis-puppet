@@ -53,6 +53,16 @@ class libvirt::params {
             'swap'       => false,
         },
 
+        'fc_16_i386_3' => {
+            'arch'       => 'i386',
+            'distro'     => 'fc',
+            'hostname'   => 'fc-16-i386-3',
+            'ip'         => '192.168.122.123',
+            'mac'        => '52:54:00:28:37:23',
+            'releasever' => '16',
+            'swap'       => false,
+        },
+
     }
 
 }
@@ -192,6 +202,12 @@ class libvirt::machines {
         size => '24G',
     }
 
+    logical_volume { "vm_${libvirt::params::guests['fc_16_i386_3']['hostname']}_main":
+        ensure => 'present',
+        volume_group => $infra_storage_slow_vg,
+        size => '24G',
+    }
+
     host { $libvirt::params::guests['fc_15_i386']['hostname'] :
         ensure => 'present',
         ip => $libvirt::params::guests['fc_15_i386']['ip'],
@@ -208,6 +224,12 @@ class libvirt::machines {
         ensure => 'present',
         ip => $libvirt::params::guests['fc_16_i386_2']['ip'],
         host_aliases => "${libvirt::params::guests['fc_16_i386_2']['hostname']}.${domain}",
+     }
+
+    host { $libvirt::params::guests['fc_16_i386_3']['hostname'] :
+        ensure => 'present',
+        ip => $libvirt::params::guests['fc_16_i386_3']['ip'],
+        host_aliases => "${libvirt::params::guests['fc_16_i386_3']['hostname']}.${domain}",
      }
 
     libvirt::make_kickstart { $libvirt::params::guests['fc_15_i386']['hostname']:
@@ -258,6 +280,23 @@ class libvirt::machines {
             ',
         },
         ks_guest => $libvirt::params::guests['fc_16_i386_2'],
+    }
+
+    libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_3']['hostname']:
+        ks_path => $kickstarts_path,
+        ks_info => {
+            biosboot   => 'true',
+            firewall   => '',
+            kernel     => 'biosdevname=0',
+            packages   => '
+                @buildsys-build
+                -ntp
+            ',
+            post => '
+                rm -f /etc/udev/rules.d/70-persistent-net.rules
+            ',
+        },
+        ks_guest => $libvirt::params::guests['fc_16_i386_3'],
     }
 
 }
