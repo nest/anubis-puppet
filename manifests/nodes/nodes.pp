@@ -203,6 +203,7 @@ node 'builder-fedora-15' inherits 'builder-fedora' {
 }
 
 node 'builder-fedora-16' inherits 'builder-fedora' {
+    include jenkins::builddeps::sumatra
 }
 
 node 'fc-15-i386' inherits 'builder-fedora-15' {
