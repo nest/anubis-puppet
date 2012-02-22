@@ -172,6 +172,7 @@ class libvirt::machines {
     libvirt::make_kickstart { $libvirt::params::guests['jenkins']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
+            selinux    => 'enforcing',
             firewall   => '--http',
             kernel     => '',
             packages   => '
@@ -235,6 +236,7 @@ class libvirt::machines {
     libvirt::make_kickstart { $libvirt::params::guests['fc_15_i386']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
+            selinux    => 'disabled',
             firewall   => '',
             kernel     => 'biosdevname=0',
             packages   => '
@@ -251,6 +253,7 @@ class libvirt::machines {
     libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_1']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
+            selinux    => 'disabled',
             biosboot   => 'true',
             firewall   => '',
             kernel     => 'biosdevname=0',
@@ -268,6 +271,7 @@ class libvirt::machines {
     libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_2']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
+            selinux    => 'disabled',
             biosboot   => 'true',
             firewall   => '',
             kernel     => 'biosdevname=0',
@@ -285,6 +289,7 @@ class libvirt::machines {
     libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_3']['hostname']:
         ks_path => $kickstarts_path,
         ks_info => {
+            selinux    => 'disabled',
             biosboot   => 'true',
             firewall   => '',
             kernel     => 'biosdevname=0',

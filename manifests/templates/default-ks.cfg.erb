@@ -27,7 +27,7 @@ keyboard us
 lang en_US.UTF-8
 
 # SELinux configuration
-selinux --enforcing
+selinux --<%= ks_info['selinux'] %>
 
 # Do not configure the X Window System
 skipx
