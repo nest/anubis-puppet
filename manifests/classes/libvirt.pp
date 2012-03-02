@@ -63,6 +63,12 @@ class libvirt::params {
             'swap'       => false,
         },
 
+        'windows_7_pro_x86_64' => {
+            'hostname'   => 'windows-7-pro-x86_64',
+            'ip'         => '192.168.122.131',
+            'mac'        => '52:54:00:5b:48:1a',
+        },
+
     }
 
 }
@@ -209,6 +215,12 @@ class libvirt::machines {
         size => '24G',
     }
 
+    logical_volume { "vm_${libvirt::params::guests['windows_7_pro_x86_64']['hostname']}_main":
+        ensure => 'present',
+        volume_group => $infra_storage_slow_vg,
+        size => '96G',
+    }
+
     host { $libvirt::params::guests['fc_15_i386']['hostname'] :
         ensure => 'present',
         ip => $libvirt::params::guests['fc_15_i386']['ip'],
@@ -231,6 +243,12 @@ class libvirt::machines {
         ensure => 'present',
         ip => $libvirt::params::guests['fc_16_i386_3']['ip'],
         host_aliases => "${libvirt::params::guests['fc_16_i386_3']['hostname']}.${domain}",
+     }
+
+    host { $libvirt::params::guests['windows_7_pro_x86_64']['hostname'] :
+        ensure => 'present',
+        ip => $libvirt::params::guests['windows_7_pro_x86_64']['ip'],
+        host_aliases => "${libvirt::params::guests['windows_7_pro_x86_64']['hostname']}.${domain}",
      }
 
     libvirt::make_kickstart { $libvirt::params::guests['fc_15_i386']['hostname']:
