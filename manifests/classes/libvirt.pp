@@ -370,6 +370,9 @@ class libvirt::kickstarts {
 
 }
 
+#
+# Requires subscription to RHEL Server Supplementary!
+#
 class libvirt::paravirt {
     package { 'virtio-win':
         ensure => 'present',
