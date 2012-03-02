@@ -370,6 +370,12 @@ class libvirt::kickstarts {
 
 }
 
+class libvirt::paravirt {
+    package { 'virtio-win':
+        ensure => 'present',
+    }
+}
+
 class libvirt::pypi {
 
     #
