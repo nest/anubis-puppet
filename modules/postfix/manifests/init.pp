@@ -49,10 +49,10 @@ class postfix::params {
         $relayhost = $postfix::settings['relayhost']
     }
 
-    $aliases = [
-        { 'user' => 'zaytsev', 'recipient' => 'yury@shurup.com', },
-        { 'user' => 'root', 'recipient' => 'zaytsev', },
-    ]
+    $aliases = {
+        'zaytsev' => { ensure => 'present', notify => Class['postfix::service'], require => Class['postfix::install'], 'recipient' => 'yury@shurup.com', },
+        'root'    => { ensure => 'present', notify => Class['postfix::service'], require => Class['postfix::install'], 'recipient' => 'zaytsev', },
+    }
 
 }
 
@@ -100,22 +100,7 @@ class postfix::config {
 
     }
 
-    include postfix::config::aliases
-
-}
-
-class postfix::config::aliases {
-
-    define make_alias {
-        mailalias { $name['user']:
-            ensure => 'present',
-            recipient => $name['recipient'],
-            notify => Class['postfix::service'],
-            require => Class['postfix::install'],
-        }
-    }
-
-    make_alias { $postfix::params::aliases : ; }
+    create_resources(mailalias, $postfix::params::aliases)
 
 }
 
