@@ -17,7 +17,7 @@ set -u
 iptables='/sbin/iptables'
 
 # Ideally, rewrite as ERB template and fetch this from Puppet
-external_if='em1'
+external_ifs='em1 virbr0'
 external_ip='132.230.177.10'
 
 # List the machines here
@@ -49,14 +49,23 @@ rules_update() {
 
             for i in `seq 0 $length`; do
 
-                PREROUTING="$iptables -t nat $action PREROUTING -d ${external_ip} -i ${external_if} -p tcp -m tcp --dport ${host_sport[$i]} -j DNAT --to-destination ${host_ip}:${host_dport[$i]}"
+                for external_if in ${external_ifs}; do
+
+                    PREROUTING="$iptables -t nat $action PREROUTING -d ${external_ip} -i ${external_if} -p tcp -m tcp --dport ${host_sport[$i]} -j DNAT --to-destination ${host_ip}:${host_dport[$i]}"
+
+                    if [ -z "${DEBUG_RULES:-}" ]; then
+                        `$PREROUTING`
+                    else
+                        echo $PREROUTING
+                    fi
+
+                done
+
                 FORWARD="$iptables $action FORWARD -d ${host_ip} -p tcp -m state --state NEW -m tcp --dport ${host_dport[$i]} -j ACCEPT"
 
                 if [ -z "${DEBUG_RULES:-}" ]; then
-                    `$PREROUTING`
                     `$FORWARD`
                 else
-                    echo $PREROUTING
                     echo $FORWARD
                 fi
 
