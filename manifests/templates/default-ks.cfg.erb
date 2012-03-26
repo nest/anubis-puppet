@@ -3,7 +3,7 @@
 #
 
 # Firewall configuration
-firewall --enabled --ssh <%= ks_info['firewall'] %>
+firewall <%= preseed['ks_firewall'] %>
 
 # Install OS instead of upgrade
 install
@@ -27,7 +27,7 @@ keyboard us
 lang en_US.UTF-8
 
 # SELinux configuration
-selinux --<%= ks_info['selinux'] %>
+selinux --<%= preseed['selinux'] %>
 
 # Do not configure the X Window System
 skipx
@@ -39,10 +39,10 @@ logging --level=info
 timezone --isUtc Europe/Berlin
 
 # Network information
-network --device eth0 --bootproto=dhcp --hostname=<%= ks_guest['hostname'] %>.<%= scope.lookupvar('::domain') %>
+network --device eth0 --bootproto=dhcp --hostname=<%= preseed['hostname'] %>.<%= scope.lookupvar('::domain') %>
 
 # System bootloader configuration
-bootloader --location=mbr --append="<%= ks_info['kernel'] %>"
+bootloader --location=mbr --append="<%= preseed['ks_kernel'] %>"
 
 # Clear the Master Boot Record
 zerombr
@@ -52,22 +52,22 @@ clearpart --all --initlabel
 
 # Disk partitioning information
 
-<% if ks_info['biosboot'] then %>
+<% if preseed['biosboot'] == 'true' then %>
 part biosboot --asprimary --fstype="biosboot" --ondisk=/dev/vda --size=1
 <% end %>
 
 part / --asprimary --fstype="ext4" --fsoptions="relatime" --grow --ondisk=/dev/vda --size=1
 
-<% if ks_guest['swap'] then %>
+<% if preseed['swap'] then %>
 part swap --asprimary --fstype="swap" --grow --ondisk=/dev/vdb --size=1
 <% end %>
 
 # Local repos
-repo --name="<%= ks_guest['distro'] %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_guest['distro'] %>-<%= ks_guest['releasever'] %>-local/noarch"
-repo --name="<%= ks_guest['distro'] %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= ks_guest['distro'] %>-<%= ks_guest['releasever'] %>-local/<%= ks_guest['arch'] %>"
+repo --name="<%= preseed['distro'] %>-local-noarch" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= preseed['distro'] %>-<%= preseed['releasever'] %>-local/noarch"
+repo --name="<%= preseed['distro'] %>-local-binary" --baseurl="http://<%= scope.lookupvar('::hostname') %>.<%= scope.lookupvar('::domain') %>/repos/<%= preseed['distro'] %>-<%= preseed['releasever'] %>-local/<%= preseed['arch'] %>"
 
-<% if ks_guest['distro'] == 'fc' then %>
-repo --name="<%= ks_guest['distro'] %>-online-main" --baseurl="http://download.fedoraproject.org/pub/fedora/linux/releases/<%= ks_guest['releasever'] %>/Everything/<%= ks_guest['arch'] %>/os/"
+<% if preseed['distro'] == 'fc' then %>
+repo --name="<%= preseed['distro'] %>-online-main" --baseurl="http://download.fedoraproject.org/pub/fedora/linux/releases/<%= preseed['releasever'] %>/Everything/<%= preseed['arch'] %>/os/"
 <% end %>
 
 # Turn off the machine upon succesfull completion
@@ -86,7 +86,7 @@ wget
 -sysstat
 -smartmontools
 
-<%= ks_info['packages'] %>
+<%= preseed['ks_packages'] %>
 
 %end
 
@@ -97,7 +97,7 @@ wget
 # Enable puppet client installed from the internal repo
 chkconfig puppet on
 
-<%= ks_info['post'] %>
+<%= preseed['ks_post'] %>
 
 ) 2>&1 | tee /root/ks-post.log
 

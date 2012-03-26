@@ -11,62 +11,144 @@ class libvirt::params {
         # Jenkins, the ci master host (RHEL6)
         #
         'jenkins' => {
-            'arch'       => 'x86_64',
-            'distro'     => 'rhel',
-            'hostname'   => 'jenkins',
-            'ip'         => '192.168.122.101',
-            'mac'        => '52:54:00:c1:5c:c3',
-            'releasever' => '6Server',
-            'swap'       => true,
+            m => {
+                'arch'       => 'x86_64',
+                'distro'     => 'rhel',
+                'os'         => 'redhat',
+                'hostname'   => 'jenkins',
+                'ip'         => '192.168.122.101',
+                'mac'        => '52:54:00:c1:5c:c3',
+                'releasever' => '6Server',
+                'swap'       => true,
+                'selinux'    => 'enforcing',
+                'biosboot'   => 'false',
+                'storage'    => {
+                    'vm_jenkins_main' => { ensure => 'present', size => '16G', volume_group => $infra_storage_fast_vg, },
+                    'vm_jenkins_swap' => { ensure => 'present', size => '8G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => '',
+                'ks_firewall'=> '--enabled --ssh --http',
+                'ks_post'    => '',
+                'ks_packages'=> '
+                    @server-policy
+                    -ntp
+                    -subscription-manager
+                ',
+            },
         },
 
         #
         # Build slaves
         #
         'fc_15_i386' => {
-            'arch'       => 'i386',
-            'distro'     => 'fc',
-            'hostname'   => 'fc-15-i386',
-            'ip'         => '192.168.122.111',
-            'mac'        => '52:54:00:3c:77:9a',
-            'releasever' => '15',
-            'swap'       => false,
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-15-i386',
+                'ip'         => '192.168.122.111',
+                'mac'        => '52:54:00:3c:77:9a',
+                'releasever' => '15',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'false',
+                'storage'    => {
+                    'vm_fc_15_i386_main' => { ensure => 'present', size => '16G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+            },
         },
 
         'fc_16_i386_1' => {
-            'arch'       => 'i386',
-            'distro'     => 'fc',
-            'hostname'   => 'fc-16-i386-1',
-            'ip'         => '192.168.122.121',
-            'mac'        => '52:54:00:69:f2:a1',
-            'releasever' => '16',
-            'swap'       => false,
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-16-i386-1',
+                'ip'         => '192.168.122.121',
+                'mac'        => '52:54:00:69:f2:a1',
+                'releasever' => '16',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc_16_i386_1_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+            },
         },
 
         'fc_16_i386_2' => {
-            'arch'       => 'i386',
-            'distro'     => 'fc',
-            'hostname'   => 'fc-16-i386-2',
-            'ip'         => '192.168.122.122',
-            'mac'        => '52:54:00:b3:ae:28',
-            'releasever' => '16',
-            'swap'       => false,
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-16-i386-2',
+                'ip'         => '192.168.122.122',
+                'mac'        => '52:54:00:b3:ae:28',
+                'releasever' => '16',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc_16_i386_2_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+            },
         },
 
         'fc_16_i386_3' => {
-            'arch'       => 'i386',
-            'distro'     => 'fc',
-            'hostname'   => 'fc-16-i386-3',
-            'ip'         => '192.168.122.123',
-            'mac'        => '52:54:00:28:37:23',
-            'releasever' => '16',
-            'swap'       => false,
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-16-i386-3',
+                'ip'         => '192.168.122.123',
+                'mac'        => '52:54:00:28:37:23',
+                'releasever' => '16',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc_16_i386_3_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+            },
         },
 
         'windows_7_pro_x86_64' => {
-            'hostname'   => 'windows-7-pro-x86_64',
-            'ip'         => '192.168.122.131',
-            'mac'        => '52:54:00:5b:48:1a',
+            m => {
+                'os'         => 'windows',
+                'hostname'   => 'windows-7-pro-x86_64',
+                'ip'         => '192.168.122.131',
+                'mac'        => '52:54:00:5b:48:1a',
+                'storage'    => {
+                    'vm_windows_7_pro_x86_64_main' => { ensure => 'present', size => '96G', volume_group => $infra_storage_slow_vg, },
+                },
+            },
         },
 
     }
@@ -157,169 +239,26 @@ class libvirt::storage {
 #
 class libvirt::machines {
 
-    logical_volume { "vm_${libvirt::params::guests['jenkins']['hostname']}_main":
-        ensure => 'present',
-        volume_group => $infra_storage_fast_vg,
-        size => '16G',
-    }
+    include libvirt::params
 
-    logical_volume { "vm_${libvirt::params::guests['jenkins']['hostname']}_swap":
-        ensure => 'present',
-        volume_group => $infra_storage_slow_vg,
-        size => '8G',
-    }
+    create_resources(libvirt::guest, $libvirt::params::guests)
 
-    host { $libvirt::params::guests['jenkins']['hostname'] :
+}
+
+define libvirt::guest($m) {
+
+    host { $m['hostname'] :
         ensure => 'present',
-        ip => $libvirt::params::guests['jenkins']['ip'],
-        host_aliases => "${libvirt::params::guests['jenkins']['hostname']}.${domain}",
+        ip => $m['ip'],
+        host_aliases => "${m['hostname']}.${domain}",
      }
 
-    libvirt::make_kickstart { $libvirt::params::guests['jenkins']['hostname']:
-        ks_path => $kickstarts_path,
-        ks_info => {
-            selinux    => 'enforcing',
-            firewall   => '--http',
-            kernel     => '',
-            packages   => '
-                @server-policy
-                -ntp
-                -subscription-manager
-            ',
-            post => '',
-        },
-        ks_guest => $libvirt::params::guests['jenkins'],
-    }
+    create_resources(logical_volume, $m['storage'])
 
-    logical_volume { "vm_${libvirt::params::guests['fc_15_i386']['hostname']}_main":
-        ensure => 'present',
-        volume_group => $infra_storage_slow_vg,
-        size => '16G',
-    }
-
-    logical_volume { "vm_${libvirt::params::guests['fc_16_i386_1']['hostname']}_main":
-        ensure => 'present',
-        volume_group => $infra_storage_slow_vg,
-        size => '24G',
-    }
-
-    logical_volume { "vm_${libvirt::params::guests['fc_16_i386_2']['hostname']}_main":
-        ensure => 'present',
-        volume_group => $infra_storage_slow_vg,
-        size => '24G',
-    }
-
-    logical_volume { "vm_${libvirt::params::guests['fc_16_i386_3']['hostname']}_main":
-        ensure => 'present',
-        volume_group => $infra_storage_slow_vg,
-        size => '24G',
-    }
-
-    logical_volume { "vm_${libvirt::params::guests['windows_7_pro_x86_64']['hostname']}_main":
-        ensure => 'present',
-        volume_group => $infra_storage_slow_vg,
-        size => '96G',
-    }
-
-    host { $libvirt::params::guests['fc_15_i386']['hostname'] :
-        ensure => 'present',
-        ip => $libvirt::params::guests['fc_15_i386']['ip'],
-        host_aliases => "${libvirt::params::guests['fc_15_i386']['hostname']}.${domain}",
-     }
-
-    host { $libvirt::params::guests['fc_16_i386_1']['hostname'] :
-        ensure => 'present',
-        ip => $libvirt::params::guests['fc_16_i386_1']['ip'],
-        host_aliases => "${libvirt::params::guests['fc_16_i386_1']['hostname']}.${domain}",
-     }
-
-    host { $libvirt::params::guests['fc_16_i386_2']['hostname'] :
-        ensure => 'present',
-        ip => $libvirt::params::guests['fc_16_i386_2']['ip'],
-        host_aliases => "${libvirt::params::guests['fc_16_i386_2']['hostname']}.${domain}",
-     }
-
-    host { $libvirt::params::guests['fc_16_i386_3']['hostname'] :
-        ensure => 'present',
-        ip => $libvirt::params::guests['fc_16_i386_3']['ip'],
-        host_aliases => "${libvirt::params::guests['fc_16_i386_3']['hostname']}.${domain}",
-     }
-
-    host { $libvirt::params::guests['windows_7_pro_x86_64']['hostname'] :
-        ensure => 'present',
-        ip => $libvirt::params::guests['windows_7_pro_x86_64']['ip'],
-        host_aliases => "${libvirt::params::guests['windows_7_pro_x86_64']['hostname']}.${domain}",
-     }
-
-    libvirt::make_kickstart { $libvirt::params::guests['fc_15_i386']['hostname']:
-        ks_path => $kickstarts_path,
-        ks_info => {
-            selinux    => 'disabled',
-            firewall   => '',
-            kernel     => 'biosdevname=0',
-            packages   => '
-                @buildsys-build
-                -ntp
-            ',
-            post => '
-                rm -f /etc/udev/rules.d/70-persistent-net.rules
-            ',
-        },
-        ks_guest => $libvirt::params::guests['fc_15_i386'],
-    }
-
-    libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_1']['hostname']:
-        ks_path => $kickstarts_path,
-        ks_info => {
-            selinux    => 'disabled',
-            biosboot   => 'true',
-            firewall   => '',
-            kernel     => 'biosdevname=0',
-            packages   => '
-                @buildsys-build
-                -ntp
-            ',
-            post => '
-                rm -f /etc/udev/rules.d/70-persistent-net.rules
-            ',
-        },
-        ks_guest => $libvirt::params::guests['fc_16_i386_1'],
-    }
-
-    libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_2']['hostname']:
-        ks_path => $kickstarts_path,
-        ks_info => {
-            selinux    => 'disabled',
-            biosboot   => 'true',
-            firewall   => '',
-            kernel     => 'biosdevname=0',
-            packages   => '
-                @buildsys-build
-                -ntp
-            ',
-            post => '
-                rm -f /etc/udev/rules.d/70-persistent-net.rules
-            ',
-        },
-        ks_guest => $libvirt::params::guests['fc_16_i386_2'],
-    }
-
-    libvirt::make_kickstart { $libvirt::params::guests['fc_16_i386_3']['hostname']:
-        ks_path => $kickstarts_path,
-        ks_info => {
-            selinux    => 'disabled',
-            biosboot   => 'true',
-            firewall   => '',
-            kernel     => 'biosdevname=0',
-            packages   => '
-                @buildsys-build
-                -ntp
-            ',
-            post => '
-                rm -f /etc/udev/rules.d/70-persistent-net.rules
-            ',
-        },
-        ks_guest => $libvirt::params::guests['fc_16_i386_3'],
+    if $m['os'] == "redhat" {
+        libvirt::make_kickstart { $m['hostname']:
+            preseed => $m,
+        }
     }
 
 }
@@ -327,12 +266,12 @@ class libvirt::machines {
 #
 # Creates personalized kickstart files from a template
 #
-define libvirt::make_kickstart($ks_path, $ks_info, $ks_guest) {
+define libvirt::make_kickstart($preseed) {
 
-    file { "${ks_path}/${ks_guest['hostname']}-ks.cfg":
+    file { "${kickstarts_path}/${preseed['hostname']}-ks.cfg":
         content => template('default-ks.cfg.erb'),
         ensure => 'file',
-        require => File[$ks_path],
+        require => File[$kickstarts_path],
         seltype => 'httpd_sys_content_t',
     }
 
