@@ -57,12 +57,12 @@ class libvirt::params {
                 },
                 'ks_kernel'  => 'biosdevname=0',
                 'ks_firewall'=> '--enabled --ssh',
-                'ks_post'    => '
-                    rm -f /etc/udev/rules.d/70-persistent-net.rules
-                ',
                 'ks_packages'=> '
                     @buildsys-build
                     -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
                 ',
             },
         },
@@ -88,6 +88,9 @@ class libvirt::params {
                     @buildsys-build
                     -ntp
                 ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
             },
         },
 
@@ -112,6 +115,9 @@ class libvirt::params {
                     @buildsys-build
                     -ntp
                 ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
             },
         },
 
@@ -135,6 +141,9 @@ class libvirt::params {
                 'ks_packages'=> '
                     @buildsys-build
                     -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
                 ',
             },
         },
