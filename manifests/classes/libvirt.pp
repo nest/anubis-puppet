@@ -53,7 +53,7 @@ class libvirt::params {
                 'selinux'    => 'disabled',
                 'biosboot'   => 'false',
                 'storage'    => {
-                    'vm_fc_15_i386_main' => { ensure => 'present', size => '16G', volume_group => $infra_storage_slow_vg, },
+                    'vm_fc-15-i386_main' => { ensure => 'present', size => '16G', volume_group => $infra_storage_slow_vg, },
                 },
                 'ks_kernel'  => 'biosdevname=0',
                 'ks_firewall'=> '--enabled --ssh',
@@ -80,7 +80,7 @@ class libvirt::params {
                 'selinux'    => 'disabled',
                 'biosboot'   => 'true',
                 'storage'    => {
-                    'vm_fc_16_i386_1_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                    'vm_fc-16-i386-1_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
                 },
                 'ks_kernel'  => 'biosdevname=0',
                 'ks_firewall'=> '--enabled --ssh',
@@ -107,7 +107,7 @@ class libvirt::params {
                 'selinux'    => 'disabled',
                 'biosboot'   => 'true',
                 'storage'    => {
-                    'vm_fc_16_i386_2_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                    'vm_fc-16-i386-2_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
                 },
                 'ks_kernel'  => 'biosdevname=0',
                 'ks_firewall'=> '--enabled --ssh',
@@ -134,7 +134,7 @@ class libvirt::params {
                 'selinux'    => 'disabled',
                 'biosboot'   => 'true',
                 'storage'    => {
-                    'vm_fc_16_i386_3_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                    'vm_fc-16-i386-3_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
                 },
                 'ks_kernel'  => 'biosdevname=0',
                 'ks_firewall'=> '--enabled --ssh',
@@ -155,7 +155,7 @@ class libvirt::params {
                 'ip'         => '192.168.122.131',
                 'mac'        => '52:54:00:5b:48:1a',
                 'storage'    => {
-                    'vm_windows_7_pro_x86_64_main' => { ensure => 'present', size => '96G', volume_group => $infra_storage_slow_vg, },
+                    'vm_windows-7-pro-x86_64_main' => { ensure => 'present', size => '96G', volume_group => $infra_storage_slow_vg, },
                 },
             },
         },
