@@ -239,8 +239,6 @@ class libvirt::storage {
 #
 class libvirt::machines {
 
-    include libvirt::params
-
     create_resources(libvirt::guest, $libvirt::params::guests)
 
 }
