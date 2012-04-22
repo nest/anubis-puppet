@@ -186,6 +186,7 @@ node 'builder-fedora' {
 
     include jenkins::builddeps::common
     include jenkins::builddeps::nest
+    include jenkins::builddeps::mc
 
     include users::admins
     include users::sudoers

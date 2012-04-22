@@ -168,3 +168,21 @@ class jenkins::builddeps::pynn {
     }
 
 }
+
+class jenkins::builddeps::mc {
+
+    $packages = [
+
+        'glib2-devel',
+        'e2fsprogs-devel',
+        'slang-devel',
+        'gpm-devel',
+        'groff',
+
+    ]
+
+    package { $packages :
+        ensure => 'present',
+    }
+
+}
