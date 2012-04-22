@@ -176,6 +176,7 @@ class jenkins::builddeps::mc {
         # Required by autopoint :-(
         'cvs',
 
+        'gettext-devel',
         'glib2-devel',
         'e2fsprogs-devel',
         'slang-devel',
