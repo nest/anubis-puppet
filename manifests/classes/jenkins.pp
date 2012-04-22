@@ -173,6 +173,9 @@ class jenkins::builddeps::mc {
 
     $packages = [
 
+        # Required by autopoint :-(
+        'cvs',
+
         'glib2-devel',
         'e2fsprogs-devel',
         'slang-devel',
