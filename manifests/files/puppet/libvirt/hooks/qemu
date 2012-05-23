@@ -34,7 +34,7 @@ rules_update() {
     domain="$1"
     action="$2"
 
-    for host in $machines; do
+    for host in ${machines[@]}; do
 
         eval host_name="\$${host}_hostname"
 
