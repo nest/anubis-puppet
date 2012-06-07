@@ -83,6 +83,9 @@ class jenkins::builddeps::common {
 
     $packages = [
 
+        # Clang
+        'clang-analyzer',
+
         # Required by NEST and PyNN
         'numpy',
         'scipy',
