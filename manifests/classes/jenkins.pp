@@ -85,6 +85,7 @@ class jenkins::builddeps::common {
 
         # Clang
         'clang-analyzer',
+        'indent',
 
         # Required by NEST and PyNN
         'numpy',
@@ -179,12 +180,13 @@ class jenkins::builddeps::mc {
         # Required by autopoint :-(
         'cvs',
 
+        'e2fsprogs-devel',
         'gettext-devel',
         'glib2-devel',
-        'e2fsprogs-devel',
-        'slang-devel',
         'gpm-devel',
         'groff',
+        'libssh2-devel',
+        'slang-devel',
 
     ]
 
