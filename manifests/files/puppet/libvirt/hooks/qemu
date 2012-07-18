@@ -89,6 +89,11 @@ case "${domain_task}" in
     stopped)
         rules_update ${domain_name} " -D "
     ;;
+    # libvirtd restart hook, added in libvirt-0.9.13
+    reconnect)
+        rules_update ${domain_name} " -D "
+        rules_update ${domain_name} " -I "
+    ;;
     *)
         echo "qemu hook called with unexpected options $*" >&2
     ;;
