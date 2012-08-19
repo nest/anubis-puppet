@@ -154,7 +154,7 @@ class libvirt::params {
                 'distro'     => 'fc',
                 'os'         => 'redhat',
                 'hostname'   => 'fc-17-i386-1',
-                'ip'         => '192.168.122.131',
+                'ip'         => '192.168.122.141',
                 'mac'        => '52:54:00:a2:82:8d',
                 'releasever' => '17',
                 'swap'       => false,
