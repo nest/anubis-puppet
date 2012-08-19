@@ -208,8 +208,9 @@ node 'builder-fedora-16' inherits 'builder-fedora' {
     include jenkins::builddeps::sumatra
 }
 
-node 'fc-15-i386' inherits 'builder-fedora-15' {
+node 'builder-fedora-17' inherits 'builder-fedora' {
 }
 
-node /^fc-16-i386-\d+$/ inherits 'builder-fedora-16' {
-}
+node 'fc-15-i386' inherits 'builder-fedora-15' { }
+node /^fc-16-i386-\d+$/ inherits 'builder-fedora-16' { }
+node /^fc-17-i386-\d+$/ inherits 'builder-fedora-17' { }
