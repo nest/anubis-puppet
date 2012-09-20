@@ -87,9 +87,12 @@ class jenkins::builddeps::common {
         'clang-analyzer',
         'indent',
 
-        # Required by NEST and PyNN
+        # Required by NEST, PyNN and Topographica
         'numpy',
         'scipy',
+
+        'python-matplotlib',
+        'python-matplotlib-tk',
 
         # Required by Sumatra and PyNN
         'python-coverage',
@@ -98,6 +101,9 @@ class jenkins::builddeps::common {
 
         # Required by Sumatra and PyNN
         'mpi4py-openmpi',
+
+        # Nice to have
+        'ipython',
 
         # OpenJDK to build Java stuff
         'java-1.6.0-openjdk-devel',
@@ -187,6 +193,24 @@ class jenkins::builddeps::mc {
         'groff',
         'libssh2-devel',
         'slang-devel',
+
+    ]
+
+    package { $packages :
+        ensure => 'present',
+    }
+
+}
+
+class jenkins::builddeps::topographica {
+
+    $packages = [
+
+        'tkinter',
+        'gmpy',
+
+        'python-imaging',
+        'python-imaging-tk',
 
     ]
 
