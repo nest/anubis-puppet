@@ -88,10 +88,15 @@ class services::java {
     #
     # Jenkins: "Captcha Not Rendering with OpenJDK 1.6.0.0"
     #
-
-    case "$operatingsystem" {
+    case $operatingsystem {
         /RedHat/: { $java_package = 'java-1.6.0-sun' }
-        /Fedora/: { $java_package = 'java-1.6.0-openjdk' }
+        /Fedora/: {
+            case $operatingsystemrelease {
+                16: { $java_package = 'java-1.6.0-openjdk' }
+                17: { $java_package = 'java-1.7.0-openjdk' }
+                default: { fail('Unsupported version of Fedora') }
+            }
+        }
         default: { fail('Unsupported operating system') }
     }
 
