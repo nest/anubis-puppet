@@ -105,8 +105,29 @@ class jenkins::builddeps::common {
         # Nice to have
         'ipython',
 
-        # OpenJDK to build Java stuff
-        'java-1.6.0-openjdk-devel',
+    ]
+
+    package { $packages :
+        ensure => 'present',
+    }
+
+}
+
+class jenkins::builddeps::java {
+
+    if $operatingsystem == 'Fedora' {
+        case $operatingsystemrelease {
+            16: { $java_openjdk_devel = 'java-1.6.0-openjdk-devel' }
+            17: { $java_openjdk_devel = 'java-1.7.0-openjdk-devel' }
+            default: { fail('Unsupported version of Fedora') }
+        }
+    } else {
+        fail('Unsupported build slave operating system')
+    }
+
+    $packages = [
+
+        $java_openjdk_devel,
         'vecmath',
 
     ]

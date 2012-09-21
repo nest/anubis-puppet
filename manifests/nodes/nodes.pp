@@ -185,6 +185,7 @@ node 'builder-fedora' {
     include jenkins::slave::tmpfs
 
     include jenkins::builddeps::common
+    include jenkins::builddeps::java
     include jenkins::builddeps::nest
     include jenkins::builddeps::mc
 
