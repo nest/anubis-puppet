@@ -1,9 +1,10 @@
-NEST Infrastructure
-===================
+NEST QA Infrastructure
+======================
 
-This repository contains Puppet source code for the NEST Infrastructure
-project. It was tested to be compatible with Puppet 2.7.1 [1][puppet],
-however it might also work with with earlier or later versions.
+This repository contains Puppet source code for the NEST QA
+infrastructure project. It was tested to be compatible with Puppet 2.7.9
+[1][puppet], however it might also work with with earlier or later
+versions.
 
   [puppet]: http://www.puppetlabs.com/
 
