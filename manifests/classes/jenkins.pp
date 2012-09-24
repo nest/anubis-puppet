@@ -87,6 +87,9 @@ class jenkins::builddeps::common {
         'clang-analyzer',
         'indent',
 
+        # Required by Topographica
+        'xorg-x11-server-Xvfb',
+
         # Required by NEST, PyNN and Topographica
         'numpy',
         'scipy',
