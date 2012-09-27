@@ -90,6 +90,9 @@ class jenkins::builddeps::common {
         # Required by Topographica
         'xorg-x11-server-Xvfb',
 
+        'pylint',
+        'pyflakes',
+
         # Required by NEST, PyNN and Topographica
         'numpy',
         'scipy',
