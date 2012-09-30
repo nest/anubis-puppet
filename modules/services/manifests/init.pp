@@ -92,7 +92,7 @@ class services::java {
         /RedHat/: { $java_package = 'java-1.6.0-sun' }
         /Fedora/: {
             case $operatingsystemrelease {
-                16: { $java_package = 'java-1.6.0-openjdk' }
+                15, 16: { $java_package = 'java-1.6.0-openjdk' }
                 17: { $java_package = 'java-1.7.0-openjdk' }
                 default: { fail('Unsupported version of Fedora') }
             }
