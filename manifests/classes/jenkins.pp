@@ -221,6 +221,8 @@ class jenkins::builddeps::mc {
         'libssh2-devel',
         'slang-devel',
 
+        'check',
+
     ]
 
     package { $packages :
