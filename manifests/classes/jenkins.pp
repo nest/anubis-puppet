@@ -222,6 +222,7 @@ class jenkins::builddeps::mc {
         'slang-devel',
 
         'check',
+        'check-devel',
 
     ]
 
