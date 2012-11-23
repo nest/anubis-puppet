@@ -111,6 +111,9 @@ class jenkins::builddeps::common {
         # Nice to have
         'ipython',
 
+        # Needed for documentation, e.g. NEST examples
+        'texlive',
+
     ]
 
     package { $packages :
