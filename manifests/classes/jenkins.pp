@@ -113,6 +113,7 @@ class jenkins::builddeps::common {
 
         # Needed for documentation, e.g. NEST examples
         'texlive',
+        'texlive-latex',
 
     ]
 
