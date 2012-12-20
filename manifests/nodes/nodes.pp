@@ -176,6 +176,7 @@ node 'builder-fedora' {
     include services::bzr
     include services::git
     include services::mercurial
+    include services::subversion
 
     include jenkins::params
     include jenkins::slave::user
