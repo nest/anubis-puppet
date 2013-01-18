@@ -199,8 +199,9 @@ class jenkins::builddeps::pynn {
         'python-jinja2',
         'python-mock',
 
-        'nrn',
-        'python-nest',
+# Installed from within the build job locally
+#        'nrn',
+#        'python-nest',
 
     ]
 
