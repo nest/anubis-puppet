@@ -215,6 +215,10 @@ node 'builder-fedora-17' inherits 'builder-fedora' {
     include jenkins::builddeps::pynn
 }
 
+node 'builder-fedora-18' inherits 'builder-fedora' {
+}
+
 node 'fc-15-i386' inherits 'builder-fedora-15' { }
 node /^fc-16-i386-\d+$/ inherits 'builder-fedora-16' { }
 node /^fc-17-i386-\d+$/ inherits 'builder-fedora-17' { }
+node /^fc-18-i386-\d+$/ inherits 'builder-fedora-18' { }
