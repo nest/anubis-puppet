@@ -128,7 +128,7 @@ class jenkins::builddeps::java {
     if $operatingsystem == 'Fedora' {
         case $operatingsystemrelease {
             15, 16: { $java_openjdk_devel = 'java-1.6.0-openjdk-devel' }
-            17: { $java_openjdk_devel = 'java-1.7.0-openjdk-devel' }
+            17, 18: { $java_openjdk_devel = 'java-1.7.0-openjdk-devel' }
             default: { fail('Unsupported version of Fedora') }
         }
     } else {
