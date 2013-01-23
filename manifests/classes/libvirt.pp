@@ -202,6 +202,140 @@ class libvirt::params {
             },
         },
 
+        'fc_18_i386_2' => {
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-18-i386-2',
+                'ip'         => '192.168.122.152',
+                'mac'        => '52:54:00:00:36:2a',
+                'releasever' => '18',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc-18-i386-2_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+            },
+        },
+
+        'fc_18_i386_3' => {
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-18-i386-3',
+                'ip'         => '192.168.122.153',
+                'mac'        => '52:54:00:a0:13:c6',
+                'releasever' => '18',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc-18-i386-3_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+            },
+        },
+
+        'fc_18_i386_4' => {
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-18-i386-4',
+                'ip'         => '192.168.122.154',
+                'mac'        => '52:54:00:bb:69:cd',
+                'releasever' => '18',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc-18-i386-4_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+            },
+        },
+
+        'fc_18_i386_5' => {
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-18-i386-5',
+                'ip'         => '192.168.122.155',
+                'mac'        => '52:54:00:e8:f3:73',
+                'releasever' => '18',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc-18-i386-5_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+            },
+        },
+
+        'fc_18_i386_6' => {
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-18-i386-6',
+                'ip'         => '192.168.122.156',
+                'mac'        => '52:54:00:d4:2b:77',
+                'releasever' => '18',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc-18-i386-6_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+            },
+        },
 
         'windows_7_pro_x86_64' => {
             m => {
