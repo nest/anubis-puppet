@@ -180,10 +180,24 @@ class jenkins::builddeps::nest {
 
 class jenkins::builddeps::sumatra {
 
+    if $operatingsystem == 'Fedora' {
+        case $operatingsystemrelease {
+            15, 16, 17: {
+                $pkg_django = 'Django'
+                $pkg_django_tagging = 'django-tagging'
+            }
+            18: {
+                $pkg_django = 'python-django'
+                $pkg_django_tagging = 'python-django-tagging'
+            }
+            default: { fail('Unsupported version of Fedora') }
+        }
+    }
+
     $packages = [
 
-        'Django',
-        'django-tagging',
+        $pkg_django,
+        $pkg_django_tagging,
 
         'python-httplib2',
         'python-simplejson',
