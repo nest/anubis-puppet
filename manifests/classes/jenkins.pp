@@ -81,6 +81,14 @@ class jenkins::slave::tmpfs {
 
 class jenkins::builddeps::common {
 
+    if $operatingsystem == 'Fedora' {
+        case $operatingsystemrelease {
+            15, 16, 17: { $pkg_ipython = 'ipython' }
+            18: { $pkg_ipython = 'python-ipython' }
+            default: { fail('Unsupported version of Fedora') }
+        }
+    }
+
     $packages = [
 
         # Clang
@@ -109,7 +117,7 @@ class jenkins::builddeps::common {
         'mpi4py-openmpi',
 
         # Nice to have
-        'ipython',
+        $pkg_ipython,
 
         # Needed for documentation, e.g. NEST examples
         'texlive',
