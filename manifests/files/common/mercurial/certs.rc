@@ -1,0 +1,7 @@
+# ZYV
+#
+# Disables SSL cert checking: http://mercurial.selenic.com/wiki/CACertificates
+#
+
+[web]
+cacerts = 

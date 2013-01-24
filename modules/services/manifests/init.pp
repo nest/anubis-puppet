@@ -67,9 +67,19 @@ class services::git {
 }
 
 class services::mercurial {
+
     package { 'mercurial':
         ensure => 'present',
     }
+
+    #
+    # Disable SSL certs checking
+    #
+    file { '/etc/mercurial/hgrc.d/certs.rc':
+        ensure => 'file',
+        source => 'puppet:///common/mercurial/certs.rc',
+    }
+
 }
 
 class services::subversion {
