@@ -199,11 +199,6 @@ node 'builder-fedora' {
 
 }
 
-node 'builder-fedora-15' inherits 'builder-fedora' {
-    include jenkins::builddeps::sumatra
-    include jenkins::builddeps::pynn
-}
-
 node 'builder-fedora-17' inherits 'builder-fedora' {
     include jenkins::builddeps::topographica
     include jenkins::builddeps::sumatra
@@ -216,6 +211,5 @@ node 'builder-fedora-18' inherits 'builder-fedora' {
     include jenkins::builddeps::pynn
 }
 
-node 'fc-15-i386' inherits 'builder-fedora-15' { }
 node /^fc-17-i386-\d+$/ inherits 'builder-fedora-17' { }
 node /^fc-18-i386-\d+$/ inherits 'builder-fedora-18' { }
