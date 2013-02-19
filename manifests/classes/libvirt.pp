@@ -40,32 +40,6 @@ class libvirt::params {
         #
         # Build slaves
         #
-        'fc_15_i386' => {
-            m => {
-                'arch'       => 'i386',
-                'distro'     => 'fc',
-                'os'         => 'redhat',
-                'hostname'   => 'fc-15-i386',
-                'ip'         => '192.168.122.111',
-                'mac'        => '52:54:00:3c:77:9a',
-                'releasever' => '15',
-                'swap'       => false,
-                'selinux'    => 'disabled',
-                'biosboot'   => 'false',
-                'storage'    => {
-                    'vm_fc-15-i386_main' => { ensure => 'present', size => '16G', volume_group => $infra_storage_slow_vg, },
-                },
-                'ks_kernel'  => 'biosdevname=0',
-                'ks_firewall'=> '--enabled --ssh',
-                'ks_packages'=> '
-                    @buildsys-build
-                    -ntp
-                ',
-                'ks_post'    => '
-                    rm -f /etc/udev/rules.d/70-persistent-net.rules
-                ',
-            },
-        },
 
         'fc_17_i386_1' => {
             m => {
