@@ -42,8 +42,10 @@ for m in $MACHINES ; do
     MACHINE_MAC=$( echo "$MACHINE_INFO" | grep "mac address" | cut -d '"' -f 2 )
     MACHINE_MOD=$( echo "$MACHINE_INFO" | grep "model type" | cut -d '"' -f 2 )
 
+    set +e
     virsh detach-interface "$m" network --mac "$MACHINE_MAC" && sleep 3
     virsh attach-interface "$m" network $NETWORK_NAME --mac "$MACHINE_MAC" --model "$MACHINE_MOD"
+    set -e
 
     $NETWORK_HOOK "$m" stopped && sleep 3
     $NETWORK_HOOK "$m" start
