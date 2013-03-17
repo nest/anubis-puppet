@@ -230,6 +230,60 @@ class libvirt::params {
             },
         },
 
+        'fc_18_i386_7' => {
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-18-i386-7',
+                'ip'         => '192.168.122.157',
+                'mac'        => '52:54:00:e4:c0:8c',
+                'releasever' => '18',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc-18-i386-7_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+            },
+        },
+
+        'fc_18_i386_8' => {
+            m => {
+                'arch'       => 'i386',
+                'distro'     => 'fc',
+                'os'         => 'redhat',
+                'hostname'   => 'fc-18-i386-8',
+                'ip'         => '192.168.122.158',
+                'mac'        => '52:54:00:e7:12:e2',
+                'releasever' => '18',
+                'swap'       => false,
+                'selinux'    => 'disabled',
+                'biosboot'   => 'true',
+                'storage'    => {
+                    'vm_fc-18-i386-8_main' => { ensure => 'present', size => '24G', volume_group => $infra_storage_slow_vg, },
+                },
+                'ks_kernel'  => 'biosdevname=0',
+                'ks_firewall'=> '--enabled --ssh',
+                'ks_packages'=> '
+                    @buildsys-build
+                    -ntp
+                ',
+                'ks_post'    => '
+                    rm -f /etc/udev/rules.d/70-persistent-net.rules
+                ',
+            },
+        },
+
         'windows_7_pro_x86_64' => {
             m => {
                 'os'         => 'windows',
