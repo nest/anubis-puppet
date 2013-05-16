@@ -84,7 +84,15 @@ class jenkins::builddeps::common {
     if $operatingsystem == 'Fedora' {
         case $operatingsystemrelease {
             15, 16, 17: { $pkg_ipython = 'ipython' }
-            18: { $pkg_ipython = 'python-ipython' }
+            18: {
+
+                $pkg_ipython = 'python-ipython'
+
+                package { 'texlive-multirow' :
+                    ensure => 'present',
+                }
+
+            }
             default: { fail('Unsupported version of Fedora') }
         }
     }
