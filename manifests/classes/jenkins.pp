@@ -88,7 +88,8 @@ class jenkins::builddeps::common {
 
                 $pkg_ipython = 'python-ipython'
 
-                package { 'texlive-multirow' :
+                # NEST ConnPlotter tutorial needs this
+                package { [ 'texlive-multirow', 'texlive-pdfcrop' ] :
                     ensure => 'present',
                 }
 
