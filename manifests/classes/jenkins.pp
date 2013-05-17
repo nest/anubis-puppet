@@ -132,6 +132,8 @@ class jenkins::builddeps::common {
         'texlive',
         'texlive-latex',
 
+        'ghostscript',
+
     ]
 
     package { $packages :
