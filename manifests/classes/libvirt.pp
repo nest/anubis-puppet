@@ -23,7 +23,7 @@ class libvirt::params {
                 'selinux'    => 'enforcing',
                 'biosboot'   => 'false',
                 'storage'    => {
-                    'vm_jenkins_main' => { ensure => 'present', size => '16G', volume_group => $infra_storage_fast_vg, },
+                    'vm_jenkins_main' => { ensure => 'present', size => '48G', volume_group => $infra_storage_fast_vg, },
                     'vm_jenkins_swap' => { ensure => 'present', size => '8G', volume_group => $infra_storage_slow_vg, },
                 },
                 'ks_kernel'  => '',
