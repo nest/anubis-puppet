@@ -114,6 +114,8 @@ class jenkins::builddeps::common {
         'numpy',
         'scipy',
 
+        'python-virtualenv',
+
         'python-matplotlib',
         'python-matplotlib-tk',
 
