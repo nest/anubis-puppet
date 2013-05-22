@@ -91,4 +91,4 @@ JENKINS_HANDLER_IDLE="20"
 #
 # keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -validity 3650 -dname "cn=qa.nest-intiative.org" -storepass XXX
 #
-JENKINS_ARGS=" --httpsPort=8443 --httpsKeyStore=/var/lib/jenkins/ssl/keystore.jks --httpsKeyStorePassword=uDf7oLosBDMh7 --ajp13Port=-1 "
+JENKINS_ARGS=" --httpsPort=8443 --httpsKeyStore=/var/lib/jenkins/ssl/qa.nest-initiative.org.jks --httpsKeyStorePassword='' --ajp13Port=-1 "
