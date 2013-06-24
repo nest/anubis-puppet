@@ -3,7 +3,7 @@
 class jenkins::params {
 
     $ramdisk = '/mnt/ram'
-    $ramsize = '4G'
+    $ramsize = '6G'
 
 }
 
