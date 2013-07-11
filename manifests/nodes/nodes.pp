@@ -179,6 +179,7 @@ node 'builder-fedora' {
 
     include jenkins::params
     include jenkins::slave::user
+    include jenkins::slave::ssh_key
     include jenkins::slave::tmpfs
 
     include services::python
