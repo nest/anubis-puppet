@@ -58,19 +58,23 @@ class jenkins::slave::user {
 
 class jenkins::slave::ssh_key {
 
-     file { '/home/jenkins/.ssh/id_rsa':
-         ensure => 'file',
-         mode => '0600',
-         require => Class['jenkins::slave::user'],
-         source => 'puppet:///common/id_rsa',
-     }
+    file { '/home/jenkins/.ssh/id_rsa':
+        group => 'jenkins',
+        owner => 'jenkins',
+        ensure => 'file',
+        mode => '0600',
+        require => Class['jenkins::slave::user'],
+        source => 'puppet:///common/id_rsa',
+    }
 
-     file { '/home/jenkins/.ssh/id_rsa.pub':
-         ensure => 'file',
-         mode => '0644',
-         require => Class['jenkins::slave::user'],
-         source => 'puppet:///common/id_rsa.pub',
-     }
+    file { '/home/jenkins/.ssh/id_rsa.pub':
+        group => 'jenkins',
+        owner => 'jenkins',
+        ensure => 'file',
+        mode => '0644',
+        require => Class['jenkins::slave::user'],
+        source => 'puppet:///common/id_rsa.pub',
+    }
 
 }
 
