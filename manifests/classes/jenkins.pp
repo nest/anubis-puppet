@@ -205,6 +205,8 @@ class jenkins::builddeps::nest {
         'python-devel',
         'readline-devel',
 
+        'Cython',
+
     ]
 
     package { $packages :
