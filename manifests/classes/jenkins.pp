@@ -133,6 +133,8 @@ class jenkins::builddeps::common {
         'pyflakes',
 
         # Required by NEST, PyNN and Topographica
+        'python-devel',
+
         'numpy',
         'scipy',
 
@@ -151,6 +153,22 @@ class jenkins::builddeps::common {
 
         # Nice to have
         $pkg_ipython,
+
+        # Python 3 stack
+        'python3',
+        'python3-devel',
+
+        'python3-numpy',
+        'python3-scipy',
+        'python3-matplotlib',
+        'python3-matplotlib-tk',
+
+        'python3-ipython',
+
+        'python3-nose',
+        'python3-coverage',
+
+        'python3-Cython',
 
         # Needed for documentation, e.g. NEST examples
         'texlive',
@@ -202,7 +220,6 @@ class jenkins::builddeps::nest {
 
         'gsl-devel',
         'openmpi-devel',
-        'python-devel',
         'readline-devel',
 
         'Cython',
