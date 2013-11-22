@@ -127,7 +127,7 @@ class yum::ban::i386 {
     augeas { 'yum_ban_i386':
         context => '/files/etc/yum.conf/main',
         changes => [
-            'set exclude "*.i?86;yum-rhn-plugin-0.9.1-7.el6.noarch"',
+            'set exclude "*.i?86"',
         ],
     }
 
