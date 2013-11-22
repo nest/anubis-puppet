@@ -35,7 +35,7 @@ node 'puppet.qa.nest-initiative.org' {
     #include puppet::client
     include puppet::server
 
-    include yum::ban::i386
+    #include yum::ban::i386
     include yum::repos::rhel
 
     class { 'yum::server':
