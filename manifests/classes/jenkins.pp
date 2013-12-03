@@ -301,6 +301,7 @@ class jenkins::builddeps::mc {
         'groff',
         'libssh2-devel',
         'slang-devel',
+        'ncurses-devel',
 
         'check',
         'check-devel',
