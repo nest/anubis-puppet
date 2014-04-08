@@ -105,10 +105,15 @@ class jenkins::builddeps::common {
 
     if $operatingsystem == 'Fedora' {
         case $operatingsystemrelease {
-            15, 16, 17: { $pkg_ipython = 'ipython' }
+            15, 16, 17: {
+                $pkg_ipython = 'ipython'
+            }
             18: {
-
                 $pkg_ipython = 'python-ipython'
+
+                package { [ 'python3-ipython', 'python3-matplotlib', 'python3-matplotlib-tk' ] :
+                    ensure => 'present',
+                }
 
                 # NEST ConnPlotter tutorial needs this
                 package { [ 'texlive-multirow', 'texlive-pdfcrop' ] :
@@ -160,10 +165,6 @@ class jenkins::builddeps::common {
 
         'python3-numpy',
         'python3-scipy',
-        'python3-matplotlib',
-        'python3-matplotlib-tk',
-
-        'python3-ipython',
 
         'python3-nose',
         'python3-coverage',
