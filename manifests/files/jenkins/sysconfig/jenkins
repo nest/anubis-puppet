@@ -70,6 +70,28 @@ JENKINS_HTTPS_PORT="8443"
 ## Default:     ""
 ## ServiceRestart: jenkins
 #
+# Path to the keystore in JKS format (as created by the JDK 'keytool').
+# Default is disabled.
+#
+# ZYV
+#
+# keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -validity 3650 -dname "cn=qa.nest-intiative.org" -storepass XXX
+#
+JENKINS_HTTPS_KEYSTORE="/var/lib/jenkins/ssl/qa.nest-initiative.org.jks"
+
+## Type:        string
+## Default:     ""
+## ServiceRestart: jenkins
+#
+# Password to access the keystore defined in JENKINS_HTTPS_KEYSTORE.
+# Default is disabled.
+#
+JENKINS_HTTPS_KEYSTORE_PASSWORD=""
+
+## Type:        string
+## Default:     ""
+## ServiceRestart: jenkins
+#
 # IP address Jenkins listens on for HTTPS requests.
 # Default is disabled.
 #
@@ -134,8 +156,4 @@ JENKINS_HANDLER_IDLE="20"
 # Pass arbitrary arguments to Jenkins.
 # Full option list: java -jar jenkins.war --help
 #
-# ZYV
-#
-# keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -validity 3650 -dname "cn=qa.nest-intiative.org" -storepass XXX
-#
-JENKINS_ARGS=" --httpsKeyStore=/var/lib/jenkins/ssl/qa.nest-initiative.org.jks --httpsKeyStorePassword='' "
+JENKINS_ARGS=""
