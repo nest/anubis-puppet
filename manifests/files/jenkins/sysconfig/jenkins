@@ -77,7 +77,7 @@ JENKINS_HTTPS_PORT="8443"
 #
 # keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -validity 3650 -dname "cn=qa.nest-intiative.org" -storepass XXX
 #
-JENKINS_HTTPS_KEYSTORE="/var/lib/jenkins/ssl/qa.nest-initiative.org.jks"
+JENKINS_HTTPS_KEYSTORE="/var/lib/jenkins/ssl/keystore.jks"
 
 ## Type:        string
 ## Default:     ""
@@ -86,7 +86,7 @@ JENKINS_HTTPS_KEYSTORE="/var/lib/jenkins/ssl/qa.nest-initiative.org.jks"
 # Password to access the keystore defined in JENKINS_HTTPS_KEYSTORE.
 # Default is disabled.
 #
-JENKINS_HTTPS_KEYSTORE_PASSWORD=""
+JENKINS_HTTPS_KEYSTORE_PASSWORD="uDf7oLosBDMh7"
 
 ## Type:        string
 ## Default:     ""
